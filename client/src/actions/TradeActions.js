@@ -75,11 +75,11 @@ const INITIAL_CONFIG = {
           box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
           border-radius: 5px;
         ">
-          <li><b>Date:</b> ${date}</li>
-          <li><b>Open:</b> ${open}</li>
-          <li><b>High:</b> ${high}</li>
-          <li><b>Low:</b> ${low}</li>
-          <li><b>Close:</b> ${close}</li>
+          <li style="margin-bottom: 5px"><b>Date:</b> ${date}</li>
+          <li style="margin-bottom: 5px"><b>Open:</b> ${open}</li>
+          <li style="margin-bottom: 5px"><b>High:</b> ${high}</li>
+          <li style="margin-bottom: 5px"><b>Low:</b> ${low}</li>
+          <li style="margin-bottom: 5px"><b>Close:</b> ${close}</li>
           <li><b>Volume:</b> ${volume}</li>
         </div>
       `;
@@ -108,7 +108,7 @@ const INITIAL_CONFIG = {
           color: '#777777'
         }
       },
-      gridLineColor: '#212333',
+      gridLineColor: 'none',
       gridLineWidth: 1,
       height: '100%'
     },

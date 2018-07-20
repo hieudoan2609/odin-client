@@ -5,8 +5,7 @@ body {
   background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
   color: #777777;
   font-family: 'Fira Sans', sans-serif;
-  font-size: 14px;
-}
+  font-size: 14px; }
 
 .nav-bar {
   position: relative;
@@ -14,62 +13,142 @@ body {
   width: 100%;
   box-sizing: border-box;
   background-color: #2b2c3a;
-  box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
-}
-
-.nav-bar .container {
-  display: flex;
-  justify-content: space-between;
-}
-
-.nav-bar .container .nav-items {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-  box-sizing: border-box;
-}
-
-.nav-bar .container .nav-items ul {
-  list-style: none;
-  display: flex;
-  margin: 0px;
-  padding: 0px;
-}
-
-.nav-bar .container .nav-items ul .nav-item {
-  cursor: pointer;
-  transition: all 300ms ease;
-}
-
-.nav-bar .container .nav-items ul .nav-item:hover {
-  color: white;
-}
-
-.nav-bar .container .brand-logo {
-  width: 60px;
-  height: 60px;
-}
-
-.nav-bar .container .brand-logo img {
-  width: 100%;
-  height: 100%;
-}
+  box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1); }
+  .nav-bar .container {
+    display: flex;
+    justify-content: space-between; }
+    .nav-bar .container .nav-items {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex: 1;
+      box-sizing: border-box; }
+      .nav-bar .container .nav-items ul {
+        list-style: none;
+        display: flex;
+        margin: 0px;
+        padding: 0px; }
+        .nav-bar .container .nav-items ul .nav-item {
+          cursor: pointer;
+          transition: all 300ms ease; }
+          .nav-bar .container .nav-items ul .nav-item:hover {
+            color: white; }
+    .nav-bar .container .brand-logo {
+      width: 60px;
+      height: 60px; }
+      .nav-bar .container .brand-logo img {
+        width: 100%;
+        height: 100%; }
 
 .card {
+  position: relative;
   background-color: #2b2c3a;
   border-radius: 5px;
   box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
   border: 0px;
-  margin-top: 30px;
-}
+  margin-top: 30px; }
 
 .chart {
   box-sizing: border-box;
   padding-top: 100px;
-  height: 400px;
-}
+  height: 400px; }
 
 #tooltip {
-  background-color: 'lime';
-}
+  background-color: 'lime'; }
+
+.loading {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .loading .loading__blink {
+    animation: blink-animation 1500ms infinite; }
+    .loading .loading__blink svg {
+      width: 100px;
+      height: 100px;
+      fill: #777777; }
+
+@keyframes blink-animation {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+.chart__nav {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  box-sizing: border-box; }
+  .chart__nav .outerWrapper {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    overflow: hidden; }
+    .chart__nav .outerWrapper:hover .fadeRight {
+      display: none; }
+    .chart__nav .outerWrapper .fadeRight {
+      display: block;
+      right: 0px;
+      position: absolute;
+      width: 50%;
+      background: linear-gradient(to right, rgba(43, 44, 58, 0), #2b2c3a);
+      height: 100%;
+      top: 0px;
+      z-index: 1; }
+    .chart__nav .outerWrapper .markets {
+      display: flex;
+      overflow-x: scroll;
+      -webkit-overflow-scrolling: touch;
+      box-sizing: content-box; }
+      .chart__nav .outerWrapper .markets::-webkit-scrollbar {
+        display: none; }
+      .chart__nav .outerWrapper .markets .wrapper {
+        height: 50px;
+        display: flex; }
+        .chart__nav .outerWrapper .markets .wrapper .button {
+          width: 100px;
+          float: left; }
+  .chart__nav .options {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    box-sizing: border-box; }
+
+.button {
+  position: relative;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 200ms ease; }
+  .button:after {
+    position: absolute;
+    content: '';
+    display: flex;
+    bottom: -6px;
+    left: 0px;
+    border-radius: 100px;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right, #427bda, #1048a7);
+    transition: all 200ms ease; }
+  .button.active, .button:hover {
+    color: #145bd1; }
+    .button.active:after, .button:hover:after {
+      position: absolute;
+      content: '';
+      display: flex;
+      bottom: -4px;
+      border-radius: 100px;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right, #427bda, #1048a7); }
