@@ -1,0 +1,1 @@
+export const POPULATE_CHART = 'POPULATE_CHART';
