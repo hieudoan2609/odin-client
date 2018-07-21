@@ -125,12 +125,17 @@ body {
 .button {
   position: relative;
   display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   cursor: pointer;
   transition: all 200ms ease; }
+  .button > span.buy {
+    color: #27d68a; }
+  .button > span.sell {
+    color: #ef395b; }
   .button:after {
     position: absolute;
     content: '';

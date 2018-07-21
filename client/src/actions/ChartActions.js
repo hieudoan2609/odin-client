@@ -153,14 +153,21 @@ const DEPTH_CHART_CONFIG = {
       color: '#212333'
     },
     lineColor: 'none',
-    type: 'logarithmic',
     labels: {
       style: {
         color: '#777777'
-      }
-    }
+      },
+      enabled: false
+    },
+    title: {
+      text: 'Price'
+    },
+    tickColor: 'none'
   },
   yAxis: {
+    title: {
+      text: 'Volume'
+    },
     lineColor: 'none',
     gridLineWidth: 0,
     labels: {

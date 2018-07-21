@@ -14,7 +14,7 @@ class App extends Component {
   };
 
   render() {
-    if (this.props.trade.priceLoading || this.props.trade.depthLoading) {
+    if (this.props.chart.priceLoading || this.props.chart.depthLoading) {
       return <Loading />;
     }
 
@@ -36,8 +36,8 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ trade }) => {
-  return { trade };
+const mapStateToProps = ({ chart }) => {
+  return { chart };
 };
 
 export default connect(mapStateToProps, {

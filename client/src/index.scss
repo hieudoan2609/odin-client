@@ -3,6 +3,8 @@ $shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
 $buy: #27d68a;
 $sell: #ef395b;
 $blue: #145bd1;
+// $green: #27dc8e;
+// $green2: #3bb254;
 $blue-gradient-to-right: linear-gradient(to right, #427bda, #1048a7);
 $text: #777777;
 
@@ -167,12 +169,21 @@ body {
 .button {
   position: relative;
   display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: center;
   align-items: center;
   overflow: hidden;
   cursor: pointer;
   transition: all 200ms ease;
+  > span {
+    &.buy {
+      color: $buy;
+    }
+    &.sell {
+      color: $sell;
+    }
+  }
   &:after {
     position: absolute;
     content: '';

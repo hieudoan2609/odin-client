@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import TradeReducer from './TradeReducer';
+import ChartReducer from './ChartReducer';
 
 export default combineReducers({
-  trade: TradeReducer
+  chart: ChartReducer
 });
