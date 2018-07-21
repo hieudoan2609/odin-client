@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import NavBar from './components/NavBar';
 import Trade from './components/Trade';
 import Loading from './components/Loading';
-import { populateChart } from './actions';
+import { populatePriceChart, populateDepthChart } from './actions';
 
 class App extends Component {
   componentWillMount = () => {
-    this.props.populateChart();
+    this.props.populatePriceChart();
+    this.props.populateDepthChart();
   };
 
   render() {
-    if (this.props.trade.loading) {
+    if (this.props.trade.priceLoading || this.props.trade.depthLoading) {
       return <Loading />;
     }
 
@@ -30,4 +31,7 @@ const mapStateToProps = ({ trade }) => {
   return { trade };
 };
 
-export default connect(mapStateToProps, { populateChart })(App);
+export default connect(mapStateToProps, {
+  populatePriceChart,
+  populateDepthChart
+})(App);

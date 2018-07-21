@@ -5,6 +5,7 @@
   "scripts": {
     "server": "nodemon ./bin/www",
     "client": "npm run start --prefix client",
+    "sass": "npm run watch-css --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {

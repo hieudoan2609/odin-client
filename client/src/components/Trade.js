@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
 import { connect } from 'react-redux';
+import { switchChart } from '../actions';
 
 class Trade extends Component {
+  renderChart = () => {
+    if (this.props.trade.chart === 'price') {
+      return <ReactHighstock config={this.props.trade.priceConfig} />;
+    }
+
+    return <ReactHighstock config={this.props.trade.depthConfig} />;
+  };
+
   render() {
     return (
       <div className="Trade">
@@ -30,11 +39,25 @@ class Trade extends Component {
                   </div>
                 </div>
                 <div className="options">
-                  <div className="button active">Price</div>
-                  <div className="button">Market depth</div>
+                  <div
+                    className={`button ${
+                      this.props.trade.chart === 'price' ? 'active' : ''
+                    }`}
+                    onClick={() => this.props.switchChart('price')}
+                  >
+                    Price
+                  </div>
+                  <div
+                    className={`button ${
+                      this.props.trade.chart === 'depth' ? 'active' : ''
+                    }`}
+                    onClick={() => this.props.switchChart('depth')}
+                  >
+                    Market depth
+                  </div>
                 </div>
               </div>
-              <ReactHighstock config={this.props.trade.config} />
+              {this.renderChart()}
             </div>
           </div>
           <div className="col-md-4">
@@ -50,4 +73,4 @@ const mapStateToProps = ({ trade }) => {
   return { trade };
 };
 
-export default connect(mapStateToProps)(Trade);
+export default connect(mapStateToProps, { switchChart })(Trade);

@@ -41,7 +41,7 @@ body {
           cursor: pointer;
           transition: all 300ms ease;
           &:hover {
-            color: rgba(255, 255, 255, 1);
+            color: rgba(255, 255, 255, 0.7);
           }
         }
       }
@@ -70,6 +70,7 @@ body {
   box-sizing: border-box;
   padding-top: 100px;
   height: 400px;
+  overflow: hidden;
 }
 
 #tooltip {
@@ -177,25 +178,24 @@ body {
     content: '';
     display: flex;
     bottom: -6px;
-    left: 0px;
     border-radius: 100px;
-    width: 100%;
     height: 6px;
     background: $blue-gradient-to-right;
     transition: all 200ms ease;
+    left: 5px;
+    right: 5px;
   }
-  &.active,
   &:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  &.active {
     color: $blue;
     &:after {
-      position: absolute;
-      content: '';
-      display: flex;
       bottom: -4px;
-      border-radius: 100px;
-      width: 100%;
-      height: 6px;
-      background: $blue-gradient-to-right;
     }
   }
 }
+
+// .highcharts-tooltip .highcharts-label:nth-child(1) {
+//   display: none;
+// }
