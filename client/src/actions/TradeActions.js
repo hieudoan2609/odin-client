@@ -158,8 +158,7 @@ const DEPTH_CHART_CONFIG = {
       style: {
         color: '#777777'
       }
-    },
-    tickInterval: 0.01
+    }
   },
   yAxis: {
     lineColor: 'none',

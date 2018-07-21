@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class NavBar extends Component {
   render() {
@@ -6,14 +7,18 @@ class NavBar extends Component {
       <div className="nav-bar">
         <div className="container">
           <div className="brand-logo">
-            <img src="/blacklotus-with-shadow.png" alt="Black Lotus" />
+            <Link to="/">
+              <img src="/blacklotus-with-shadow.png" alt="Black Lotus" />
+            </Link>
           </div>
           <div className="nav-items">
             <ul className="pull-right" />
             <ul className="pull-left">
-              <li className="nav-item">
-                <i className="icon ion-ios-wallet" /> 0x8a37b7...2830E1{' '}
-              </li>
+              <Link to="/account">
+                <li className="nav-item">
+                  <i className="icon ion-ios-wallet" /> 0x8a37b7...2830E1{' '}
+                </li>
+              </Link>
             </ul>
           </div>
         </div>

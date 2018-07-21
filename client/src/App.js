@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavBar from './components/NavBar';
-import Trade from './components/Trade';
+import Market from './components/Market';
+import Account from './components/Account';
 import Loading from './components/Loading';
 import { populatePriceChart, populateDepthChart } from './actions';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class App extends Component {
   componentWillMount = () => {
@@ -17,12 +19,19 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
-        <NavBar />
-        <div className="container">
-          <Trade />
+      <Router>
+        <div className="App">
+          <NavBar />
+
+          <div className="container">
+            <Switch>
+              <Route exact path="/" component={Market} />
+              <Route path="/account" component={Account} />
+              <Route path="/market/:pair" component={Market} />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }

@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   depthConfig: {},
   priceLoading: true,
   depthLoading: true,
-  chart: 'depth'
+  chart: 'price'
 };
 
 export default (state = INITIAL_STATE, action) => {

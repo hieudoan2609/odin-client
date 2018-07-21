@@ -196,6 +196,9 @@ body {
   }
 }
 
-// .highcharts-tooltip .highcharts-label:nth-child(1) {
-//   display: none;
-// }
+a {
+  color: $text;
+  &:hover {
+    text-decoration: none;
+  }
+}

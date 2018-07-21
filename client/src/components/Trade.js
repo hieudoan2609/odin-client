@@ -1,7 +1,9 @@
+import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
 import { connect } from 'react-redux';
 import { switchChart } from '../actions';
+import { NavLink } from 'react-router-dom';
 
 class Trade extends Component {
   renderChart = () => {
@@ -23,18 +25,42 @@ class Trade extends Component {
                   <div className="markets">
                     <div className="fadeRight" />
                     <div className="wrapper">
-                      <div className="button active">BTC/USD</div>
-                      <div className="button">BTC/LTC</div>
-                      <div className="button">BTC/XRP</div>
-                      <div className="button">BTC/ETH</div>
-                      <div className="button">BTC/XMR</div>
-                      <div className="button">BTC/NANO</div>
-                      <div className="button">BTC/NEO</div>
-                      <div className="button">BTC/NEM</div>
-                      <div className="button">BTC/BCH</div>
-                      <div className="button">BTC/EOS</div>
-                      <div className="button">BTC/XML</div>
-                      <div className="button">BTC/IOTA</div>
+                      <NavLink to="/market/BTC_USD" className="button">
+                        BTC/USD
+                      </NavLink>
+                      <NavLink to="/market/BTC_LTC" className="button">
+                        BTC/LTC
+                      </NavLink>
+                      <NavLink to="/market/BTC_XRP" className="button">
+                        BTC/XRP
+                      </NavLink>
+                      <NavLink to="/market/BTC_ETH" className="button">
+                        BTC/ETH
+                      </NavLink>
+                      <NavLink to="/market/BTC_XMR" className="button">
+                        BTC/XMR
+                      </NavLink>
+                      <NavLink to="/market/BTC_NANO" className="button">
+                        BTC/NANO
+                      </NavLink>
+                      <NavLink to="/market/BTC_NEO" className="button">
+                        BTC/NEO
+                      </NavLink>
+                      <NavLink to="/market/BTC_NEM" className="button">
+                        BTC/NEM
+                      </NavLink>
+                      <NavLink to="/market/BTC_BCH" className="button">
+                        BTC/BCH
+                      </NavLink>
+                      <NavLink to="/market/BTC_EOS" className="button">
+                        BTC/EOS
+                      </NavLink>
+                      <NavLink to="/market/BTC_XML" className="button">
+                        BTC/XML
+                      </NavLink>
+                      <NavLink to="/market/BTC_IOTA" className="button">
+                        BTC/IOTA
+                      </NavLink>
                     </div>
                   </div>
                 </div>
@@ -73,4 +99,4 @@ const mapStateToProps = ({ trade }) => {
   return { trade };
 };
 
-export default connect(mapStateToProps, { switchChart })(Trade);
+export default withRouter(connect(mapStateToProps, { switchChart })(Trade));

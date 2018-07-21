@@ -148,3 +148,8 @@ body {
     color: #145bd1; }
     .button.active:after {
       bottom: -4px; }
+
+a {
+  color: #777777; }
+  a:hover {
+    text-decoration: none; }
