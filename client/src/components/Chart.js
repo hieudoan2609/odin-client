@@ -16,7 +16,7 @@ class Chart extends Component {
 
   render() {
     return (
-      <div className="chart card">
+      <div className="Chart card">
         <div className="chart__nav">
           <div className="outerWrapper">
             <div className="markets">

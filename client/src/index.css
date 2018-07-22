@@ -46,9 +46,22 @@ body {
   border-radius: 5px;
   box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
   border: 0px;
+  margin: 0px;
   margin-top: 30px; }
+  .card.mini {
+    margin: 0px;
+    background-color: #363749; }
+    .card.mini.balance {
+      box-sizing: border-box;
+      padding: 20px 20px;
+      text-align: center; }
+    .card.mini p {
+      margin: 0px; }
+  .card.Chart, .card.Trade {
+    height: 100%;
+    margin: 0px; }
 
-.chart {
+.Chart {
   box-sizing: border-box;
   padding-top: 100px;
   height: 400px;
@@ -153,6 +166,14 @@ body {
     color: #145bd1; }
     .button.active:after {
       bottom: -4px; }
+    .button.active.buy {
+      color: #27d68a; }
+      .button.active.buy:after {
+        background: linear-gradient(to right, #27d68a, #1048a7); }
+    .button.active.sell {
+      color: #ef395b; }
+      .button.active.sell:after {
+        background: linear-gradient(to right, #ef395b, #1048a7); }
 
 a {
   color: #777777; }
@@ -174,5 +195,63 @@ a {
     color: #27d68a; }
   .order__body .ask {
     color: #ef395b; }
-  .order__body .balance {
+
+strong {
+  color: rgba(255, 255, 255, 0.7); }
+
+/* label color */
+.input-field input {
+  color: #777777; }
+
+/* label focus color */
+.input-field input:focus + label {
+  color: #145bd1 !important; }
+
+/* label underline focus color */
+.input-field input[type='text']:focus {
+  border-bottom: 1px solid #145bd1 !important;
+  box-shadow: 0 1px 0 0 #145bd1 !important; }
+
+.Market .row {
+  display: flex; }
+  .Market .row > div {
+    margin-top: 30px; }
+
+.buttons {
+  display: flex;
+  justify-content: space-between; }
+
+.button2 {
+  height: 40px;
+  box-sizing: border-box;
+  flex: 1;
+  border-radius: 500px;
+  background: linear-gradient(to right, #427bda, #1048a7);
+  margin-right: 20px;
+  position: relative;
+  overflow: hidden;
+  padding: 2px;
+  cursor: pointer; }
+  .button2:hover {
+    background: transparent; }
+    .button2:hover > div {
+      background: #427bda; }
+  .button2:last-child {
+    margin: 0px; }
+  .button2 > div {
+    border-radius: 500px;
+    background: #2b2c3a;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: rgba(255, 255, 255, 0.7); }
+  .button2.sell {
+    background: #ef395b; }
+    .button2.sell:hover > div {
+      background: #ef395b; }
+  .button2.buy {
+    background: #27d68a; }
+    .button2.buy:hover > div {
+      background: #27d68a; }

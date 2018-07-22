@@ -1,12 +1,14 @@
 $background: #2b2c3a;
 $shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
 $buy: #27d68a;
+$buy-gradient: linear-gradient(to right, $buy, #1048a7);
 $sell: #ef395b;
+$sell-gradient: linear-gradient(to right, $sell, #1048a7);
 $blue: #145bd1;
-// $green: #27dc8e;
-// $green2: #3bb254;
 $blue-gradient-to-right: linear-gradient(to right, #427bda, #1048a7);
+$blue-gradient-to-left: linear-gradient(to right, #1048a7, #427bda);
 $text: #777777;
+$lighter: rgba(255, 255, 255, 0.7);
 
 body {
   position: relative;
@@ -65,10 +67,28 @@ body {
   border-radius: 5px;
   box-shadow: $shadow;
   border: 0px;
+  margin: 0px;
   margin-top: 30px;
+  &.mini {
+    margin: 0px;
+    background-color: #363749;
+    &.balance {
+      box-sizing: border-box;
+      padding: 20px 20px;
+      text-align: center;
+    }
+    p {
+      margin: 0px;
+    }
+  }
+  &.Chart,
+  &.Trade {
+    height: 100%;
+    margin: 0px;
+  }
 }
 
-.chart {
+.Chart {
   box-sizing: border-box;
   padding-top: 100px;
   height: 400px;
@@ -204,6 +224,18 @@ body {
     &:after {
       bottom: -4px;
     }
+    &.buy {
+      color: $buy;
+      &:after {
+        background: $buy-gradient;
+      }
+    }
+    &.sell {
+      color: $sell;
+      &:after {
+        background: $sell-gradient;
+      }
+    }
   }
 }
 
@@ -234,7 +266,89 @@ a {
   .ask {
     color: $sell;
   }
-  .balance {
-    color: rgba(255, 255, 255, 0.7);
+}
+
+strong {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* label color */
+.input-field input {
+  color: $text;
+}
+/* label focus color */
+.input-field input:focus + label {
+  color: $blue !important;
+}
+/* label underline focus color */
+.input-field input[type='text']:focus {
+  border-bottom: 1px solid $blue !important;
+  box-shadow: 0 1px 0 0 $blue !important;
+}
+
+.Market {
+  .row {
+    display: flex;
+    & > div {
+      margin-top: 30px;
+    }
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.button2 {
+  height: 40px;
+  box-sizing: border-box;
+  flex: 1;
+  border-radius: 500px;
+  background: $blue-gradient-to-right;
+  margin-right: 20px;
+  position: relative;
+  overflow: hidden;
+  padding: 2px;
+  cursor: pointer;
+
+  &:hover {
+    background: transparent;
+    > div {
+      background: #427bda;
+    }
+  }
+
+  &:last-child {
+    margin: 0px;
+  }
+
+  > div {
+    border-radius: 500px;
+    background: $background;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $lighter;
+  }
+
+  &.sell {
+    background: $sell;
+    &:hover {
+      > div {
+        background: $sell;
+      }
+    }
+  }
+
+  &.buy {
+    background: $buy;
+    &:hover {
+      > div {
+        background: $buy;
+      }
+    }
   }
 }
