@@ -158,3 +158,21 @@ a {
   color: #777777; }
   a:hover {
     text-decoration: none; }
+
+.order__types {
+  display: flex;
+  height: 50px; }
+
+.order__body {
+  box-sizing: border-box;
+  padding: 20px; }
+  .order__body .row {
+    margin: 0px; }
+  .order__body .no-padding {
+    padding: 0px; }
+  .order__body .bid {
+    color: #27d68a; }
+  .order__body .ask {
+    color: #ef395b; }
+  .order__body .balance {
+    color: rgba(255, 255, 255, 0.7); }

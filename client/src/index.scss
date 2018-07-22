@@ -213,3 +213,28 @@ a {
     text-decoration: none;
   }
 }
+
+.order__types {
+  display: flex;
+  height: 50px;
+}
+
+.order__body {
+  box-sizing: border-box;
+  padding: 20px;
+  .row {
+    margin: 0px;
+  }
+  .no-padding {
+    padding: 0px;
+  }
+  .bid {
+    color: $buy;
+  }
+  .ask {
+    color: $sell;
+  }
+  .balance {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
