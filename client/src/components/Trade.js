@@ -26,9 +26,9 @@ class Trade extends Component {
         </div>
         <div className="order__body">
           <div className="mini card balance">
-            <p>
-              Balance: <strong>21000 USD</strong>
-            </p>
+            <div className="title">
+              Balance<span>21000 USD</span>
+            </div>
           </div>
           <div className="fields">
             <div className="input-field">

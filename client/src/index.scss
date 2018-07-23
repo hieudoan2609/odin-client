@@ -1,18 +1,18 @@
 $background: #2b2c3a;
 $shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
 $buy: #27d68a;
-$buy-gradient: linear-gradient(to right, $buy, #1048a7);
+$buy-gradient: linear-gradient(to right, $buy, #58d39e);
 $sell: #ef395b;
-$sell-gradient: linear-gradient(to right, $sell, #1048a7);
+$sell-gradient: linear-gradient(to right, $sell, #ed6f86);
 $blue: #145bd1;
 $blue-gradient-to-right: linear-gradient(to right, #427bda, #1048a7);
 $blue-gradient-to-left: linear-gradient(to right, #1048a7, #427bda);
 $text: #777777;
 $lighter: rgba(255, 255, 255, 0.7);
+$lightest: rgba(255, 255, 255, 1);
 
 body {
   position: relative;
-  height: 1000px;
   width: 100%;
   background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
   color: $text;
@@ -62,20 +62,28 @@ body {
 }
 
 .card {
+  .title {
+    text-transform: uppercase;
+    color: $lighter;
+  }
   position: relative;
   background-color: $background;
   border-radius: 5px;
   box-shadow: $shadow;
   border: 0px;
   margin: 0px;
-  margin-top: 30px;
   &.mini {
     margin: 0px;
     background-color: #363749;
     &.balance {
       box-sizing: border-box;
       padding: 20px 20px;
-      text-align: center;
+      span {
+        display: block;
+        font-weight: 100;
+        font-size: 28px;
+        color: $lightest;
+      }
     }
     p {
       margin: 0px;
@@ -187,6 +195,7 @@ body {
 }
 
 .button {
+  text-transform: uppercase;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -301,6 +310,7 @@ strong {
 }
 
 .button2 {
+  text-transform: uppercase;
   height: 40px;
   box-sizing: border-box;
   flex: 1;
@@ -350,5 +360,90 @@ strong {
         background: $buy;
       }
     }
+  }
+}
+
+.row {
+  margin-bottom: 0px;
+}
+
+.Footer {
+  position: relative;
+  text-align: center;
+  padding: 20px 0px;
+  background-color: $background;
+  margin-top: 100px;
+}
+
+.icon {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  &.sell {
+    background: $sell-gradient;
+  }
+  &.buy {
+    background: $buy-gradient;
+  }
+}
+
+.table-responsive {
+  max-height: 160px;
+}
+
+.table {
+  white-space: nowrap;
+  margin-top: 10px;
+  border: 0px !important;
+  thead {
+    border: 0px !important;
+  }
+  tbody {
+    border: 0px !important;
+  }
+  th {
+    border: 0px !important;
+    color: $lighter;
+  }
+  td {
+    border: 0px !important;
+  }
+  tr {
+    .icon {
+      span {
+        width: 10px;
+        height: 100%;
+        display: block;
+        position: relative;
+        &:after {
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          top: 50%;
+          margin-top: -50%;
+          border-radius: 50%;
+        }
+        &.sell {
+          &:after {
+            background: $sell-gradient;
+          }
+        }
+        &.buy {
+          &:after {
+            background: $buy-gradient;
+          }
+        }
+      }
+    }
+  }
+}
+
+.action {
+  cursor: pointer;
+  transition: all 300ms ease;
+  &:hover {
+    color: rgba(255, 255, 255, 0.7);
   }
 }
