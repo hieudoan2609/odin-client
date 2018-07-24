@@ -7,6 +7,8 @@ import Loading from './components/Loading';
 import Footer from './components/Footer';
 import { populatePriceChart, populateDepthChart } from './actions';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+// import 'materialize-css';
+// import 'materialize-css/dist/css/materialize.min.css';
 
 class App extends Component {
   componentWillMount = () => {

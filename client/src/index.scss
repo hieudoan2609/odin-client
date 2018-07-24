@@ -62,9 +62,18 @@ body {
 }
 
 .card {
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
   .title {
     text-transform: uppercase;
     color: $lighter;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 8px;
+    }
   }
   position: relative;
   background-color: $background;
@@ -74,7 +83,7 @@ body {
   margin: 0px;
   &.mini {
     margin: 0px;
-    background-color: #363749;
+    background-color: rgba(54, 55, 73, 0.5);
     &.balance {
       box-sizing: border-box;
       padding: 20px 20px;
@@ -98,7 +107,7 @@ body {
 
 .Chart {
   box-sizing: border-box;
-  padding-top: 100px;
+  padding-top: 50px;
   height: 400px;
   overflow: hidden;
 }
@@ -114,6 +123,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background: $background;
   .loading__blink {
     animation: blink-animation 1500ms infinite;
     svg {
@@ -370,15 +380,17 @@ strong {
 .Footer {
   position: relative;
   text-align: center;
-  padding: 20px 0px;
+  padding: 20px 20px;
   background-color: $background;
-  margin-top: 100px;
+  margin-top: 30px;
+  box-sizing: border-box;
 }
 
 .icon {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+
   &.sell {
     background: $sell-gradient;
   }
@@ -387,8 +399,18 @@ strong {
   }
 }
 
-.table-responsive {
-  max-height: 160px;
+.MyOrders {
+  .table-responsive {
+    max-height: 205px;
+  }
+}
+
+.SellOrders,
+.BuyOrders,
+.TradeHistory {
+  .table-responsive {
+    max-height: 425px;
+  }
 }
 
 .table {
@@ -445,5 +467,136 @@ strong {
   transition: all 300ms ease;
   &:hover {
     color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+.card {
+  overflow: hidden;
+  .fadeBottom {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: linear-gradient(
+      to bottom,
+      rgba(43, 44, 58, 0),
+      rgba(43, 44, 58, 1)
+    );
+    width: 100%;
+    height: 50%;
+  }
+  &:hover {
+    .fadeBottom {
+      display: none;
+    }
+  }
+}
+
+.balance {
+  .title {
+    display: block;
+  }
+}
+
+.Chart {
+  .options {
+    display: none;
+  }
+}
+
+.MyAccount {
+  margin-top: 30px;
+}
+
+.Search {
+  .card {
+    padding: 20px;
+    .input-field {
+      margin: 0px;
+    }
+  }
+  /* label color */
+  .input-field input {
+    color: $text;
+  }
+  /* label focus color */
+  .input-field input:focus + label {
+    color: $blue !important;
+  }
+  /* label underline focus color */
+  .input-field input[type='text']:focus {
+    border-bottom: 1px solid $blue !important;
+    box-shadow: 0 1px 0 0 $blue !important;
+  }
+  /* icon prefix focus color */
+  .input-field .prefix.active {
+    color: $blue;
+  }
+}
+
+.Asset {
+  margin-top: 30px;
+  .card {
+    .row {
+      margin-top: 30px;
+    }
+    padding: 20px;
+    box-sizing: border-box;
+    > .title {
+      font-weight: 100;
+      font-size: 30px;
+      margin-bottom: 0px;
+      span {
+        font-size: 16px;
+        margin-left: 8px;
+      }
+    }
+    > .subtitle {
+      span {
+        transition: all 300ms ease;
+        margin-right: 5px;
+        cursor: pointer;
+        &:hover {
+          color: $lightest;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  h4 {
+    color: $lightest;
+    text-transform: capitalize;
+  }
+  color: $lighter;
+  background: $background;
+  box-sizing: border-box;
+  padding-bottom: 56px;
+  .modal-content {
+    border: 0px;
+    background: transparent;
+  }
+  .modal-footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: transparent;
+    border: 0px;
+    .button2 {
+      > div {
+        padding: 0px 20px;
+      }
+    }
+  }
+  bottom: auto !important;
+  max-height: initial !important;
+}
+
+.helper-text {
+  color: $text !important;
+  text-transform: capitalize;
+  &.deposit-all {
+    cursor: pointer;
+    text-decoration: underline;
   }
 }

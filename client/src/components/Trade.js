@@ -27,16 +27,16 @@ class Trade extends Component {
         <div className="order__body">
           <div className="mini card balance">
             <div className="title">
-              Balance<span>21000 USD</span>
+              Balance<span>21,000 USD</span>
             </div>
           </div>
           <div className="fields">
             <div className="input-field">
-              <input id="amount" type="text" />
+              <input id="amount" type="text" autoComplete="off" />
               <label htmlFor="amount">Amount</label>
             </div>
             <div className="input-field">
-              <input id="price" type="text" />
+              <input id="price" type="text" autoComplete="off" />
               <label htmlFor="price">Price</label>
             </div>
           </div>

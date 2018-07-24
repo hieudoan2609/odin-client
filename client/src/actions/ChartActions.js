@@ -41,7 +41,7 @@ const PRICE_CHART_CONFIG = {
   },
   chart: {
     backgroundColor: 'transparent',
-    height: '300px'
+    height: '400px'
   },
   credits: {
     enabled: false
