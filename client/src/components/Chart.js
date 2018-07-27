@@ -2,16 +2,11 @@ import { withRouter } from 'react-router-dom';
 import React, { Component } from 'react';
 import ReactHighstock from 'react-highcharts/ReactHighstock.src';
 import { connect } from 'react-redux';
-import { switchChart } from '../actions';
 import { NavLink } from 'react-router-dom';
 
 class Chart extends Component {
   renderChart = () => {
-    if (this.props.chart.type === 'price') {
-      return <ReactHighstock config={this.props.chart.priceConfig} />;
-    }
-
-    return <ReactHighstock config={this.props.chart.depthConfig} />;
+    return <ReactHighstock config={this.props.chart.priceConfig} />;
   };
 
   render() {
@@ -78,24 +73,6 @@ class Chart extends Component {
               </div>
             </div>
           </div>
-          <div className="options">
-            <div
-              className={`button ${
-                this.props.chart.type === 'price' ? 'active' : ''
-              }`}
-              onClick={() => this.props.switchChart('price')}
-            >
-              Price
-            </div>
-            <div
-              className={`button ${
-                this.props.chart.type === 'depth' ? 'active' : ''
-              }`}
-              onClick={() => this.props.switchChart('depth')}
-            >
-              Market depth
-            </div>
-          </div>
         </div>
         {this.renderChart()}
       </div>
@@ -107,4 +84,4 @@ const mapStateToProps = ({ chart }) => {
   return { chart };
 };
 
-export default withRouter(connect(mapStateToProps, { switchChart })(Chart));
+export default withRouter(connect(mapStateToProps)(Chart));
