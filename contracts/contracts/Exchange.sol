@@ -41,7 +41,6 @@ contract Exchange {
     bool initialized;
   }
 
-  bool public frozen;
   address public owner;
   uint private lastOrderId;
   uint public feeMake;
@@ -69,40 +68,31 @@ contract Exchange {
     _;
   }
 
-  modifier requireNotFrozen {
-    require(frozen == false);
-    _;
-  }
-
-  function freeze (bool _frozen) public requireOwner {
-    frozen = _frozen;
-  }
-
-  function addToken(address _address, string _name, string _symbol) public requireOwner requireNotFrozen {
+  function addToken(address _address, string _name, string _symbol) public requireOwner {
     require(!tokens[_address].initialized);
     tokens[_address].name = _name;
     tokens[_address].symbol = _symbol;
     tokens[_address].initialized = true;
   }
 
-  function removeToken(address _address) public requireOwner requireNotFrozen {
+  function removeToken(address _address) public requireOwner {
     require(tokens[_address].initialized);
     delete tokens[_address];
   }
 
-  function setFeeMake(uint _feeMake) public requireOwner requireNotFrozen {
+  function setFeeMake(uint _feeMake) public requireOwner {
     feeMake = _feeMake;
   }
 
-  function setFeeTake(uint _feeTake) public requireOwner requireNotFrozen {
+  function setFeeTake(uint _feeTake) public requireOwner {
     feeTake = _feeTake;
   }
 
-  function setOwner(address _owner) public requireOwner requireNotFrozen {
+  function setOwner(address _owner) public requireOwner {
     owner = _owner;
   }
 
-  function deposit(address _token, uint _amount) public requireNotFrozen payable {
+  function deposit(address _token, uint _amount) public payable {
     if (_token == 0) {
       require(msg.value == _amount);
       balances[0][msg.sender] = balances[0][msg.sender].add(msg.value);
@@ -114,7 +104,7 @@ contract Exchange {
     emit Deposit(_token, msg.sender, _amount, balances[_token][msg.sender]);
   }
 
-  function withdraw(address _token, uint _amount) public requireNotFrozen {
+  function withdraw(address _token, uint _amount) public {
     require(balances[_token][msg.sender] >= _amount);
     balances[_token][msg.sender] = balances[_token][msg.sender].sub(_amount);
     if (_token == 0) {
@@ -125,11 +115,11 @@ contract Exchange {
     emit Withdraw(_token, msg.sender, _amount, balances[_token][msg.sender]);
   }
 
-  function balance() public constant requireOwner requireNotFrozen returns (uint) {
+  function balance() public constant requireOwner returns (uint) {
     return address(this).balance;
   }
 
-  function createOrder(address _token, uint _price, uint _amount, bool _sell) public requireNotFrozen {
+  function createOrder(address _token, uint _price, uint _amount, bool _sell) public {
     /* balance checks */
     if (_sell == true) {
       require(balances[_token][msg.sender] >= _amount);
@@ -345,7 +335,7 @@ contract Exchange {
     emit NewOrder(order.token, order.owner, order.id, order.sell, order.price, order.amount, order.timestamp);
   }
 
-  function cancelOrder(address _token, uint _price, uint _id) public requireNotFrozen {
+  function cancelOrder(address _token, uint _price, uint _id) public {
     Order memory order = orderBooks[_token].prices[_price].orders[_id];
     require(order.owner == msg.sender);
     delete orderBooks[_token].prices[_price].orders[_id];

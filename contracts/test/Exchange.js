@@ -231,26 +231,6 @@ contract('Exchange', accounts => {
     }
   });
 
-  it('should freeze if is admin', async () => {
-    await exchange.freeze(true);
-    const frozen = await exchange.frozen.call();
-    assert(frozen, true);
-  });
-
-  it('should not free if is not admin', async () => {
-    try {
-      assert.fail(await exchange.freeze(true, { from: accounts[1] }));
-    } catch (err) {
-      assert.equal(
-        err.message,
-        'VM Exception while processing transaction: revert'
-      );
-    }
-
-    const frozen = await exchange.frozen.call();
-    assert.equal(frozen, false);
-  });
-
   it('should retrieve balance', async () => {
     const balance = (await exchange.balances.call(
       etherAddress,
@@ -820,56 +800,5 @@ contract('Exchange', accounts => {
       // await assertOrderBook(token.address, 'ask', 0);
       // await assertOrderBook(token.address, 'bid', 0.0005);
     });
-  });
-
-  it('cant do shit when frozen is set to true by admin', async () => {
-    await token.approve(exchange.address, web3.toWei(10000));
-    await exchange.deposit(0, web3.toWei(1), {
-      from: accounts[2],
-      value: web3.toWei(1)
-    });
-    await exchange.deposit(token.address, web3.toWei(10000));
-
-    await exchange.freeze(true);
-
-    try {
-      assert.fail(
-        await exchange.deposit(0, web3.toWei(1), {
-          from: accounts[2],
-          value: web3.toWei(1)
-        })
-      );
-    } catch (err) {
-      assert.equal(
-        err.message,
-        'VM Exception while processing transaction: revert'
-      );
-    }
-
-    try {
-      assert.fail(await exchange.deposit(token.address, web3.toWei(10000)));
-    } catch (err) {
-      assert.equal(
-        err.message,
-        'VM Exception while processing transaction: revert'
-      );
-    }
-
-    try {
-      assert.fail(
-        await exchange.createOrder(
-          token.address,
-          web3.toWei(0.002),
-          web3.toWei(100),
-          false,
-          { from: accounts[2] }
-        )
-      );
-    } catch (err) {
-      assert.equal(
-        err.message,
-        'VM Exception while processing transaction: revert'
-      );
-    }
   });
 });
