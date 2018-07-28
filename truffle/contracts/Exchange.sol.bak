@@ -47,7 +47,7 @@ contract Exchange {
   uint public feeTake;
 
   mapping (address => OrderBook) public orderBooks;
-  mapping (address => Token) public tokens; // list of official tokens managed by owner
+  mapping (address => Token) public tokens;
   mapping (address => mapping (address => uint)) public balances;
 
   event Deposit(address token, address user, uint amount, uint balance);
