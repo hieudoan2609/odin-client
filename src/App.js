@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import NavBar from './components/NavBar';
-import Market from './components/Market';
-import Account from './components/Account';
+import Market from './pages/Market';
+import Account from './pages/Account';
 import Loading from './components/Loading';
 import Footer from './components/Footer';
 import { populatePriceChart } from './actions';
@@ -45,6 +45,9 @@ const mapStateToProps = ({ chart }) => {
   return { chart };
 };
 
-export default connect(mapStateToProps, {
-  populatePriceChart
-})(App);
+export default connect(
+  mapStateToProps,
+  {
+    populatePriceChart
+  }
+)(App);

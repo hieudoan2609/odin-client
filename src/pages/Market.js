@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Chart from './Chart';
-import Trade from './Trade';
-import OrderBook from './OrderBook';
+import Chart from '../components/Chart';
+import Trade from '../components/Trade';
+import OrderBook from '../components/OrderBook';
 
 class Market extends Component {
   render() {
