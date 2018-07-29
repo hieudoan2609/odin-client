@@ -9,6 +9,27 @@ class Chart extends Component {
     return <ReactHighstock config={this.props.chart.priceConfig} />;
   };
 
+  renderPairs = () => {
+    return this.props.pair.pairs.map((pair, i) => {
+      const [cntr, base] = pair.split('_');
+      return (
+        <NavLink
+          to={`/market/${pair}`}
+          className={`button ${
+            this.props.location.pathname === pair ||
+            (this.props.location.pathname === '/' && i === 0)
+              ? 'active'
+              : ''
+          }`}
+          key={i}
+        >
+          {base}/{cntr}
+          <span className="buy">7,410.52</span>
+        </NavLink>
+      );
+    });
+  };
+
   render() {
     return (
       <div className="Chart card">
@@ -16,61 +37,7 @@ class Chart extends Component {
           <div className="outerWrapper">
             <div className="markets">
               <div className="fadeRight" />
-              <div className="wrapper">
-                <NavLink
-                  to="/market/USD_BTC"
-                  className={`button ${
-                    this.props.location.pathname === '/' ? 'active' : ''
-                  }`}
-                >
-                  USD/BTC
-                  <span className="buy">7,410.52</span>
-                </NavLink>
-                <NavLink to="/market/LTC_BTC" className="button">
-                  LTC/BTC
-                  <span className="buy">84.73</span>
-                </NavLink>
-                <NavLink to="/market/XRP_BTC" className="button">
-                  XRP/BTC
-                  <span className="sell">0.454329</span>
-                </NavLink>
-                <NavLink to="/market/ETH_BTC" className="button">
-                  ETH/BTC
-                  <span className="sell">464.74</span>
-                </NavLink>
-                <NavLink to="/market/XMR_BTC" className="button">
-                  XMR/BTC
-                  <span className="buy">131.45</span>
-                </NavLink>
-                <NavLink to="/market/NANO_BTC" className="button">
-                  NANO/BTC
-                  <span className="buy">2.46</span>
-                </NavLink>
-                <NavLink to="/market/NEO_BTC" className="button">
-                  NEO/BTC
-                  <span className="buy">34.66</span>
-                </NavLink>
-                <NavLink to="/market/NEM_BTC" className="button">
-                  NEM/BTC
-                  <span className="sell">0.171755</span>
-                </NavLink>
-                <NavLink to="/market/BCH_BTC" className="button">
-                  BCH/BTC
-                  <span className="buy">791.82</span>
-                </NavLink>
-                <NavLink to="/market/EOS_BTC" className="button">
-                  EOS/BTC
-                  <span className="sell">8.12</span>
-                </NavLink>
-                <NavLink to="/market/XML_BTC" className="button">
-                  XML/BTC
-                  <span className="buy">0.289773</span>
-                </NavLink>
-                <NavLink to="/market/IOT_BTCA" className="button">
-                  IOTA/BTC
-                  <span className="buy">1.01</span>
-                </NavLink>
-              </div>
+              <div className="wrapper">{this.renderPairs()}</div>
             </div>
           </div>
         </div>
@@ -80,8 +47,8 @@ class Chart extends Component {
   }
 }
 
-const mapStateToProps = ({ chart }) => {
-  return { chart };
+const mapStateToProps = ({ chart, pair }) => {
+  return { chart, pair };
 };
 
 export default withRouter(connect(mapStateToProps)(Chart));
