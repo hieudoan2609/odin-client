@@ -14,3 +14,8 @@
 12. android firefox
 13. android opera
 14. android brave
+
+# Writings
+
+-   First completely feeless, serverless, trustless decentralized exchange
+-   Let there be light, let exchanges be free
