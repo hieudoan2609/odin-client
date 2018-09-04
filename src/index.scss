@@ -1,5 +1,6 @@
 $background: #2b2c3a;
-$shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
+// $shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
+$shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
 $buy: #27d68a;
 $buy-gradient: linear-gradient(to right, $buy, #58d39e);
 $sell: #ef395b;
@@ -12,585 +13,585 @@ $lighter: rgba(255, 255, 255, 0.7);
 $lightest: rgba(255, 255, 255, 1);
 
 body {
-  position: relative;
-  width: 100%;
-  background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
-  color: $text;
-  font-family: 'Fira Sans', sans-serif;
-  font-size: 14px;
+	position: relative;
+	width: 100%;
+	background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
+	color: $text;
+	font-family: "Fira Sans", sans-serif;
+	font-size: 14px;
 }
 
 .nav-bar {
-  position: relative;
-  height: 60px;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: $background;
-  box-shadow: $shadow;
-  .container {
-    display: flex;
-    justify-content: space-between;
-    .nav-items {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex: 1;
-      box-sizing: border-box;
-      ul {
-        list-style: none;
-        display: flex;
-        margin: 0px;
-        padding: 0px;
-        .nav-item {
-          cursor: pointer;
-          transition: all 300ms ease;
-          &:hover {
-            color: rgba(255, 255, 255, 0.7);
-          }
-        }
-      }
-    }
-    .brand-logo {
-      width: 60px;
-      height: 60px;
-      img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-  }
+	position: relative;
+	height: 60px;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: $background;
+	box-shadow: $shadow;
+	.container {
+		display: flex;
+		justify-content: space-between;
+		.nav-items {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex: 1;
+			box-sizing: border-box;
+			ul {
+				list-style: none;
+				display: flex;
+				margin: 0px;
+				padding: 0px;
+				.nav-item {
+					cursor: pointer;
+					transition: all 300ms ease;
+					&:hover {
+						color: rgba(255, 255, 255, 0.7);
+					}
+				}
+			}
+		}
+		.brand-logo {
+			width: 60px;
+			height: 60px;
+			img {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
 }
 
 .card {
-  .head {
-    display: flex;
-    justify-content: space-between;
-  }
-  .title {
-    text-transform: uppercase;
-    color: $lighter;
-    display: flex;
-    align-items: center;
-    .icon {
-      margin-right: 8px;
-    }
-  }
-  position: relative;
-  background-color: $background;
-  border-radius: 5px;
-  box-shadow: $shadow;
-  border: 0px;
-  margin: 0px;
-  &.mini {
-    margin: 0px;
-    background-color: rgba(54, 55, 73, 0.5);
-    &.balance {
-      box-sizing: border-box;
-      padding: 20px 20px;
-      span {
-        display: block;
-        font-weight: 100;
-        font-size: 28px;
-        color: $lightest;
-      }
-    }
-    p {
-      margin: 0px;
-    }
-  }
-  &.Chart,
-  &.Trade {
-    height: 100%;
-    margin: 0px;
-  }
+	.head {
+		display: flex;
+		justify-content: space-between;
+	}
+	.title {
+		text-transform: uppercase;
+		color: $lighter;
+		display: flex;
+		align-items: center;
+		.icon {
+			margin-right: 8px;
+		}
+	}
+	position: relative;
+	background-color: $background;
+	border-radius: 5px;
+	box-shadow: $shadow;
+	border: 0px;
+	margin: 0px;
+	&.mini {
+		margin: 0px;
+		background-color: rgba(54, 55, 73, 0.5);
+		&.balance {
+			box-sizing: border-box;
+			padding: 20px 20px;
+			span {
+				display: block;
+				font-weight: 100;
+				font-size: 28px;
+				color: $lightest;
+			}
+		}
+		p {
+			margin: 0px;
+		}
+	}
+	&.Chart,
+	&.Trade {
+		height: 100%;
+		margin: 0px;
+	}
 }
 
 .Chart {
-  box-sizing: border-box;
-  padding-top: 50px;
-  height: 400px;
-  overflow: hidden;
+	box-sizing: border-box;
+	padding-top: 50px;
+	height: 400px;
+	overflow: hidden;
 }
 
 #tooltip {
-  background-color: 'lime';
+	background-color: "lime";
 }
 
 .loading {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $background;
-  .loading__blink {
-    animation: blink-animation 1500ms infinite;
-    svg {
-      width: 100px;
-      height: 100px;
-      fill: #777777;
-    }
-  }
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: $background;
+	.loading__blink {
+		animation: blink-animation 1500ms infinite;
+		svg {
+			width: 100px;
+			height: 100px;
+			fill: #777777;
+		}
+	}
 }
 
 @keyframes blink-animation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .chart__nav {
-  position: absolute;
-  display: flex;
-  flex-wrap: wrap;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  box-sizing: border-box;
-  .outerWrapper {
-    position: relative;
-    height: 50px;
-    width: 100%;
-    overflow: hidden;
-    &:hover {
-      .fadeRight {
-        display: none;
-      }
-    }
-    .fadeRight {
-      display: block;
-      right: 0px;
-      position: absolute;
-      width: 50%;
-      background: linear-gradient(
-        to right,
-        rgba(43, 44, 58, 0),
-        rgba(43, 44, 58, 1)
-      );
-      height: 100%;
-      top: 0px;
-      z-index: 1;
-    }
-    .markets {
-      display: flex;
-      overflow-x: scroll;
-      -webkit-overflow-scrolling: touch;
-      box-sizing: content-box;
-      &::-webkit-scrollbar {
-        display: none;
-      }
-      .wrapper {
-        height: 50px;
-        display: flex;
-        .button {
-          width: 100px;
-          float: left;
-        }
-      }
-    }
-  }
-  .options {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    box-sizing: border-box;
-  }
+	position: absolute;
+	display: flex;
+	flex-wrap: wrap;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	box-sizing: border-box;
+	.outerWrapper {
+		position: relative;
+		height: 50px;
+		width: 100%;
+		overflow: hidden;
+		&:hover {
+			.fadeRight {
+				display: none;
+			}
+		}
+		.fadeRight {
+			display: block;
+			right: 0px;
+			position: absolute;
+			width: 50%;
+			background: linear-gradient(
+				to right,
+				rgba(43, 44, 58, 0),
+				rgba(43, 44, 58, 1)
+			);
+			height: 100%;
+			top: 0px;
+			z-index: 1;
+		}
+		.markets {
+			display: flex;
+			overflow-x: scroll;
+			-webkit-overflow-scrolling: touch;
+			box-sizing: content-box;
+			&::-webkit-scrollbar {
+				display: none;
+			}
+			.wrapper {
+				height: 50px;
+				display: flex;
+				.button {
+					width: 100px;
+					float: left;
+				}
+			}
+		}
+	}
+	.options {
+		width: 100%;
+		height: 50px;
+		display: flex;
+		box-sizing: border-box;
+	}
 }
 
 .button {
-  text-transform: uppercase;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 200ms ease;
-  > span {
-    &.buy {
-      color: $buy;
-    }
-    &.sell {
-      color: $sell;
-    }
-  }
-  &:after {
-    position: absolute;
-    content: '';
-    display: flex;
-    bottom: -6px;
-    border-radius: 100px;
-    height: 6px;
-    background: $blue-gradient-to-right;
-    transition: all 200ms ease;
-    left: 5px;
-    right: 5px;
-  }
-  &:hover {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  &.active {
-    color: $blue;
-    &:after {
-      bottom: -4px;
-    }
-    &.buy {
-      color: $buy;
-      &:after {
-        background: $buy-gradient;
-      }
-    }
-    &.sell {
-      color: $sell;
-      &:after {
-        background: $sell-gradient;
-      }
-    }
-  }
+	text-transform: uppercase;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	cursor: pointer;
+	transition: all 200ms ease;
+	> span {
+		&.buy {
+			color: $buy;
+		}
+		&.sell {
+			color: $sell;
+		}
+	}
+	&:after {
+		position: absolute;
+		content: "";
+		display: flex;
+		bottom: -6px;
+		border-radius: 100px;
+		height: 6px;
+		background: $blue-gradient-to-right;
+		transition: all 200ms ease;
+		left: 5px;
+		right: 5px;
+	}
+	&:hover {
+		color: rgba(255, 255, 255, 0.7);
+	}
+	&.active {
+		color: $blue;
+		&:after {
+			bottom: -4px;
+		}
+		&.buy {
+			color: $buy;
+			&:after {
+				background: $buy-gradient;
+			}
+		}
+		&.sell {
+			color: $sell;
+			&:after {
+				background: $sell-gradient;
+			}
+		}
+	}
 }
 
 a {
-  color: $text;
-  &:hover {
-    text-decoration: none;
-  }
+	color: $text;
+	&:hover {
+		text-decoration: none;
+	}
 }
 
 .order__types {
-  display: flex;
-  height: 50px;
+	display: flex;
+	height: 50px;
 }
 
 .order__body {
-  box-sizing: border-box;
-  padding: 20px;
-  .row {
-    margin: 0px;
-  }
-  .no-padding {
-    padding: 0px;
-  }
-  .bid {
-    color: $buy;
-  }
-  .ask {
-    color: $sell;
-  }
+	box-sizing: border-box;
+	padding: 20px;
+	.row {
+		margin: 0px;
+	}
+	.no-padding {
+		padding: 0px;
+	}
+	.bid {
+		color: $buy;
+	}
+	.ask {
+		color: $sell;
+	}
 }
 
 strong {
-  color: rgba(255, 255, 255, 0.7);
+	color: rgba(255, 255, 255, 0.7);
 }
 
 /* label color */
 .input-field input {
-  color: $text;
+	color: $text;
 }
 /* label focus color */
 .input-field input:focus + label {
-  color: $blue !important;
+	color: $blue !important;
 }
 /* label underline focus color */
-.input-field input[type='text']:focus {
-  border-bottom: 1px solid $blue !important;
-  box-shadow: 0 1px 0 0 $blue !important;
+.input-field input[type="text"]:focus {
+	border-bottom: 1px solid $blue !important;
+	box-shadow: 0 1px 0 0 $blue !important;
 }
 
 .Market {
-  .row {
-    display: flex;
-    & > div {
-      margin-top: 30px;
-    }
-  }
+	.row {
+		display: flex;
+		& > div {
+			margin-top: 30px;
+		}
+	}
 }
 
 .buttons {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .button2 {
-  text-transform: uppercase;
-  height: 40px;
-  box-sizing: border-box;
-  flex: 1;
-  border-radius: 500px;
-  background: $blue-gradient-to-right;
-  margin-right: 20px;
-  position: relative;
-  overflow: hidden;
-  padding: 2px;
-  cursor: pointer;
+	text-transform: uppercase;
+	height: 40px;
+	box-sizing: border-box;
+	flex: 1;
+	border-radius: 500px;
+	background: $blue-gradient-to-right;
+	margin-right: 20px;
+	position: relative;
+	overflow: hidden;
+	padding: 2px;
+	cursor: pointer;
 
-  &:hover {
-    background: transparent;
-    > div {
-      background: #427bda;
-    }
-  }
+	&:hover {
+		background: transparent;
+		> div {
+			background: #427bda;
+		}
+	}
 
-  &:last-child {
-    margin: 0px;
-  }
+	&:last-child {
+		margin: 0px;
+	}
 
-  > div {
-    border-radius: 500px;
-    background: $background;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: $lighter;
-  }
+	> div {
+		border-radius: 500px;
+		background: $background;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: $lighter;
+	}
 
-  &.sell {
-    background: $sell;
-    &:hover {
-      > div {
-        background: $sell;
-      }
-    }
-  }
+	&.sell {
+		background: $sell;
+		&:hover {
+			> div {
+				background: $sell;
+			}
+		}
+	}
 
-  &.buy {
-    background: $buy;
-    &:hover {
-      > div {
-        background: $buy;
-      }
-    }
-  }
+	&.buy {
+		background: $buy;
+		&:hover {
+			> div {
+				background: $buy;
+			}
+		}
+	}
 }
 
 .row {
-  margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 
 .Footer {
-  position: relative;
-  text-align: center;
-  padding: 20px 20px;
-  background-color: $background;
-  margin-top: 30px;
-  box-sizing: border-box;
+	position: relative;
+	text-align: center;
+	padding: 20px 20px;
+	background-color: $background;
+	margin-top: 30px;
+	box-sizing: border-box;
 }
 
 .icon {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
 
-  &.sell {
-    background: $sell-gradient;
-  }
-  &.buy {
-    background: $buy-gradient;
-  }
+	&.sell {
+		background: $sell-gradient;
+	}
+	&.buy {
+		background: $buy-gradient;
+	}
 }
 
 .MyOrders {
-  .table-responsive {
-    max-height: 205px;
-  }
+	.table-responsive {
+		max-height: 205px;
+	}
 }
 
 .SellOrders,
 .BuyOrders,
 .TradeHistory {
-  .table-responsive {
-    max-height: 425px;
-  }
+	.table-responsive {
+		max-height: 425px;
+	}
 }
 
 .table {
-  white-space: nowrap;
-  margin-top: 10px;
-  border: 0px !important;
-  thead {
-    border: 0px !important;
-  }
-  tbody {
-    border: 0px !important;
-  }
-  th {
-    border: 0px !important;
-    color: $lighter;
-  }
-  td {
-    border: 0px !important;
-  }
-  tr {
-    .icon {
-      span {
-        width: 10px;
-        height: 100%;
-        display: block;
-        position: relative;
-        &:after {
-          content: '';
-          display: block;
-          width: 10px;
-          height: 10px;
-          position: absolute;
-          top: 50%;
-          margin-top: -50%;
-          border-radius: 50%;
-        }
-        &.sell {
-          &:after {
-            background: $sell-gradient;
-          }
-        }
-        &.buy {
-          &:after {
-            background: $buy-gradient;
-          }
-        }
-      }
-    }
-  }
+	white-space: nowrap;
+	margin-top: 10px;
+	border: 0px !important;
+	thead {
+		border: 0px !important;
+	}
+	tbody {
+		border: 0px !important;
+	}
+	th {
+		border: 0px !important;
+		color: $lighter;
+	}
+	td {
+		border: 0px !important;
+	}
+	tr {
+		.icon {
+			span {
+				width: 10px;
+				height: 100%;
+				display: block;
+				position: relative;
+				&:after {
+					content: "";
+					display: block;
+					width: 10px;
+					height: 10px;
+					position: absolute;
+					top: 50%;
+					margin-top: -50%;
+					border-radius: 50%;
+				}
+				&.sell {
+					&:after {
+						background: $sell-gradient;
+					}
+				}
+				&.buy {
+					&:after {
+						background: $buy-gradient;
+					}
+				}
+			}
+		}
+	}
 }
 
 .action {
-  cursor: pointer;
-  transition: all 300ms ease;
-  &:hover {
-    color: rgba(255, 255, 255, 0.7);
-  }
+	cursor: pointer;
+	transition: all 300ms ease;
+	&:hover {
+		color: rgba(255, 255, 255, 0.7);
+	}
 }
 
 .card {
-  overflow: hidden;
-  .fadeBottom {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    background: linear-gradient(
-      to bottom,
-      rgba(43, 44, 58, 0),
-      rgba(43, 44, 58, 1)
-    );
-    width: 100%;
-    height: 50%;
-  }
-  &:hover {
-    .fadeBottom {
-      display: none;
-    }
-  }
+	overflow: hidden;
+	.fadeBottom {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		background: linear-gradient(
+			to bottom,
+			rgba(43, 44, 58, 0),
+			rgba(43, 44, 58, 1)
+		);
+		width: 100%;
+		height: 50%;
+	}
+	&:hover {
+		.fadeBottom {
+			display: none;
+		}
+	}
 }
 
 .balance {
-  .title {
-    display: block;
-  }
+	.title {
+		display: block;
+	}
 }
 
 .MyAccount {
-  margin-top: 30px;
+	margin-top: 30px;
 }
 
 .Search {
-  .card {
-    padding: 20px;
-    .input-field {
-      margin: 0px;
-    }
-  }
-  /* label color */
-  .input-field input {
-    color: $text;
-  }
-  /* label focus color */
-  .input-field input:focus + label {
-    color: $blue !important;
-  }
-  /* label underline focus color */
-  .input-field input[type='text']:focus {
-    border-bottom: 1px solid $blue !important;
-    box-shadow: 0 1px 0 0 $blue !important;
-  }
-  /* icon prefix focus color */
-  .input-field .prefix.active {
-    color: $blue;
-  }
+	.card {
+		padding: 20px;
+		.input-field {
+			margin: 0px;
+		}
+	}
+	/* label color */
+	.input-field input {
+		color: $text;
+	}
+	/* label focus color */
+	.input-field input:focus + label {
+		color: $blue !important;
+	}
+	/* label underline focus color */
+	.input-field input[type="text"]:focus {
+		border-bottom: 1px solid $blue !important;
+		box-shadow: 0 1px 0 0 $blue !important;
+	}
+	/* icon prefix focus color */
+	.input-field .prefix.active {
+		color: $blue;
+	}
 }
 
 .Asset {
-  margin-top: 30px;
-  .card {
-    .row {
-      margin-top: 30px;
-    }
-    padding: 20px;
-    box-sizing: border-box;
-    > .title {
-      font-weight: 100;
-      font-size: 30px;
-      margin-bottom: 0px;
-      span {
-        font-size: 16px;
-        margin-left: 8px;
-      }
-    }
-    > .subtitle {
-      span {
-        transition: all 300ms ease;
-        margin-right: 5px;
-        cursor: pointer;
-        &:hover {
-          color: $lightest;
-        }
-      }
-    }
-  }
+	margin-top: 30px;
+	.card {
+		.row {
+			margin-top: 30px;
+		}
+		padding: 20px;
+		box-sizing: border-box;
+		> .title {
+			font-weight: 100;
+			font-size: 30px;
+			margin-bottom: 0px;
+			span {
+				font-size: 16px;
+				margin-left: 8px;
+			}
+		}
+		> .subtitle {
+			span {
+				transition: all 300ms ease;
+				margin-right: 5px;
+				cursor: pointer;
+				&:hover {
+					color: $lightest;
+				}
+			}
+		}
+	}
 }
 
 .modal {
-  h4 {
-    color: $lightest;
-    text-transform: capitalize;
-  }
-  color: $lighter;
-  background: $background;
-  box-sizing: border-box;
-  padding-bottom: 56px;
-  .modal-content {
-    border: 0px;
-    background: transparent;
-  }
-  .modal-footer {
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    background: transparent;
-    border: 0px;
-    .button2 {
-      > div {
-        padding: 0px 20px;
-      }
-    }
-  }
-  bottom: auto !important;
-  max-height: initial !important;
+	h4 {
+		color: $lightest;
+		text-transform: capitalize;
+	}
+	color: $lighter;
+	background: $background;
+	box-sizing: border-box;
+	padding-bottom: 56px;
+	.modal-content {
+		border: 0px;
+		background: transparent;
+	}
+	.modal-footer {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		background: transparent;
+		border: 0px;
+		.button2 {
+			> div {
+				padding: 0px 20px;
+			}
+		}
+	}
+	bottom: auto !important;
+	max-height: initial !important;
 }
 
 .helper-text {
-  color: $text !important;
-  text-transform: capitalize;
-  &.deposit-all {
-    cursor: pointer;
-    text-decoration: underline;
-  }
+	color: $text !important;
+	text-transform: capitalize;
+	&.deposit-all {
+		cursor: pointer;
+		text-decoration: underline;
+	}
 }

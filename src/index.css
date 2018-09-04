@@ -3,7 +3,7 @@ body {
   width: 100%;
   background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
   color: #777777;
-  font-family: 'Fira Sans', sans-serif;
+  font-family: "Fira Sans", sans-serif;
   font-size: 14px; }
 
 .nav-bar {
@@ -12,7 +12,7 @@ body {
   width: 100%;
   box-sizing: border-box;
   background-color: #2b2c3a;
-  box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1); }
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08); }
   .nav-bar .container {
     display: flex;
     justify-content: space-between; }
@@ -43,7 +43,7 @@ body {
   position: relative;
   background-color: #2b2c3a;
   border-radius: 5px;
-  box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
   border: 0px;
   margin: 0px; }
   .card .head {
@@ -80,7 +80,7 @@ body {
   overflow: hidden; }
 
 #tooltip {
-  background-color: 'lime'; }
+  background-color: "lime"; }
 
 .loading {
   position: fixed;
@@ -165,7 +165,7 @@ body {
     color: #ef395b; }
   .button:after {
     position: absolute;
-    content: '';
+    content: "";
     display: flex;
     bottom: -6px;
     border-radius: 100px;
@@ -222,7 +222,7 @@ strong {
   color: #145bd1 !important; }
 
 /* label underline focus color */
-.input-field input[type='text']:focus {
+.input-field input[type="text"]:focus {
   border-bottom: 1px solid #145bd1 !important;
   box-shadow: 0 1px 0 0 #145bd1 !important; }
 
@@ -318,7 +318,7 @@ strong {
     display: block;
     position: relative; }
     .table tr .icon span:after {
-      content: '';
+      content: "";
       display: block;
       width: 10px;
       height: 10px;
@@ -368,7 +368,7 @@ strong {
     color: #777777; }
   .Search .input-field input:focus + label {
     color: #145bd1 !important; }
-  .Search .input-field input[type='text']:focus {
+  .Search .input-field input[type="text"]:focus {
     border-bottom: 1px solid #145bd1 !important;
     box-shadow: 0 1px 0 0 #145bd1 !important; }
   .Search .input-field .prefix.active {
