@@ -1,13 +1,11 @@
-$background: #2b2c3a;
-// $shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
-$shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+$background: #232d44;
+$shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
 $buy: #27d68a;
 $buy-gradient: linear-gradient(to right, $buy, #58d39e);
-$sell: #ef395b;
-$sell-gradient: linear-gradient(to right, $sell, #ed6f86);
-$blue: #145bd1;
-$blue-gradient-to-right: linear-gradient(to right, #427bda, #1048a7);
-$blue-gradient-to-left: linear-gradient(to right, #1048a7, #427bda);
+$sell: #ed8a45;
+$sell-gradient: linear-gradient(to right, $sell, #f6de6c);
+$orange: #ed8a45;
+$orange-gradient-to-left: linear-gradient(to right, #f6de6c, #ed8a45);
 $text: #777777;
 $lighter: rgba(255, 255, 255, 0.7);
 $lightest: rgba(255, 255, 255, 1);
@@ -15,7 +13,7 @@ $lightest: rgba(255, 255, 255, 1);
 body {
 	position: relative;
 	width: 100%;
-	background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
+	background: linear-gradient(to bottom right, #323b5d 100px, #141827);
 	color: $text;
 	font-family: "Fira Sans", sans-serif;
 	font-size: 14px;
@@ -44,7 +42,6 @@ body {
 				padding: 0px;
 				.nav-item {
 					cursor: pointer;
-					transition: all 300ms ease;
 					&:hover {
 						color: rgba(255, 255, 255, 0.7);
 					}
@@ -76,15 +73,15 @@ body {
 			margin-right: 8px;
 		}
 	}
+	border-radius: 0px;
 	position: relative;
 	background-color: $background;
-	border-radius: 5px;
 	box-shadow: $shadow;
 	border: 0px;
 	margin: 0px;
 	&.mini {
 		margin: 0px;
-		background-color: rgba(54, 55, 73, 0.5);
+		background: $orange-gradient-to-left;
 		&.balance {
 			box-sizing: border-box;
 			padding: 20px 20px;
@@ -127,10 +124,9 @@ body {
 	background: $background;
 	.loading__blink {
 		animation: blink-animation 1500ms infinite;
-		svg {
+		img {
 			width: 100px;
 			height: 100px;
-			fill: #777777;
 		}
 	}
 }
@@ -170,11 +166,7 @@ body {
 			right: 0px;
 			position: absolute;
 			width: 50%;
-			background: linear-gradient(
-				to right,
-				rgba(43, 44, 58, 0),
-				rgba(43, 44, 58, 1)
-			);
+			background: linear-gradient(to right, transparent, #232d44);
 			height: 100%;
 			top: 0px;
 			z-index: 1;
@@ -215,7 +207,6 @@ body {
 	align-items: center;
 	overflow: hidden;
 	cursor: pointer;
-	transition: all 200ms ease;
 	> span {
 		&.buy {
 			color: $buy;
@@ -229,10 +220,8 @@ body {
 		content: "";
 		display: flex;
 		bottom: -6px;
-		border-radius: 100px;
 		height: 6px;
-		background: $blue-gradient-to-right;
-		transition: all 200ms ease;
+		background: $orange-gradient-to-left;
 		left: 5px;
 		right: 5px;
 	}
@@ -240,7 +229,7 @@ body {
 		color: rgba(255, 255, 255, 0.7);
 	}
 	&.active {
-		color: $blue;
+		color: $orange;
 		&:after {
 			bottom: -4px;
 		}
@@ -298,12 +287,12 @@ strong {
 }
 /* label focus color */
 .input-field input:focus + label {
-	color: $blue !important;
+	color: $orange !important;
 }
 /* label underline focus color */
 .input-field input[type="text"]:focus {
-	border-bottom: 1px solid $blue !important;
-	box-shadow: 0 1px 0 0 $blue !important;
+	border-bottom: 1px solid $orange !important;
+	box-shadow: 0 1px 0 0 $orange !important;
 }
 
 .Market {
@@ -325,8 +314,7 @@ strong {
 	height: 40px;
 	box-sizing: border-box;
 	flex: 1;
-	border-radius: 500px;
-	background: $blue-gradient-to-right;
+	background: $orange-gradient-to-left;
 	margin-right: 20px;
 	position: relative;
 	overflow: hidden;
@@ -336,7 +324,7 @@ strong {
 	&:hover {
 		background: transparent;
 		> div {
-			background: #427bda;
+			background: $orange;
 		}
 	}
 
@@ -345,7 +333,6 @@ strong {
 	}
 
 	> div {
-		border-radius: 500px;
 		background: $background;
 		width: 100%;
 		height: 100%;
@@ -390,7 +377,6 @@ strong {
 .icon {
 	width: 10px;
 	height: 10px;
-	border-radius: 50%;
 
 	&.sell {
 		background: $sell-gradient;
@@ -446,7 +432,6 @@ strong {
 					position: absolute;
 					top: 50%;
 					margin-top: -50%;
-					border-radius: 50%;
 				}
 				&.sell {
 					&:after {
@@ -465,7 +450,6 @@ strong {
 
 .action {
 	cursor: pointer;
-	transition: all 300ms ease;
 	&:hover {
 		color: rgba(255, 255, 255, 0.7);
 	}
@@ -477,11 +461,7 @@ strong {
 		position: absolute;
 		bottom: 0px;
 		left: 0px;
-		background: linear-gradient(
-			to bottom,
-			rgba(43, 44, 58, 0),
-			rgba(43, 44, 58, 1)
-		);
+		background: linear-gradient(to bottom, transparent, #232d44);
 		width: 100%;
 		height: 50%;
 	}
@@ -515,16 +495,16 @@ strong {
 	}
 	/* label focus color */
 	.input-field input:focus + label {
-		color: $blue !important;
+		color: $orange !important;
 	}
 	/* label underline focus color */
 	.input-field input[type="text"]:focus {
-		border-bottom: 1px solid $blue !important;
-		box-shadow: 0 1px 0 0 $blue !important;
+		border-bottom: 1px solid $orange !important;
+		box-shadow: 0 1px 0 0 $orange !important;
 	}
 	/* icon prefix focus color */
 	.input-field .prefix.active {
-		color: $blue;
+		color: $orange;
 	}
 }
 
@@ -547,7 +527,6 @@ strong {
 		}
 		> .subtitle {
 			span {
-				transition: all 300ms ease;
 				margin-right: 5px;
 				cursor: pointer;
 				&:hover {

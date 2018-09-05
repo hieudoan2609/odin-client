@@ -1,7 +1,7 @@
 body {
   position: relative;
   width: 100%;
-  background: linear-gradient(to bottom right, #393a4e 100px, #2b2c3a);
+  background: linear-gradient(to bottom right, #323b5d 100px, #141827);
   color: #777777;
   font-family: "Fira Sans", sans-serif;
   font-size: 14px; }
@@ -11,8 +11,8 @@ body {
   height: 60px;
   width: 100%;
   box-sizing: border-box;
-  background-color: #2b2c3a;
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08); }
+  background-color: #232d44;
+  box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1); }
   .nav-bar .container {
     display: flex;
     justify-content: space-between; }
@@ -28,8 +28,7 @@ body {
         margin: 0px;
         padding: 0px; }
         .nav-bar .container .nav-items ul .nav-item {
-          cursor: pointer;
-          transition: all 300ms ease; }
+          cursor: pointer; }
           .nav-bar .container .nav-items ul .nav-item:hover {
             color: rgba(255, 255, 255, 0.7); }
     .nav-bar .container .brand-logo {
@@ -40,10 +39,10 @@ body {
         height: 100%; }
 
 .card {
+  border-radius: 0px;
   position: relative;
-  background-color: #2b2c3a;
-  border-radius: 5px;
-  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+  background-color: #232d44;
+  box-shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
   border: 0px;
   margin: 0px; }
   .card .head {
@@ -58,7 +57,7 @@ body {
       margin-right: 8px; }
   .card.mini {
     margin: 0px;
-    background-color: rgba(54, 55, 73, 0.5); }
+    background: linear-gradient(to right, #f6de6c, #ed8a45); }
     .card.mini.balance {
       box-sizing: border-box;
       padding: 20px 20px; }
@@ -89,13 +88,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #2b2c3a; }
+  background: #232d44; }
   .loading .loading__blink {
     animation: blink-animation 1500ms infinite; }
-    .loading .loading__blink svg {
+    .loading .loading__blink img {
       width: 100px;
-      height: 100px;
-      fill: #777777; }
+      height: 100px; }
 
 @keyframes blink-animation {
   0% {
@@ -125,7 +123,7 @@ body {
       right: 0px;
       position: absolute;
       width: 50%;
-      background: linear-gradient(to right, rgba(43, 44, 58, 0), #2b2c3a);
+      background: linear-gradient(to right, transparent, #232d44);
       height: 100%;
       top: 0px;
       z-index: 1; }
@@ -157,27 +155,24 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  cursor: pointer;
-  transition: all 200ms ease; }
+  cursor: pointer; }
   .button > span.buy {
     color: #27d68a; }
   .button > span.sell {
-    color: #ef395b; }
+    color: #ed8a45; }
   .button:after {
     position: absolute;
     content: "";
     display: flex;
     bottom: -6px;
-    border-radius: 100px;
     height: 6px;
-    background: linear-gradient(to right, #427bda, #1048a7);
-    transition: all 200ms ease;
+    background: linear-gradient(to right, #f6de6c, #ed8a45);
     left: 5px;
     right: 5px; }
   .button:hover {
     color: rgba(255, 255, 255, 0.7); }
   .button.active {
-    color: #145bd1; }
+    color: #ed8a45; }
     .button.active:after {
       bottom: -4px; }
     .button.active.buy {
@@ -185,9 +180,9 @@ body {
       .button.active.buy:after {
         background: linear-gradient(to right, #27d68a, #58d39e); }
     .button.active.sell {
-      color: #ef395b; }
+      color: #ed8a45; }
       .button.active.sell:after {
-        background: linear-gradient(to right, #ef395b, #ed6f86); }
+        background: linear-gradient(to right, #ed8a45, #f6de6c); }
 
 a {
   color: #777777; }
@@ -208,7 +203,7 @@ a {
   .order__body .bid {
     color: #27d68a; }
   .order__body .ask {
-    color: #ef395b; }
+    color: #ed8a45; }
 
 strong {
   color: rgba(255, 255, 255, 0.7); }
@@ -219,12 +214,12 @@ strong {
 
 /* label focus color */
 .input-field input:focus + label {
-  color: #145bd1 !important; }
+  color: #ed8a45 !important; }
 
 /* label underline focus color */
 .input-field input[type="text"]:focus {
-  border-bottom: 1px solid #145bd1 !important;
-  box-shadow: 0 1px 0 0 #145bd1 !important; }
+  border-bottom: 1px solid #ed8a45 !important;
+  box-shadow: 0 1px 0 0 #ed8a45 !important; }
 
 .Market .row {
   display: flex; }
@@ -240,8 +235,7 @@ strong {
   height: 40px;
   box-sizing: border-box;
   flex: 1;
-  border-radius: 500px;
-  background: linear-gradient(to right, #427bda, #1048a7);
+  background: linear-gradient(to right, #f6de6c, #ed8a45);
   margin-right: 20px;
   position: relative;
   overflow: hidden;
@@ -250,12 +244,11 @@ strong {
   .button2:hover {
     background: transparent; }
     .button2:hover > div {
-      background: #427bda; }
+      background: #ed8a45; }
   .button2:last-child {
     margin: 0px; }
   .button2 > div {
-    border-radius: 500px;
-    background: #2b2c3a;
+    background: #232d44;
     width: 100%;
     height: 100%;
     display: flex;
@@ -263,9 +256,9 @@ strong {
     align-items: center;
     color: rgba(255, 255, 255, 0.7); }
   .button2.sell {
-    background: #ef395b; }
+    background: #ed8a45; }
     .button2.sell:hover > div {
-      background: #ef395b; }
+      background: #ed8a45; }
   .button2.buy {
     background: #27d68a; }
     .button2.buy:hover > div {
@@ -278,16 +271,15 @@ strong {
   position: relative;
   text-align: center;
   padding: 20px 20px;
-  background-color: #2b2c3a;
+  background-color: #232d44;
   margin-top: 30px;
   box-sizing: border-box; }
 
 .icon {
   width: 10px;
-  height: 10px;
-  border-radius: 50%; }
+  height: 10px; }
   .icon.sell {
-    background: linear-gradient(to right, #ef395b, #ed6f86); }
+    background: linear-gradient(to right, #ed8a45, #f6de6c); }
   .icon.buy {
     background: linear-gradient(to right, #27d68a, #58d39e); }
 
@@ -324,16 +316,14 @@ strong {
       height: 10px;
       position: absolute;
       top: 50%;
-      margin-top: -50%;
-      border-radius: 50%; }
+      margin-top: -50%; }
     .table tr .icon span.sell:after {
-      background: linear-gradient(to right, #ef395b, #ed6f86); }
+      background: linear-gradient(to right, #ed8a45, #f6de6c); }
     .table tr .icon span.buy:after {
       background: linear-gradient(to right, #27d68a, #58d39e); }
 
 .action {
-  cursor: pointer;
-  transition: all 300ms ease; }
+  cursor: pointer; }
   .action:hover {
     color: rgba(255, 255, 255, 0.7); }
 
@@ -343,7 +333,7 @@ strong {
     position: absolute;
     bottom: 0px;
     left: 0px;
-    background: linear-gradient(to bottom, rgba(43, 44, 58, 0), #2b2c3a);
+    background: linear-gradient(to bottom, transparent, #232d44);
     width: 100%;
     height: 50%; }
   .card:hover .fadeBottom {
@@ -367,12 +357,12 @@ strong {
   .Search .input-field input {
     color: #777777; }
   .Search .input-field input:focus + label {
-    color: #145bd1 !important; }
+    color: #ed8a45 !important; }
   .Search .input-field input[type="text"]:focus {
-    border-bottom: 1px solid #145bd1 !important;
-    box-shadow: 0 1px 0 0 #145bd1 !important; }
+    border-bottom: 1px solid #ed8a45 !important;
+    box-shadow: 0 1px 0 0 #ed8a45 !important; }
   .Search .input-field .prefix.active {
-    color: #145bd1; }
+    color: #ed8a45; }
 
 .Asset {
   margin-top: 30px; }
@@ -389,7 +379,6 @@ strong {
         font-size: 16px;
         margin-left: 8px; }
     .Asset .card > .subtitle span {
-      transition: all 300ms ease;
       margin-right: 5px;
       cursor: pointer; }
       .Asset .card > .subtitle span:hover {
@@ -397,7 +386,7 @@ strong {
 
 .modal {
   color: rgba(255, 255, 255, 0.7);
-  background: #2b2c3a;
+  background: #232d44;
   box-sizing: border-box;
   padding-bottom: 56px;
   bottom: auto !important;
