@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class Footer extends Component {
-  render() {
-    return (
-      <div className="Footer">
-        CopyRight © 2017 - 2018 Black Lotus. All Rights Reserved.
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div className="Footer">
+				CopyRight © 2018 OdinTrade. All Rights Reserved.
+			</div>
+		);
+	}
 }
 
 export default Footer;

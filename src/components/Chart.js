@@ -1,11 +1,17 @@
 import { withRouter } from "react-router-dom";
+import CandleStickChartWithHoverTooltip from "./CandleStickChartWithHoverTooltip";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 class Chart extends Component {
 	renderChart = () => {
-		return <p>CHART</p>;
+		return (
+			<CandleStickChartWithHoverTooltip
+				type="hybrid"
+				data={this.props.chart.data}
+			/>
+		);
 	};
 
 	renderPairs = () => {
@@ -46,8 +52,8 @@ class Chart extends Component {
 	}
 }
 
-const mapStateToProps = ({ chart, pair }) => {
-	return { chart, pair };
+const mapStateToProps = ({ pair, chart }) => {
+	return { pair, chart };
 };
 
 export default withRouter(connect(mapStateToProps)(Chart));

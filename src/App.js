@@ -5,19 +5,16 @@ import Market from "./pages/Market";
 import Account from "./pages/Account";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
-import { populatePriceChart } from "./actions";
+import { getChartData } from "./actions";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import 'materialize-css';
-// import 'materialize-css/dist/css/materialize.min.css';
 
 class App extends Component {
 	componentWillMount = () => {
-		this.props.populatePriceChart();
-		// this.props.populateDepthChart();
+		this.props.getChartData();
 	};
 
 	render() {
-		if (this.props.chart.priceLoading) {
+		if (this.props.chart.loading) {
 			return <Loading />;
 		}
 
@@ -45,9 +42,11 @@ const mapStateToProps = ({ chart }) => {
 	return { chart };
 };
 
+const mapFunctionsToProps = {
+	getChartData
+};
+
 export default connect(
 	mapStateToProps,
-	{
-		populatePriceChart
-	}
+	mapFunctionsToProps
 )(App);

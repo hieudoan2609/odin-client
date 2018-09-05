@@ -30,7 +30,7 @@ body {
         .nav-bar .container .nav-items ul .nav-item {
           cursor: pointer; }
           .nav-bar .container .nav-items ul .nav-item:hover {
-            color: rgba(255, 255, 255, 0.7); }
+            color: #ed8a45; }
     .nav-bar .container .brand-logo {
       width: 60px;
       height: 60px; }
@@ -170,7 +170,7 @@ body {
     left: 5px;
     right: 5px; }
   .button:hover {
-    color: rgba(255, 255, 255, 0.7); }
+    color: #ed8a45; }
   .button.active {
     color: #ed8a45; }
     .button.active:after {
@@ -206,7 +206,7 @@ a {
     color: #ed8a45; }
 
 strong {
-  color: rgba(255, 255, 255, 0.7); }
+  color: #ed8a45; }
 
 /* label color */
 .input-field input {
@@ -325,7 +325,7 @@ strong {
 .action {
   cursor: pointer; }
   .action:hover {
-    color: rgba(255, 255, 255, 0.7); }
+    color: #ed8a45; }
 
 .card {
   overflow: hidden; }
@@ -382,7 +382,7 @@ strong {
       margin-right: 5px;
       cursor: pointer; }
       .Asset .card > .subtitle span:hover {
-        color: white; }
+        color: #ed8a45; }
 
 .modal {
   color: rgba(255, 255, 255, 0.7);
