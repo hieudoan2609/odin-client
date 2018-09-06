@@ -5,11 +5,7 @@ import { format } from "d3-format";
 import { timeFormat } from "d3-time-format";
 
 import { ChartCanvas, Chart } from "react-stockcharts";
-import {
-	BarSeries,
-	CandlestickSeries,
-	LineSeries
-} from "react-stockcharts/lib/series";
+import { BarSeries, CandlestickSeries } from "react-stockcharts/lib/series";
 import { XAxis, YAxis } from "react-stockcharts/lib/axes";
 import { EdgeIndicator } from "react-stockcharts/lib/coordinates";
 
@@ -21,8 +17,22 @@ import { last } from "react-stockcharts/lib/utils";
 
 const dateFormat = timeFormat("%Y-%m-%d");
 const numberFormat = format(".2f");
+const candlesAppearance = {
+	wickStroke: function fill(d) {
+		return d.close > d.open ? "rgba(39,214,138,.5)" : "rgba(237,138,69,.5)";
+	},
+	fill: function fill(d) {
+		return d.close > d.open ? "rgba(39,214,138,.5)" : "rgba(237,138,69,.5)";
+	},
+	stroke: function fill(d) {
+		return d.close > d.open ? "rgba(39,214,138,1)" : "rgba(237,138,69,1)";
+	},
+	candleStrokeWidth: 1,
+	widthRatio: 0.8,
+	opacity: 1
+};
 
-function tooltipContent(ys) {
+function tooltipContent() {
 	return ({ currentItem, xAccessor }) => {
 		return {
 			x: dateFormat(xAccessor(currentItem)),
@@ -42,16 +52,12 @@ function tooltipContent(ys) {
 				{
 					label: "close",
 					value: currentItem.close && numberFormat(currentItem.close)
+				},
+				{
+					label: "volume",
+					value: currentItem.volume && numberFormat(currentItem.volume)
 				}
-			]
-				.concat(
-					ys.map(each => ({
-						label: each.label,
-						value: each.value(currentItem),
-						stroke: each.stroke
-					}))
-				)
-				.filter(line => line.value)
+			].filter(line => line.value)
 		};
 	};
 }
@@ -95,7 +101,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 			})
 			.accessor(d => d.ema50);
 
-		const margin = { left: 80, right: 80, top: 30, bottom: 50 };
+		const margin = { left: 10, right: 80, top: 10, bottom: 30 };
 
 		const calculatedData = ema50(ema20(initialData));
 		const xScaleProvider = discontinuousTimeScaleProvider.inputDateAccessor(
@@ -106,7 +112,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 		);
 
 		const start = xAccessor(last(data));
-		const end = xAccessor(data[Math.max(0, data.length - 150)]);
+		const end = xAccessor(data[Math.max(0, data.length - 100)]);
 		const xExtents = [start, end];
 
 		return (
@@ -125,40 +131,42 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 			>
 				<Chart
 					id={1}
-					yExtents={[d => [d.high, d.low], ema20.accessor(), ema50.accessor()]}
+					yExtents={[d => [d.high, d.low]]}
 					padding={{ top: 10, bottom: 20 }}
 				>
-					<XAxis axisAt="bottom" orient="bottom" />
+					<XAxis
+						axisAt="bottom"
+						orient="bottom"
+						stroke="transparent"
+						tickStroke="#777777"
+					/>
 
-					<YAxis axisAt="right" orient="right" ticks={5} />
+					<YAxis
+						axisAt="right"
+						orient="right"
+						ticks={5}
+						stroke="transparent"
+						tickStroke="#777777"
+					/>
 
-					<CandlestickSeries />
-					<LineSeries yAccessor={ema20.accessor()} stroke={ema20.stroke()} />
-					<LineSeries yAccessor={ema50.accessor()} stroke={ema50.stroke()} />
+					<CandlestickSeries {...candlesAppearance} />
 
 					<EdgeIndicator
 						itemType="last"
 						orient="right"
 						edgeAt="right"
 						yAccessor={d => d.close}
-						fill={d => (d.close > d.open ? "#6BA583" : "#FF0000")}
+						fill={d =>
+							d.close > d.open ? "rgba(39,214,138,1" : "rgba(237,138,69,1)"
+						}
 					/>
 
 					<HoverTooltip
-						yAccessor={ema50.accessor()}
-						tooltipContent={tooltipContent([
-							{
-								label: `${ema20.type()}(${ema20.options().windowSize})`,
-								value: d => numberFormat(ema20.accessor()(d)),
-								stroke: ema20.stroke()
-							},
-							{
-								label: `${ema50.type()}(${ema50.options().windowSize})`,
-								value: d => numberFormat(ema50.accessor()(d)),
-								stroke: ema50.stroke()
-							}
-						])}
+						tooltipContent={tooltipContent()}
 						fontSize={15}
+						stroke={"transparent"}
+						fontFill={"#ffffff"}
+						fill={"#ed8a45"}
 					/>
 				</Chart>
 				<Chart
@@ -167,16 +175,9 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 					height={150}
 					origin={(w, h) => [0, h - 150]}
 				>
-					<YAxis
-						axisAt="left"
-						orient="left"
-						ticks={5}
-						tickFormat={format(".2s")}
-					/>
-
 					<BarSeries
 						yAccessor={d => d.volume}
-						fill={d => (d.close > d.open ? "#6BA583" : "#FF0000")}
+						fill={d => (d.close > d.open ? "#27d68a" : "#ed8a45")}
 					/>
 				</Chart>
 			</ChartCanvas>

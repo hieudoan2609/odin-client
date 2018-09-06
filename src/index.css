@@ -1,12 +1,13 @@
 body {
   position: relative;
   width: 100%;
-  background: linear-gradient(to bottom right, #323b5d 100px, #141827);
+  background: linear-gradient(to bottom right, #384256 100px, #1f283d);
   color: #777777;
   font-family: "Fira Sans", sans-serif;
   font-size: 14px; }
 
 .nav-bar {
+  margin-bottom: 30px;
   position: relative;
   height: 60px;
   width: 100%;
@@ -221,10 +222,14 @@ strong {
   border-bottom: 1px solid #ed8a45 !important;
   box-shadow: 0 1px 0 0 #ed8a45 !important; }
 
+.Market > .row {
+  display: flex;
+  margin-top: -20px; }
+
 .Market .row {
   display: flex; }
   .Market .row > div {
-    margin-top: 30px; }
+    margin-top: 20px; }
 
 .buttons {
   display: flex;
@@ -342,9 +347,6 @@ strong {
 .balance .title {
   display: block; }
 
-.MyAccount {
-  margin-top: 30px; }
-
 .Search {
   /* label color */
   /* label focus color */
@@ -365,12 +367,12 @@ strong {
     color: #ed8a45; }
 
 .Asset {
-  margin-top: 30px; }
+  margin-top: 20px; }
   .Asset .card {
     padding: 20px;
     box-sizing: border-box; }
     .Asset .card .row {
-      margin-top: 30px; }
+      margin-top: 20px; }
     .Asset .card > .title {
       font-weight: 100;
       font-size: 30px;

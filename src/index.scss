@@ -14,13 +14,14 @@ $hover: $orange;
 body {
 	position: relative;
 	width: 100%;
-	background: linear-gradient(to bottom right, #323b5d 100px, #141827);
+	background: linear-gradient(to bottom right, #384256 100px, #1f283d);
 	color: $text;
 	font-family: "Fira Sans", sans-serif;
 	font-size: 14px;
 }
 
 .nav-bar {
+	margin-bottom: 30px;
 	position: relative;
 	height: 60px;
 	width: 100%;
@@ -297,10 +298,17 @@ strong {
 }
 
 .Market {
+	> .row {
+		display: flex;
+		margin-top: -20px;
+		& > div {
+			// margin-top: 0px !important;
+		}
+	}
 	.row {
 		display: flex;
 		& > div {
-			margin-top: 30px;
+			margin-top: 20px;
 		}
 	}
 }
@@ -479,10 +487,6 @@ strong {
 	}
 }
 
-.MyAccount {
-	margin-top: 30px;
-}
-
 .Search {
 	.card {
 		padding: 20px;
@@ -510,10 +514,10 @@ strong {
 }
 
 .Asset {
-	margin-top: 30px;
+	margin-top: 20px;
 	.card {
 		.row {
-			margin-top: 30px;
+			margin-top: 20px;
 		}
 		padding: 20px;
 		box-sizing: border-box;
