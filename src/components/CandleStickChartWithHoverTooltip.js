@@ -159,6 +159,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 						fill={d =>
 							d.close > d.open ? "rgba(39,214,138,1" : "rgba(237,138,69,1)"
 						}
+						lineStroke={"#777777"}
 					/>
 
 					<HoverTooltip
