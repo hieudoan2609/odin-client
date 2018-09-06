@@ -166,8 +166,8 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 						tooltipContent={tooltipContent()}
 						fontSize={15}
 						stroke={"transparent"}
-						fontFill={"#ffffff"}
-						fill={"#ed8a45"}
+						fontFill={"#777777"}
+						fill={"#151b28"}
 					/>
 				</Chart>
 				<Chart
