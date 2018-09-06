@@ -18,8 +18,13 @@ class Account extends Component {
 				<div className="row" key={i}>
 					{group.map((asset, i) => {
 						return (
-							<div className="col-md-6 col-lg-3">
-								<Asset name={asset.name} symbol={asset.symbol} />
+							<div className="col-md-6 col-lg-3" key={i}>
+								<Asset
+									name={asset.name}
+									symbol={asset.symbol}
+									availableBalance={asset.balance.available}
+									reserveBalance={asset.balance.reserve}
+								/>
 							</div>
 						);
 					})}

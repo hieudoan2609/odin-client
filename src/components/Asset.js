@@ -10,8 +10,8 @@ class Asset extends Component {
 
 				<div className="card">
 					<p className="title">
-						Ethereum
-						<span>(ETH)</span>
+						{this.props.name}
+						<span>({this.props.symbol})</span>
 					</p>
 					<p className="subtitle">
 						<span className="modal-trigger" href="#deposit">
@@ -25,18 +25,20 @@ class Asset extends Component {
 					<div className="row">
 						<div className="col-12">
 							<div className="title">Total Balance</div>
-							<div className="value">0.18946627</div>
+							<div className="value">
+								{this.props.availableBalance + this.props.reserveBalance}
+							</div>
 						</div>
 					</div>
 
 					<div className="row">
 						<div className="col-6">
 							<div className="title">Available</div>
-							<div className="value">0.18946627</div>
+							<div className="value">{this.props.availableBalance}</div>
 						</div>
 						<div className="col-6">
 							<div className="title">In Orders</div>
-							<div className="value">0</div>
+							<div className="value">{this.props.reserveBalance}</div>
 						</div>
 					</div>
 				</div>
