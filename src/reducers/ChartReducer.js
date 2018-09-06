@@ -1,5 +1,4 @@
 import { GET_CHART_DATA } from "../actions/types";
-import moment from "moment";
 
 const INITIAL_STATE = {
 	data: {},

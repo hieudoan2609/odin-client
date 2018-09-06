@@ -3,9 +3,9 @@ $shadow: 0px 5px 15px rgba(1, 1, 1, 0.1);
 $buy: #27d68a;
 $buy-gradient: linear-gradient(to right, $buy, #58d39e);
 $sell: #ed8a45;
-$sell-gradient: linear-gradient(to right, $sell, #f6de6c);
+$sell-gradient: $orange-gradient;
 $orange: #ed8a45;
-$orange-gradient-to-left: linear-gradient(to right, #f6de6c, #ed8a45);
+$orange-gradient: linear-gradient(to right, $sell, #f6de6c);
 $text: #777777;
 $lighter: rgba(255, 255, 255, 0.7);
 $lightest: rgba(255, 255, 255, 1);
@@ -83,7 +83,7 @@ body {
 	margin: 0px;
 	&.mini {
 		margin: 0px;
-		background: $orange-gradient-to-left;
+		background: $orange-gradient;
 		&.balance {
 			box-sizing: border-box;
 			padding: 20px 20px;
@@ -223,7 +223,7 @@ body {
 		display: flex;
 		bottom: -6px;
 		height: 6px;
-		background: $orange-gradient-to-left;
+		background: $orange-gradient;
 		left: 5px;
 		right: 5px;
 	}
@@ -285,7 +285,7 @@ strong {
 
 /* label color */
 .input-field input {
-	color: $text;
+	color: white;
 }
 /* label focus color */
 .input-field input:focus + label {
@@ -323,7 +323,7 @@ strong {
 	height: 40px;
 	box-sizing: border-box;
 	flex: 1;
-	background: $orange-gradient-to-left;
+	background: $orange-gradient;
 	margin-right: 20px;
 	position: relative;
 	overflow: hidden;

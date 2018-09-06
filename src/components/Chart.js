@@ -15,20 +15,19 @@ class Chart extends Component {
 	};
 
 	renderPairs = () => {
-		return this.props.pair.pairs.map((pair, i) => {
-			const [cntr, base] = pair.split("_");
+		return this.props.contract.assets.map((asset, i) => {
 			return (
 				<NavLink
-					to={`/market/${pair}`}
+					to={`/market/${asset.symbol}`}
 					className={`button ${
-						this.props.location.pathname === pair ||
+						this.props.location.pathname === asset.symbol ||
 						(this.props.location.pathname === "/" && i === 0)
 							? "active"
 							: ""
 					}`}
 					key={i}
 				>
-					{base}/{cntr}
+					{"ETH"}/{asset.symbol}
 					<span className="buy">7,410.52</span>
 				</NavLink>
 			);
@@ -52,8 +51,8 @@ class Chart extends Component {
 	}
 }
 
-const mapStateToProps = ({ pair, chart }) => {
-	return { pair, chart };
+const mapStateToProps = ({ contract, chart }) => {
+	return { contract, chart };
 };
 
 export default withRouter(connect(mapStateToProps)(Chart));

@@ -58,7 +58,7 @@ body {
       margin-right: 8px; }
   .card.mini {
     margin: 0px;
-    background: linear-gradient(to right, #f6de6c, #ed8a45); }
+    background: linear-gradient(to right, #ed8a45, #f6de6c); }
     .card.mini.balance {
       box-sizing: border-box;
       padding: 20px 20px; }
@@ -167,7 +167,7 @@ body {
     display: flex;
     bottom: -6px;
     height: 6px;
-    background: linear-gradient(to right, #f6de6c, #ed8a45);
+    background: linear-gradient(to right, #ed8a45, #f6de6c);
     left: 5px;
     right: 5px; }
   .button:hover {
@@ -211,7 +211,7 @@ strong {
 
 /* label color */
 .input-field input {
-  color: #777777; }
+  color: white; }
 
 /* label focus color */
 .input-field input:focus + label {
@@ -240,7 +240,7 @@ strong {
   height: 40px;
   box-sizing: border-box;
   flex: 1;
-  background: linear-gradient(to right, #f6de6c, #ed8a45);
+  background: linear-gradient(to right, #ed8a45, #f6de6c);
   margin-right: 20px;
   position: relative;
   overflow: hidden;
