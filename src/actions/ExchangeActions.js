@@ -10,6 +10,6 @@ const web3 = new Web3(
 
 export const connectExchange = () => {
 	return async dispatch => {
-		console.log(await web3.eth.getAccounts());
+		// console.log("lol");
 	};
 };

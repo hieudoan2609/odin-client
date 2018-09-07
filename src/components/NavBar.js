@@ -1,7 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class NavBar extends Component {
+	renderUser = () => {
+		if (this.props.exchange.user) {
+			return (
+				<span>
+					<i className="icon ion-ios-wallet" /> 0x8a37b7...2830E1 (0.097252 BTC)
+				</span>
+			);
+		}
+
+		return (
+			<span>
+				<i className="icon ion-ios-wallet" /> Log in
+			</span>
+		);
+	};
+
 	render() {
 		return (
 			<div className="nav-bar">
@@ -15,10 +32,7 @@ class NavBar extends Component {
 						<ul className="pull-right" />
 						<ul className="pull-left">
 							<Link to="/account">
-								<li className="nav-item">
-									<i className="icon ion-ios-wallet" /> 0x8a37b7...2830E1{" "}
-									(0.097252 BTC)
-								</li>
+								<li className="nav-item">{this.renderUser()}</li>
 							</Link>
 						</ul>
 					</div>
@@ -28,4 +42,12 @@ class NavBar extends Component {
 	}
 }
 
-export default NavBar;
+const mapStateToProps = ({ exchange }) => {
+	return { exchange };
+};
+
+// const mapFunctionsToProps = {
+// 	getChartData
+// };
+
+export default connect(mapStateToProps)(NavBar);

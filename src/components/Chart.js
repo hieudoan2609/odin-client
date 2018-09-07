@@ -15,15 +15,14 @@ class Chart extends Component {
 	};
 
 	renderPairs = () => {
-		return this.props.exchange.assets.map((asset, i) => {
+		return Object.keys(this.props.exchange.assets).map((assetKey, i) => {
+			const asset = this.props.exchange.assets[assetKey];
+
 			return (
 				<NavLink
 					to={`/market/${asset.symbol}`}
 					className={`button ${
-						this.props.location.pathname === asset.symbol ||
-						(this.props.location.pathname === "/" && i === 0)
-							? "active"
-							: ""
+						this.props.exchange.currentMarket === asset.symbol ? "active" : ""
 					}`}
 					key={i}
 				>

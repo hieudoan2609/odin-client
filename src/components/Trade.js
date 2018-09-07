@@ -28,7 +28,7 @@ class Trade extends Component {
 					<div className="mini card balance">
 						<div className="title">
 							Balance
-							<span>21,000 USD</span>
+							<span>0 USD</span>
 						</div>
 					</div>
 					<div className="fields">
@@ -54,8 +54,8 @@ class Trade extends Component {
 	}
 }
 
-const mapStateToProps = ({ trade }) => {
-	return { trade };
+const mapStateToProps = ({ trade, exchange }) => {
+	return { trade, exchange };
 };
 
 export default connect(
