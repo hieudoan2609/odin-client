@@ -15,7 +15,7 @@ class Chart extends Component {
 	};
 
 	renderPairs = () => {
-		return this.props.contract.assets.map((asset, i) => {
+		return this.props.exchange.assets.map((asset, i) => {
 			return (
 				<NavLink
 					to={`/market/${asset.symbol}`}
@@ -51,8 +51,8 @@ class Chart extends Component {
 	}
 }
 
-const mapStateToProps = ({ contract, chart }) => {
-	return { contract, chart };
+const mapStateToProps = ({ exchange, chart }) => {
+	return { exchange, chart };
 };
 
 export default withRouter(connect(mapStateToProps)(Chart));

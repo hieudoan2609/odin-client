@@ -11,7 +11,7 @@ class Account extends Component {
 	};
 
 	renderAssets = () => {
-		const assetGroups = _.chunk(this.props.contract.assets, 4);
+		const assetGroups = _.chunk(this.props.exchange.assets, 4);
 
 		return assetGroups.map((group, i) => {
 			return (
@@ -48,8 +48,8 @@ class Account extends Component {
 	}
 }
 
-const mapStateToProps = ({ contract }) => {
-	return { contract };
+const mapStateToProps = ({ exchange }) => {
+	return { exchange };
 };
 
 // const mapFunctionsToProps = {

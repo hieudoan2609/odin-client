@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 import TradeReducer from "./TradeReducer";
 import OrderBookReducer from "./OrderBookReducer";
-import ContractReducer from "./ContractReducer";
+import ExchangeReducer from "./ExchangeReducer";
 import ChartReducer from "./ChartReducer";
 
 export default combineReducers({
 	trade: TradeReducer,
 	orderBook: OrderBookReducer,
 	chart: ChartReducer,
-	contract: ContractReducer
+	exchange: ExchangeReducer
 });
