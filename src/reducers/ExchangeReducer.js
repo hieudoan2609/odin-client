@@ -1,4 +1,4 @@
-import { EXCHANGE_LOGIN } from "../actions/types";
+import { EXCHANGE_LOGIN, EXCHANGE_CURRENT_MARKET } from "../actions/types";
 
 const INITIAL_STATE = {
 	assets: {
@@ -99,6 +99,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_CURRENT_MARKET:
+			return { ...state, currentMarket: action.payload };
 		case EXCHANGE_LOGIN:
 			return { ...state, user: action.payload };
 		default:

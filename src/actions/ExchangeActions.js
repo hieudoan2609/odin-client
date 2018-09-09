@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import exchangeAbi from "../contracts/ExchangePureAbi.json";
-import { EXCHANGE_CONNECT } from "./types";
+import { EXCHANGE_CONNECT, EXCHANGE_CURRENT_MARKET } from "./types";
 
 const web3 = new Web3(
 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
@@ -11,5 +11,12 @@ const web3 = new Web3(
 export const connectExchange = () => {
 	return async dispatch => {
 		// console.log("lol");
+	};
+};
+
+export const setCurrentMarket = market => {
+	return {
+		type: EXCHANGE_CURRENT_MARKET,
+		payload: market
 	};
 };

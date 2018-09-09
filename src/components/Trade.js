@@ -4,6 +4,8 @@ import { switchOrderType } from "../actions";
 
 class Trade extends Component {
 	render() {
+		const exchange = this.props.exchange;
+
 		return (
 			<div className="Trade card">
 				<div className="order__types">
@@ -28,7 +30,7 @@ class Trade extends Component {
 					<div className="mini card balance">
 						<div className="title">
 							Balance
-							<span>0 USD</span>
+							<span>0 {exchange.currentMarket}</span>
 						</div>
 					</div>
 					<div className="fields">
