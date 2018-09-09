@@ -11,12 +11,15 @@ class Account extends Component {
 	};
 
 	renderAssets = () => {
-		const assetGroups = _.chunk(this.props.exchange.assets, 4);
+		const exchange = this.props.exchange;
+		const assetGroups = _.chunk(Object.keys(exchange.assets), 4);
 
 		return assetGroups.map((group, i) => {
 			return (
 				<div className="row" key={i}>
-					{group.map((asset, i) => {
+					{group.map((key, i) => {
+						const asset = exchange.assets[key];
+
 						return (
 							<div className="col-md-6 col-lg-3" key={i}>
 								<Asset

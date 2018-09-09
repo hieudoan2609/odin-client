@@ -432,3 +432,16 @@ strong {
   height: 100%; }
   .OrderBook .col-md-4 > div > .card {
     height: 100%; }
+
+.unavailable {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(35, 45, 68, 0.9);
+  color: #ed8a45;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; }
