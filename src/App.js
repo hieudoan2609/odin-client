@@ -5,13 +5,15 @@ import Market from "./pages/Market";
 import Account from "./pages/Account";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
-import { getChartData, connectExchange } from "./actions";
+import { getChartData, getMarketInfo, setCurrentMarket } from "./actions";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 class App extends Component {
 	componentWillMount = () => {
 		this.props.getChartData();
-		this.props.connectExchange();
+		const defaultMarket = Object.keys(this.props.exchange.assets)[0];
+		this.props.setCurrentMarket(defaultMarket);
+		this.props.getMarketInfo(defaultMarket);
 	};
 
 	render() {
@@ -39,13 +41,14 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ chart }) => {
-	return { chart };
+const mapStateToProps = ({ chart, exchange }) => {
+	return { chart, exchange };
 };
 
 const mapFunctionsToProps = {
 	getChartData,
-	connectExchange
+	getMarketInfo,
+	setCurrentMarket
 };
 
 export default connect(

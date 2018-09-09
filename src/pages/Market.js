@@ -16,7 +16,7 @@ class Market extends Component {
 			market = this.props.match.params.pair;
 		}
 
-		if (exchange.currentMarket != market) {
+		if (exchange.currentMarket !== market) {
 			this.props.setCurrentMarket(market);
 		}
 	};
@@ -31,7 +31,7 @@ class Market extends Component {
 			market = nextProps.match.params.pair;
 		}
 
-		if (exchange.currentMarket != market) {
+		if (exchange.currentMarket !== market) {
 			this.props.setCurrentMarket(market);
 		}
 	};

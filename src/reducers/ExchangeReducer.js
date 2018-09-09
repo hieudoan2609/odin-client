@@ -94,7 +94,8 @@ const INITIAL_STATE = {
 		}
 	},
 	user: "",
-	currentMarket: ""
+	currentMarket: "",
+	loading: true
 };
 
 export default (state = INITIAL_STATE, action) => {
