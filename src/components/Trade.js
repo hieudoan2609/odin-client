@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { switchOrderType } from "../actions";
 
 class Trade extends Component {
-	renderOverlay(user) {
-		if (!user) {
+	renderOverlay() {
+		if (!this.props.exchange.user) {
 			return (
 				<div className="unavailable">
 					<p>Please log in to trade.</p>
@@ -18,7 +18,7 @@ class Trade extends Component {
 
 		return (
 			<div className="Trade card">
-				{this.renderOverlay(exchange.user)}
+				{this.renderOverlay()}
 				<div className="order__types">
 					<div
 						className={`button buy ${

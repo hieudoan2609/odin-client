@@ -1,7 +1,18 @@
 import React, { Component } from "react";
 import Modal from "./Modal";
+import { connect } from "react-redux";
 
 class Asset extends Component {
+	renderOverlay() {
+		if (!this.props.exchange.user) {
+			return (
+				<div className="unavailable">
+					<p>Please log in to view this asset.</p>
+				</div>
+			);
+		}
+	}
+
 	render() {
 		return (
 			<div className="Asset">
@@ -19,6 +30,8 @@ class Asset extends Component {
 				/>
 
 				<div className="card">
+					{this.renderOverlay()}
+
 					<p className="title">
 						{this.props.name}
 						<span>({this.props.symbol})</span>
@@ -63,12 +76,13 @@ class Asset extends Component {
 	}
 }
 
-// const mapStateToProps = ({ contract }) => {
-// 	return { contract };
-// };
+const mapStateToProps = ({ exchange }) => {
+	return { exchange };
+};
 
-// const mapFunctionsToProps = {
-// 	getChartData
-// };
+const mapFunctionsToProps = {};
 
-export default Asset;
+export default connect(
+	mapStateToProps,
+	mapFunctionsToProps
+)(Asset);
