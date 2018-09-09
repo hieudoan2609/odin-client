@@ -5,8 +5,18 @@ class Asset extends Component {
 	render() {
 		return (
 			<div className="Asset">
-				<Modal name="Ethereum" symbol="ETH" type="deposit" />
-				<Modal name="Ethereum" symbol="ETH" type="withdraw" />
+				<Modal
+					name={this.props.name}
+					symbol={this.props.symbol}
+					type="deposit"
+					id={`deposit-${this.props.symbol}`}
+				/>
+				<Modal
+					name={this.props.name}
+					symbol={this.props.symbol}
+					type="withdraw"
+					id={`withdraw-${this.props.symbol}`}
+				/>
 
 				<div className="card">
 					<p className="title">
@@ -14,10 +24,16 @@ class Asset extends Component {
 						<span>({this.props.symbol})</span>
 					</p>
 					<p className="subtitle">
-						<span className="modal-trigger" href="#deposit">
+						<span
+							className="modal-trigger"
+							href={`#deposit-${this.props.symbol}`}
+						>
 							Deposit
 						</span>
-						<span className="modal-trigger" href="#withdraw">
+						<span
+							className="modal-trigger"
+							href={`#withdraw-${this.props.symbol}`}
+						>
 							Withdraw
 						</span>
 					</p>
