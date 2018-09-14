@@ -18,16 +18,6 @@ class BuyOrders extends Component {
 		}
 
 		return prices;
-
-		// return buyBook.prices.map((price, i) => {
-		// 	return (
-		// 		<tr key={i}>
-		// 			<td>{order.price}</td>
-		// 			<td>{order.amount}</td>
-		// 			<td>{order.total}</td>
-		// 		</tr>
-		// 	);
-		// });
 	};
 
 	render() {
