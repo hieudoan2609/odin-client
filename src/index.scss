@@ -412,8 +412,12 @@ strong {
 .SellOrders,
 .BuyOrders,
 .TradeHistory {
-	.table-responsive {
-		max-height: 425px;
+	.body {
+		position: relative;
+		height: 425px;
+		.table-responsive {
+			height: 425px;
+		}
 	}
 }
 

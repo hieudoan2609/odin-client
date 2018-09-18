@@ -294,10 +294,15 @@ strong {
 .MyOrders .card {
   height: 215px; }
 
-.SellOrders .table-responsive,
-.BuyOrders .table-responsive,
-.TradeHistory .table-responsive {
-  max-height: 425px; }
+.SellOrders .body,
+.BuyOrders .body,
+.TradeHistory .body {
+  position: relative;
+  height: 425px; }
+  .SellOrders .body .table-responsive,
+  .BuyOrders .body .table-responsive,
+  .TradeHistory .body .table-responsive {
+    height: 425px; }
 
 .TradeHistory > .card {
   padding-top: 0px !important; }
