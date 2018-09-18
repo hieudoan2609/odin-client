@@ -291,8 +291,8 @@ strong {
   .icon.buy {
     background: linear-gradient(to right, #27d68a, #58d39e); }
 
-.MyOrders .table-responsive {
-  max-height: 205px; }
+.MyOrders .card {
+  height: 215px; }
 
 .SellOrders .table-responsive,
 .BuyOrders .table-responsive,
