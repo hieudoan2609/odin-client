@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { roundFixed } from "../helpers";
 
 class SellOrders extends Component {
 	renderPrices = () => {
@@ -10,9 +11,9 @@ class SellOrders extends Component {
 		for (const price in sellBook.prices) {
 			prices.push(
 				<tr key={price}>
-					<td>{price}</td>
-					<td>{sellBook.prices[price].amount}</td>
-					<td>{sellBook.prices[price].total}</td>
+					<td>{roundFixed(price)}</td>
+					<td>{roundFixed(sellBook.prices[price].amount)}</td>
+					<td>{roundFixed(sellBook.prices[price].total)}</td>
 				</tr>
 			);
 		}
@@ -32,7 +33,7 @@ class SellOrders extends Component {
 							Sell orders
 						</div>
 						<div className="subtitle">
-							Total: {sellBook.total} {currentMarket}
+							Total: {roundFixed(sellBook.total)} {currentMarket}
 						</div>
 					</div>
 

@@ -6,11 +6,12 @@ import {
 	EXCHANGE_LOAD_SELLBOOK,
 	EXCHANGE_LOAD_BUYBOOK
 } from "./types";
+import { round } from "../helpers.js";
 
 const web3 = new Web3(
 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
 );
-const exchangeAddress = "0x3F3aEF30AFee20b0281B2947c4F694DA1839d281";
+const exchangeAddress = "0x54a298eE9fcCBF0aD8e55Bc641D3086b81a48c41";
 const exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
 const nullAddress = "0x0000000000000000000000000000000000000000";
 
@@ -19,6 +20,13 @@ export const getMarket = (market, marketAddress) => {
 		setCurrentMarket(dispatch, market);
 		await loadBuyBook(dispatch, marketAddress);
 		await loadSellBook(dispatch, marketAddress);
+		// const updateInterval = setInterval(
+		// 	this.props.getMarket,
+		// 	3000,
+		// 	defaultMarket,
+		// 	defaultMarketAddress
+		// );
+		// await loadMarketTrades(dispatch, )
 		dispatch({
 			type: EXCHANGE_LOADED
 		});
@@ -34,25 +42,22 @@ const loadBuyBook = (dispatch, marketAddress) => {
 		let orders = [];
 		const { ask } = await exchange.methods.getMarketInfo(marketAddress).call();
 		let order = await exchange.methods.getOrder(marketAddress, ask).call();
+		let currentId = ask;
 		while (order.user !== nullAddress) {
 			const prevId = order.prev;
+			order.id = currentId;
 			orders.push(order);
 			order = await exchange.methods.getOrder(marketAddress, prevId).call();
+			currentId = prevId;
 		}
 		orders.forEach(order => {
-			if (!buyBook.prices[order.price]) {
-				const amount = web3.utils.fromWei(order.amount);
-				const price = web3.utils.fromWei(order.price);
-				const total = price * amount;
-				buyBook.prices[price] = { amount, total };
-			} else {
-				const prevAmount = buyBook[order.price].amount;
-				const prevTotal = buyBook[order.price].total;
-				const amount = web3.utils.fromWei(order.amount) + prevAmount;
-				const price = web3.utils.fromWei(order.price);
-				const total = price * amount + prevTotal;
-				buyBook.prices[price] = { amount, total };
-			}
+			const price = round(parseFloat(web3.utils.fromWei(order.price)));
+			const prevAmount = buyBook.prices[price]
+				? parseFloat(buyBook.prices[price].amount)
+				: 0;
+			const amount = parseFloat(web3.utils.fromWei(order.amount)) + prevAmount;
+			const total = price * amount;
+			buyBook.prices[price] = { amount, total };
 		});
 		for (const price in buyBook.prices) {
 			buyBook.total += parseFloat(buyBook.prices[price].amount);
@@ -74,25 +79,22 @@ const loadSellBook = async (dispatch, marketAddress) => {
 		let orders = [];
 		const { bid } = await exchange.methods.getMarketInfo(marketAddress).call();
 		let order = await exchange.methods.getOrder(marketAddress, bid).call();
+		let currentId = bid;
 		while (order.user !== nullAddress) {
 			const nextId = order.next;
+			order.id = currentId;
 			orders.push(order);
 			order = await exchange.methods.getOrder(marketAddress, nextId).call();
+			currentId = nextId;
 		}
 		orders.forEach(order => {
-			if (!sellBook.prices[order.price]) {
-				const amount = web3.utils.fromWei(order.amount);
-				const price = web3.utils.fromWei(order.price);
-				const total = price * amount;
-				sellBook.prices[price] = { amount, total };
-			} else {
-				const nextAmount = sellBook[order.price].amount;
-				const nextTotal = sellBook[order.price].total;
-				const amount = web3.utils.fromWei(order.amount) + nextAmount;
-				const price = web3.utils.fromWei(order.price);
-				const total = price * amount + nextTotal;
-				sellBook.prices[price] = { amount, total };
-			}
+			const price = round(parseFloat(web3.utils.fromWei(order.price)));
+			const prevAmount = sellBook.prices[price]
+				? parseFloat(sellBook.prices[price].amount)
+				: 0;
+			const amount = parseFloat(web3.utils.fromWei(order.amount)) + prevAmount;
+			const total = price * amount;
+			sellBook.prices[price] = { amount, total };
 		});
 		for (const price in sellBook.prices) {
 			sellBook.total += parseFloat(sellBook.prices[price].amount);

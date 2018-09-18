@@ -109,6 +109,7 @@ const INITIAL_STATE = {
 		prices: {},
 		total: 0
 	},
+	updateInterval: "",
 	loading: true
 };
 

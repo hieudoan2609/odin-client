@@ -9,12 +9,9 @@ class Market extends Component {
 	componentWillMount = () => {
 		const exchange = this.props.exchange;
 
-		let market;
-		if (!this.props.match.params.pair) {
-			market = Object.keys(exchange.assets)[0];
-		} else {
-			market = this.props.match.params.pair;
-		}
+		let market = this.props.match.params.pair
+			? this.props.match.params.pair
+			: Object.keys(exchange.assets)[0];
 
 		if (exchange.currentMarket !== market) {
 			this.props.getMarket(market);
