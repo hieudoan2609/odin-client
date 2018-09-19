@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { round } from "../helpers.js";
 import io from "socket.io-client";
+import axios from "axios";
 
 const web3 = new Web3(
 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
@@ -16,8 +17,11 @@ const exchangeAddress = "0x54a298eE9fcCBF0aD8e55Bc641D3086b81a48c41";
 const exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
 const nullAddress = "0x0000000000000000000000000000000000000000";
 
-export const connectMarket = market => {
+export const connectSocket = () => {
 	return async dispatch => {
+		const assets = (await axios.get("/assets.json")).data;
+		const market = Object.keys(assets)[0];
+
 		const socket = io(
 			process.env.REACT_APP_SOCKET_URL || "https://socket.odin.trade"
 		);
@@ -25,9 +29,10 @@ export const connectMarket = market => {
 			console.log(assets);
 		});
 		socket.emit("getAssets");
+
 		dispatch({
 			type: EXCHANGE_LOADED,
-			payload: { socket, market }
+			payload: { socket, market, assets }
 		});
 	};
 };

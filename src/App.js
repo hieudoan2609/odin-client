@@ -5,15 +5,13 @@ import Market from "./pages/Market";
 import Account from "./pages/Account";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
-import { getChartData, connectMarket } from "./actions";
+import { getChartData, connectSocket } from "./actions";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 class App extends Component {
 	componentWillMount = () => {
-		const exchange = this.props.exchange;
 		this.props.getChartData();
-		const market = Object.keys(exchange.assets)[0];
-		this.props.connectMarket(market);
+		this.props.connectSocket();
 	};
 
 	render() {
@@ -47,7 +45,7 @@ const mapStateToProps = ({ chart, exchange }) => {
 
 const mapFunctionsToProps = {
 	getChartData,
-	connectMarket
+	connectSocket
 };
 
 export default connect(
