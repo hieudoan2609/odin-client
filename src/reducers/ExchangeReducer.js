@@ -109,7 +109,7 @@ const INITIAL_STATE = {
 		prices: {},
 		total: 0
 	},
-	updateInterval: "",
+	socket: "",
 	loading: true
 };
 
@@ -124,7 +124,12 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_LOGIN:
 			return { ...state, user: action.payload };
 		case EXCHANGE_LOADED:
-			return { ...state, loading: false };
+			return {
+				...state,
+				loading: false,
+				socket: action.payload.socket,
+				currentMarket: action.payload.market
+			};
 		default:
 			return state;
 	}

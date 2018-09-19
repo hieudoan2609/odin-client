@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Chart from "../components/Chart";
 import Trade from "../components/Trade";
 import OrderBook from "../components/OrderBook";
-import { getMarket } from "../actions";
 import { connect } from "react-redux";
+import { setCurrentMarket } from "../actions";
 
 class Market extends Component {
 	componentWillMount = () => {
@@ -14,7 +14,7 @@ class Market extends Component {
 			: Object.keys(exchange.assets)[0];
 
 		if (exchange.currentMarket !== market) {
-			this.props.getMarket(market);
+			this.props.setCurrentMarket(market);
 		}
 	};
 
@@ -29,7 +29,7 @@ class Market extends Component {
 		}
 
 		if (exchange.currentMarket !== market) {
-			this.props.getMarket(market);
+			this.props.setCurrentMarket(market);
 		}
 	};
 
@@ -55,9 +55,7 @@ const mapStateToProps = ({ exchange }) => {
 	return { exchange };
 };
 
-const mapFunctionsToProps = {
-	getMarket
-};
+const mapFunctionsToProps = { setCurrentMarket };
 
 export default connect(
 	mapStateToProps,
