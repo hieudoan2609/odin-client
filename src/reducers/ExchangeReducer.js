@@ -1,9 +1,7 @@
 import {
 	EXCHANGE_LOGIN,
 	EXCHANGE_CURRENT_MARKET,
-	EXCHANGE_LOADED,
-	EXCHANGE_LOAD_SELLBOOK,
-	EXCHANGE_LOAD_BUYBOOK
+	EXCHANGE_LOADED
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -24,10 +22,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case EXCHANGE_LOAD_BUYBOOK:
-			return { ...state, buyBook: action.payload };
-		case EXCHANGE_LOAD_SELLBOOK:
-			return { ...state, sellBook: action.payload };
 		case EXCHANGE_CURRENT_MARKET:
 			return { ...state, currentMarket: action.payload };
 		case EXCHANGE_LOGIN:
@@ -38,7 +32,9 @@ export default (state = INITIAL_STATE, action) => {
 				loading: false,
 				socket: action.payload.socket,
 				currentMarket: action.payload.market,
-				assets: action.payload.assets
+				assets: action.payload.assets,
+				sellBook: action.payload.sellBook,
+				buyBook: action.payload.buyBook
 			};
 		default:
 			return state;

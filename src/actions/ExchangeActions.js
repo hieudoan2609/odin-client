@@ -1,11 +1,6 @@
 import Web3 from "web3";
 import exchangeAbi from "../contracts/ExchangePureAbi.json";
-import {
-	EXCHANGE_CURRENT_MARKET,
-	EXCHANGE_LOADED,
-	EXCHANGE_LOAD_SELLBOOK,
-	EXCHANGE_LOAD_BUYBOOK
-} from "./types";
+import { EXCHANGE_CURRENT_MARKET, EXCHANGE_LOADED } from "./types";
 import { round } from "../helpers.js";
 import io from "socket.io-client";
 import axios from "axios";
@@ -25,15 +20,13 @@ export const connectSocket = () => {
 		const socket = io(
 			process.env.REACT_APP_SOCKET_URL || "https://socket.odin.trade"
 		);
-		socket.on("assets", assets => {
-			console.log(assets);
+		socket.on("market", ({ sellBook, buyBook }) => {
+			dispatch({
+				type: EXCHANGE_LOADED,
+				payload: { socket, market, assets, sellBook, buyBook }
+			});
 		});
-		socket.emit("getAssets");
-
-		dispatch({
-			type: EXCHANGE_LOADED,
-			payload: { socket, market, assets }
-		});
+		socket.emit("getMarket");
 	};
 };
 
