@@ -1,16 +1,15 @@
-import Web3 from "web3";
-import exchangeAbi from "../contracts/ExchangePureAbi.json";
+// import Web3 from "web3";
+// import exchangeAbi from "../contracts/ExchangePure.json";
 import { EXCHANGE_CURRENT_MARKET, EXCHANGE_LOADED } from "./types";
-import { round } from "../helpers.js";
 import io from "socket.io-client";
 import axios from "axios";
 
-const web3 = new Web3(
-	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
-);
-const exchangeAddress = "0x54a298eE9fcCBF0aD8e55Bc641D3086b81a48c41";
-const exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
-const nullAddress = "0x0000000000000000000000000000000000000000";
+// const web3 = new Web3(
+// 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
+// );
+// const exchangeAddress = "0x54a298eE9fcCBF0aD8e55Bc641D3086b81a48c41";
+// const exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
+// const nullAddress = "0x0000000000000000000000000000000000000000";
 
 export const connectSocket = () => {
 	return async dispatch => {
@@ -20,13 +19,18 @@ export const connectSocket = () => {
 		const socket = io(
 			process.env.REACT_APP_SOCKET_URL || "https://socket.odin.trade"
 		);
+
+		socket.on(market, data => {
+			console.log(data);
+		});
+
 		socket.on("market", ({ sellBook, buyBook }) => {
 			dispatch({
 				type: EXCHANGE_LOADED,
 				payload: { socket, market, assets, sellBook, buyBook }
 			});
 		});
-		socket.emit("getMarket");
+		socket.emit("getMarket", { market });
 	};
 };
 

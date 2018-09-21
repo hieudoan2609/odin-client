@@ -79,19 +79,8 @@ class TradeHistory extends Component {
 		return (
 			<div className="TradeHistory">
 				<div className="card px-4 py-4">
-					<div className="head buttons">
-						<div
-							className={this.state.market ? "button active" : "button"}
-							onClick={() => this.switchTab(true)}
-						>
-							Market history
-						</div>
-						<div
-							className={!this.state.market ? "button active" : "button"}
-							onClick={() => this.switchTab(false)}
-						>
-							My trades
-						</div>
+					<div className="head">
+						<div className="title">24h Trade History</div>
 					</div>
 
 					<div className="body">{this.renderContent()}</div>
