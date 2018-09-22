@@ -106,6 +106,7 @@ body {
 
 .chart__nav {
   position: absolute;
+  z-index: 2;
   display: flex;
   flex-wrap: wrap;
   top: 0px;

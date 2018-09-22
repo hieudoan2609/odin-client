@@ -6,6 +6,14 @@ import { NavLink } from "react-router-dom";
 
 class Chart extends Component {
 	renderChart = () => {
+		if (!this.props.exchange.ticks) {
+			return (
+				<div className="unavailable">
+					<p>Chart data not available.</p>
+				</div>
+			);
+		}
+
 		return (
 			<CandleStickChartWithHoverTooltip
 				type="hybrid"

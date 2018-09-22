@@ -12,7 +12,6 @@ import axios from "axios";
 import { round } from "../helpers";
 import moment from "moment";
 import { tsvParse } from "d3-dsv";
-import { timeParse } from "d3-time-format";
 
 const web3 = new Web3(
 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
@@ -156,7 +155,13 @@ const getChartData = async market => {
 			process.env.CHART_DATA_URL ||
 			`https://socket.odin.trade/marketData/${market}.tsv`;
 
-		const res = await axios.get(dataUrl);
+		let res;
+		try {
+			res = await axios.get(dataUrl);
+		} catch (err) {
+			resolve();
+			return;
+		}
 
 		const ticks = tsvParse(res.data, parseData());
 
@@ -166,7 +171,7 @@ const getChartData = async market => {
 
 function parseData() {
 	return function(d) {
-		const date = new Date(parseInt(d.date));
+		const date = new Date(parseInt(d.date, 10));
 		d.date = date;
 		d.open = +web3.utils.fromWei(d.open);
 		d.high = +web3.utils.fromWei(d.high);
