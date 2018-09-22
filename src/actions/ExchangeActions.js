@@ -66,7 +66,7 @@ export const connectSocket = () => {
 					buyBook = await processBuyBook(data.buyOrders);
 					sellBook = await processSellBook(data.sellOrders);
 					trades = await processTrades(data.trades);
-					ticks = await getChartData();
+					ticks = await getChartData(market);
 					dispatch({
 						type: EXCHANGE_LOADED,
 						payload: {
@@ -150,32 +150,33 @@ const processTrades = async trades => {
 	});
 };
 
-const getChartData = async () => {
+const getChartData = async market => {
 	return new Promise(async (resolve, reject) => {
-		const res = await axios.get(
-			"https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv"
-		);
+		const dataUrl =
+			process.env.CHART_DATA_URL ||
+			`https://socket.odin.trade/marketData/${market}.tsv`;
 
-		const ticks = tsvParse(res.data, parseData(parseDate));
+		const res = await axios.get(dataUrl);
+
+		const ticks = tsvParse(res.data, parseData());
 
 		resolve(ticks);
 	});
 };
 
-function parseData(parse) {
+function parseData() {
 	return function(d) {
-		d.date = parse(d.date);
-		d.open = +d.open;
-		d.high = +d.high;
-		d.low = +d.low;
-		d.close = +d.close;
+		const date = new Date(parseInt(d.date));
+		d.date = date;
+		d.open = +web3.utils.fromWei(d.open);
+		d.high = +web3.utils.fromWei(d.high);
+		d.low = +web3.utils.fromWei(d.low);
+		d.close = +web3.utils.fromWei(d.close);
 		d.volume = +d.volume;
 
 		return d;
 	};
 }
-
-const parseDate = timeParse("%Y-%m-%d");
 
 export const setCurrentMarket = market => {
 	return {
