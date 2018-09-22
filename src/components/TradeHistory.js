@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 
 class TradeHistory extends Component {
 	state = {
@@ -8,13 +7,14 @@ class TradeHistory extends Component {
 	};
 
 	renderOrders = () => {
-		return this.props.orderBook.tradeHistory.map((trade, i) => {
+		const trades = this.props.exchange.trades;
+		return trades.map((trade, i) => {
 			return (
 				<tr key={i}>
 					<td className="icon">
 						<span className={trade.type} />
 					</td>
-					<td>{moment(trade.date).format("YYYY-MM-D h:mm:ss")}</td>
+					<td>{trade.date}</td>
 					<td>{trade.price}</td>
 					<td>{trade.amount}</td>
 					<td>{trade.total}</td>
