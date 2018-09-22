@@ -1,8 +1,15 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { switchOrderType } from "../actions";
 
 class Trade extends Component {
+	state = {
+		type: "buy"
+	};
+
+	switchOrderType = type => {
+		this.setState({ type });
+	};
+
 	renderOverlay() {
 		if (!this.props.exchange.user) {
 			return (
@@ -22,17 +29,17 @@ class Trade extends Component {
 				<div className="order__types">
 					<div
 						className={`button buy ${
-							this.props.trade.orderType === "buy" ? "active" : ""
+							this.state.orderType === "buy" ? "active" : ""
 						}`}
-						onClick={() => this.props.switchOrderType("buy")}
+						onClick={() => this.switchOrderType("buy")}
 					>
 						Buy
 					</div>
 					<div
 						className={`button sell ${
-							this.props.trade.orderType === "sell" ? "active" : ""
+							this.state.orderType === "sell" ? "active" : ""
 						}`}
-						onClick={() => this.props.switchOrderType("sell")}
+						onClick={() => this.switchOrderType("sell")}
 					>
 						Sell
 					</div>
@@ -67,11 +74,8 @@ class Trade extends Component {
 	}
 }
 
-const mapStateToProps = ({ trade, exchange }) => {
-	return { trade, exchange };
+const mapStateToProps = ({ exchange }) => {
+	return { exchange };
 };
 
-export default connect(
-	mapStateToProps,
-	{ switchOrderType }
-)(Trade);
+export default connect(mapStateToProps)(Trade);
