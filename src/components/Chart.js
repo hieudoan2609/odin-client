@@ -9,7 +9,7 @@ class Chart extends Component {
 		return (
 			<CandleStickChartWithHoverTooltip
 				type="hybrid"
-				data={this.props.chart.data}
+				data={this.props.exchange.ticks}
 			/>
 		);
 	};
@@ -50,8 +50,8 @@ class Chart extends Component {
 	}
 }
 
-const mapStateToProps = ({ exchange, chart }) => {
-	return { exchange, chart };
+const mapStateToProps = ({ exchange }) => {
+	return { exchange };
 };
 
 export default withRouter(connect(mapStateToProps)(Chart));

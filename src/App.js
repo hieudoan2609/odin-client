@@ -5,17 +5,16 @@ import Market from "./pages/Market";
 import Account from "./pages/Account";
 import Loading from "./components/Loading";
 import Footer from "./components/Footer";
-import { getChartData, connectSocket } from "./actions";
+import { connectSocket } from "./actions";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 class App extends Component {
 	componentWillMount = () => {
-		this.props.getChartData();
 		this.props.connectSocket();
 	};
 
 	render() {
-		if (this.props.chart.loading || this.props.exchange.loading) {
+		if (this.props.exchange.loading) {
 			return <Loading />;
 		}
 
@@ -39,12 +38,11 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ chart, exchange }) => {
-	return { chart, exchange };
+const mapStateToProps = ({ exchange }) => {
+	return { exchange };
 };
 
 const mapFunctionsToProps = {
-	getChartData,
 	connectSocket
 };
 

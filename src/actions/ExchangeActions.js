@@ -1,23 +1,22 @@
 import Web3 from "web3";
-// import exchangeAbi from "../contracts/ExchangePure.json";
 import {
 	EXCHANGE_CURRENT_MARKET,
 	EXCHANGE_LOADED,
 	EXCHANGE_LOAD_BUYBOOK,
 	EXCHANGE_LOAD_SELLBOOK,
-	EXCHANGE_LOAD_TRADES
+	EXCHANGE_LOAD_TRADES,
+	EXCHANGE_LOAD_TICKS
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
 import { round } from "../helpers";
 import moment from "moment";
+import { tsvParse } from "d3-dsv";
+import { timeParse } from "d3-time-format";
 
 const web3 = new Web3(
 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
 );
-// const exchangeAddress = "0x54a298eE9fcCBF0aD8e55Bc641D3086b81a48c41";
-// const exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
-// const nullAddress = "0x0000000000000000000000000000000000000000";
 
 export const connectSocket = () => {
 	return async dispatch => {
@@ -29,7 +28,7 @@ export const connectSocket = () => {
 		);
 
 		socket.on(market, async ({ data, type }) => {
-			let buyBook, sellBook, trades;
+			let buyBook, sellBook, trades, ticks;
 			switch (type) {
 				case "trades":
 					trades = await processTrades(data);
@@ -56,15 +55,29 @@ export const connectSocket = () => {
 					console.log("new sell orders", data);
 					break;
 				case "tick":
-					console.log("new tick has arrived");
+					ticks = await getChartData();
+					dispatch({
+						type: EXCHANGE_LOAD_TICKS,
+						payload: ticks
+					});
+					console.log("new tick");
 					break;
 				default:
 					buyBook = await processBuyBook(data.buyOrders);
 					sellBook = await processSellBook(data.sellOrders);
 					trades = await processTrades(data.trades);
+					ticks = await getChartData();
 					dispatch({
 						type: EXCHANGE_LOADED,
-						payload: { socket, market, assets, sellBook, buyBook, trades }
+						payload: {
+							socket,
+							market,
+							assets,
+							sellBook,
+							buyBook,
+							trades,
+							ticks
+						}
 					});
 			}
 		});
@@ -136,6 +149,33 @@ const processTrades = async trades => {
 		resolve(processedTrades);
 	});
 };
+
+const getChartData = async () => {
+	return new Promise(async (resolve, reject) => {
+		const res = await axios.get(
+			"https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv"
+		);
+
+		const ticks = tsvParse(res.data, parseData(parseDate));
+
+		resolve(ticks);
+	});
+};
+
+function parseData(parse) {
+	return function(d) {
+		d.date = parse(d.date);
+		d.open = +d.open;
+		d.high = +d.high;
+		d.low = +d.low;
+		d.close = +d.close;
+		d.volume = +d.volume;
+
+		return d;
+	};
+}
+
+const parseDate = timeParse("%Y-%m-%d");
 
 export const setCurrentMarket = market => {
 	return {
