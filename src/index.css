@@ -277,7 +277,10 @@ strong {
   margin-bottom: 0px; }
 
 .Footer {
-  position: relative;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
   text-align: center;
   padding: 20px 20px;
   background-color: #232d44;
@@ -366,7 +369,7 @@ strong {
     .Search .card .input-field {
       margin: 0px; }
   .Search .input-field input {
-    color: #777777; }
+    color: white; }
   .Search .input-field input:focus + label {
     color: #ed8a45 !important; }
   .Search .input-field input[type="text"]:focus {
@@ -448,3 +451,8 @@ strong {
   justify-content: center;
   align-items: center;
   z-index: 1; }
+
+.App {
+  min-height: 100vh; }
+  .App .container {
+    padding-bottom: 100px; }

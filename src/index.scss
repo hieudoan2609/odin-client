@@ -7,6 +7,7 @@ $orange-gradient: linear-gradient(to right, $sell, #f6de6c);
 $sell-gradient: $orange-gradient;
 $orange: #ed8a45;
 $text: #777777;
+$white: white;
 $lighter: rgba(255, 255, 255, 0.7);
 $lightest: rgba(255, 255, 255, 1);
 $hover: $orange;
@@ -384,7 +385,10 @@ strong {
 }
 
 .Footer {
-	position: relative;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
 	text-align: center;
 	padding: 20px 20px;
 	background-color: $background;
@@ -519,7 +523,7 @@ strong {
 	}
 	/* label color */
 	.input-field input {
-		color: $text;
+		color: $white;
 	}
 	/* label focus color */
 	.input-field input:focus + label {
@@ -634,4 +638,11 @@ strong {
 	justify-content: center;
 	align-items: center;
 	z-index: 1;
+}
+
+.App {
+	min-height: 100vh;
+	.container {
+		padding-bottom: 100px;
+	}
 }

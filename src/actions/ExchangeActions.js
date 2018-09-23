@@ -5,7 +5,8 @@ import {
 	EXCHANGE_LOAD_BUYBOOK,
 	EXCHANGE_LOAD_SELLBOOK,
 	EXCHANGE_LOAD_TRADES,
-	EXCHANGE_LOAD_TICKS
+	EXCHANGE_LOAD_TICKS,
+	EXCHANGE_FILTER_ASSETS
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -19,7 +20,7 @@ const web3 = new Web3(
 
 export const connectSocket = () => {
 	return async dispatch => {
-		const assets = (await axios.get("/assets.json")).data;
+		var assets = (await axios.get("/assets.json")).data;
 		const market = Object.keys(assets)[0];
 
 		const socket = io(
@@ -54,18 +55,24 @@ export const connectSocket = () => {
 					console.log("new sell orders", data);
 					break;
 				case "tick":
-					ticks = await getChartData();
+					ticks = await getChartData(market);
 					dispatch({
 						type: EXCHANGE_LOAD_TICKS,
 						payload: ticks
 					});
-					console.log("new tick");
+					console.log("new tick", ticks);
 					break;
 				default:
 					buyBook = await processBuyBook(data.buyOrders);
 					sellBook = await processSellBook(data.sellOrders);
 					trades = await processTrades(data.trades);
 					ticks = await getChartData(market);
+					for (let asset in assets) {
+						assets[asset].currentPrice = 0;
+						assets[asset].previousPrice = 0;
+						assets[asset].availableBalance = 0;
+						assets[asset].reserveBalance = 0;
+					}
 					dispatch({
 						type: EXCHANGE_LOADED,
 						payload: {
@@ -187,5 +194,24 @@ export const setCurrentMarket = market => {
 	return {
 		type: EXCHANGE_CURRENT_MARKET,
 		payload: market
+	};
+};
+
+export const filterAssets = (e, assets) => {
+	return async dispatch => {
+		let search = e.target.value;
+		let regex = new RegExp(search, "gmi");
+		let filteredAssets = {};
+
+		for (let asset in assets) {
+			if (regex.test(assets[asset].symbol) || regex.test(assets[asset].name)) {
+				filteredAssets[asset] = assets[asset];
+			}
+		}
+
+		dispatch({
+			type: EXCHANGE_FILTER_ASSETS,
+			payload: { filteredAssets, search }
+		});
 	};
 };

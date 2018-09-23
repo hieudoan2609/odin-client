@@ -5,11 +5,13 @@ import {
 	EXCHANGE_LOAD_BUYBOOK,
 	EXCHANGE_LOAD_SELLBOOK,
 	EXCHANGE_LOAD_TRADES,
-	EXCHANGE_LOAD_TICKS
+	EXCHANGE_LOAD_TICKS,
+	EXCHANGE_FILTER_ASSETS
 } from "../actions/types";
 
 const INITIAL_STATE = {
-	assets: "",
+	assets: {},
+	assetsFiltered: {},
 	user: "",
 	currentMarket: "",
 	buyBook: {
@@ -20,13 +22,21 @@ const INITIAL_STATE = {
 		prices: {},
 		total: 0
 	},
-	socket: "",
-	ticks: "",
+	trade: [],
+	socket: {},
+	ticks: [],
+	search: "",
 	loading: true
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_FILTER_ASSETS:
+			return {
+				...state,
+				assetsFiltered: action.payload.filteredAssets,
+				search: action.payload.search
+			};
 		case EXCHANGE_LOAD_TICKS:
 			return { ...state, ticks: action.payload };
 		case EXCHANGE_LOAD_BUYBOOK:
@@ -46,6 +56,7 @@ export default (state = INITIAL_STATE, action) => {
 				socket: action.payload.socket,
 				currentMarket: action.payload.market,
 				assets: action.payload.assets,
+				assetsFiltered: action.payload.assets,
 				sellBook: action.payload.sellBook,
 				buyBook: action.payload.buyBook,
 				trades: action.payload.trades,

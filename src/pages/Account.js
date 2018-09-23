@@ -12,21 +12,21 @@ class Account extends Component {
 
 	renderAssets = () => {
 		const exchange = this.props.exchange;
-		const assetGroups = _.chunk(Object.keys(exchange.assets), 4);
+		const assetGroups = _.chunk(Object.keys(exchange.assetsFiltered), 4);
 
 		return assetGroups.map((group, i) => {
 			return (
 				<div className="row" key={i}>
 					{group.map((key, i) => {
-						const asset = exchange.assets[key];
+						const asset = exchange.assetsFiltered[key];
 
 						return (
 							<div className="col-md-6 col-lg-3" key={i}>
 								<Asset
 									name={asset.name}
 									symbol={asset.symbol}
-									availableBalance={asset.balance.available}
-									reserveBalance={asset.balance.reserve}
+									availableBalance={asset.availableBalance}
+									reserveBalance={asset.reserveBalance}
 								/>
 							</div>
 						);
@@ -56,7 +56,7 @@ const mapStateToProps = ({ exchange }) => {
 };
 
 // const mapFunctionsToProps = {
-// 	getChartData
+// 	resetFilteredAssets
 // };
 
 export default connect(mapStateToProps)(Account);
