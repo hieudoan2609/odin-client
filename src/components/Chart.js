@@ -35,7 +35,13 @@ class Chart extends Component {
 					key={i}
 				>
 					{"ETH"}/{asset.symbol}
-					<span className="buy">{asset.currentPrice}</span>
+					<span
+						className={
+							asset.currentPrice < asset.previousPrice ? "sell" : "buy"
+						}
+					>
+						{asset.currentPrice}
+					</span>
 				</NavLink>
 			);
 		});

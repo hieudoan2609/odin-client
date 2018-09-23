@@ -22,7 +22,7 @@ const INITIAL_STATE = {
 		prices: {},
 		total: 0
 	},
-	trade: [],
+	trades: [],
 	socket: {},
 	ticks: [],
 	search: "",
@@ -44,7 +44,11 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_LOAD_SELLBOOK:
 			return { ...state, sellBook: action.payload };
 		case EXCHANGE_LOAD_TRADES:
-			return { ...state, trades: action.payload };
+			return {
+				...state,
+				trades: action.payload.trades,
+				assets: action.payload.assets
+			};
 		case EXCHANGE_CURRENT_MARKET:
 			return { ...state, currentMarket: action.payload };
 		case EXCHANGE_LOGIN:

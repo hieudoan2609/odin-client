@@ -10,7 +10,7 @@ import {
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
-import { round } from "../helpers";
+import { round, roundFixed } from "../helpers";
 import moment from "moment";
 import { tsvParse } from "d3-dsv";
 
@@ -27,32 +27,42 @@ export const connectSocket = () => {
 			process.env.REACT_APP_SOCKET_URL || "https://socket.odin.trade"
 		);
 
-		socket.on(market, async ({ data, type }) => {
+		socket.on(market, async res => {
 			let buyBook, sellBook, trades, ticks;
-			switch (type) {
+			switch (res.type) {
 				case "trades":
-					trades = await processTrades(data);
+					trades = await processTrades(res.market);
+					for (let asset in assets) {
+						assets[asset].currentPrice = roundFixed(
+							web3.utils.fromWei(res.markets[asset].currentPrice.toString())
+						);
+						assets[asset].previousPrice = roundFixed(
+							web3.utils.fromWei(res.markets[asset].previousPrice.toString())
+						);
+						assets[asset].availableBalance = 0;
+						assets[asset].reserveBalance = 0;
+					}
 					dispatch({
 						type: EXCHANGE_LOAD_TRADES,
-						payload: trades
+						payload: { trades, assets }
 					});
-					console.log("new trades", data);
+					console.log("new trades", res);
 					break;
 				case "buyOrders":
-					buyBook = await processBuyBook(data);
+					buyBook = await processBuyBook(res.market);
 					dispatch({
 						type: EXCHANGE_LOAD_BUYBOOK,
 						payload: buyBook
 					});
-					console.log("new buy orders", data);
+					console.log("new buy orders", res);
 					break;
 				case "sellOrders":
-					sellBook = await processSellBook(data);
+					sellBook = await processSellBook(res.market);
 					dispatch({
 						type: EXCHANGE_LOAD_SELLBOOK,
 						payload: sellBook
 					});
-					console.log("new sell orders", data);
+					console.log("new sell orders", res);
 					break;
 				case "tick":
 					ticks = await getChartData(market);
@@ -60,16 +70,20 @@ export const connectSocket = () => {
 						type: EXCHANGE_LOAD_TICKS,
 						payload: ticks
 					});
-					console.log("new tick", ticks);
+					console.log("new tick", res);
 					break;
 				default:
-					buyBook = await processBuyBook(data.buyOrders);
-					sellBook = await processSellBook(data.sellOrders);
-					trades = await processTrades(data.trades);
+					buyBook = await processBuyBook(res.market.buyOrders);
+					sellBook = await processSellBook(res.market.sellOrders);
+					trades = await processTrades(res.market.trades);
 					ticks = await getChartData(market);
 					for (let asset in assets) {
-						assets[asset].currentPrice = 0;
-						assets[asset].previousPrice = 0;
+						assets[asset].currentPrice = roundFixed(
+							web3.utils.fromWei(res.markets[asset].currentPrice.toString())
+						);
+						assets[asset].previousPrice = roundFixed(
+							web3.utils.fromWei(res.markets[asset].previousPrice.toString())
+						);
 						assets[asset].availableBalance = 0;
 						assets[asset].reserveBalance = 0;
 					}
