@@ -24,7 +24,7 @@ class NavBar extends Component {
 			<div className="nav-bar">
 				<div className="container">
 					<div className="brand-logo">
-						<Link to="/">
+						<Link to={`/market/${this.props.exchange.currentMarket}`}>
 							<img src="/logo.png" alt="OdinTrade" />
 						</Link>
 					</div>

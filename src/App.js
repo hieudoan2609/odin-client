@@ -27,6 +27,7 @@ class App extends Component {
 								<Route exact path="/" component={Market} />
 								<Route path="/market/:symbol" component={Market} />
 								<Route path="/account" component={Account} />
+								<Route component={Market} />
 							</Switch>
 						</div>
 
