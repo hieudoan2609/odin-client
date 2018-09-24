@@ -1,19 +1,19 @@
 import {
 	EXCHANGE_LOGIN,
-	EXCHANGE_CURRENT_MARKET,
-	EXCHANGE_LOADED,
+	EXCHANGE_MARKET_LOADED,
+	EXCHANGE_ACCOUNT_LOADED,
 	EXCHANGE_LOAD_BUYBOOK,
 	EXCHANGE_LOAD_SELLBOOK,
 	EXCHANGE_LOAD_TRADES,
 	EXCHANGE_LOAD_TICKS,
-	EXCHANGE_FILTER_ASSETS
+	EXCHANGE_FILTER_ASSETS,
+	EXCHANGE_LEAVE_PAGE
 } from "../actions/types";
 
 const INITIAL_STATE = {
 	assets: {},
 	assetsFiltered: {},
 	user: "",
-	currentMarket: "",
 	buyBook: {
 		prices: {},
 		total: 0
@@ -26,11 +26,17 @@ const INITIAL_STATE = {
 	socket: {},
 	ticks: [],
 	search: "",
+	currentMarket: "",
 	loading: true
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_LEAVE_PAGE:
+			return {
+				...state,
+				loading: true
+			};
 		case EXCHANGE_FILTER_ASSETS:
 			return {
 				...state,
@@ -49,22 +55,26 @@ export default (state = INITIAL_STATE, action) => {
 				trades: action.payload.trades,
 				assets: action.payload.assets
 			};
-		case EXCHANGE_CURRENT_MARKET:
-			return { ...state, currentMarket: action.payload };
 		case EXCHANGE_LOGIN:
 			return { ...state, user: action.payload };
-		case EXCHANGE_LOADED:
+		case EXCHANGE_ACCOUNT_LOADED:
+			return {
+				...state,
+				loading: false,
+				assets: action.payload
+			};
+		case EXCHANGE_MARKET_LOADED:
 			return {
 				...state,
 				loading: false,
 				socket: action.payload.socket,
-				currentMarket: action.payload.market,
 				assets: action.payload.assets,
 				assetsFiltered: action.payload.assets,
 				sellBook: action.payload.sellBook,
 				buyBook: action.payload.buyBook,
 				trades: action.payload.trades,
-				ticks: action.payload.ticks
+				ticks: action.payload.ticks,
+				currentMarket: action.payload.market
 			};
 		default:
 			return state;

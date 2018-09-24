@@ -1,12 +1,13 @@
 import Web3 from "web3";
 import {
-	EXCHANGE_CURRENT_MARKET,
-	EXCHANGE_LOADED,
+	EXCHANGE_ACCOUNT_LOADED,
+	EXCHANGE_MARKET_LOADED,
 	EXCHANGE_LOAD_BUYBOOK,
 	EXCHANGE_LOAD_SELLBOOK,
 	EXCHANGE_LOAD_TRADES,
 	EXCHANGE_LOAD_TICKS,
-	EXCHANGE_FILTER_ASSETS
+	EXCHANGE_FILTER_ASSETS,
+	EXCHANGE_LEAVE_PAGE
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -18,14 +19,25 @@ const web3 = new Web3(
 	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
 );
 
-export const connectSocket = () => {
+export const fetchAccount = () => {
 	return async dispatch => {
 		var assets = (await axios.get("/assets.json")).data;
-		const market = Object.keys(assets)[0];
+		dispatch({
+			type: EXCHANGE_ACCOUNT_LOADED,
+			payload: assets
+		});
+	};
+};
 
-		const socket = io(
-			process.env.REACT_APP_SOCKET_URL || "https://socket.odin.trade"
-		);
+export const fetchMarket = (market, assets, socket) => {
+	return async dispatch => {
+		if (!Object.keys(socket).length) {
+			socket = io(
+				process.env.REACT_APP_SOCKET_URL || "https://socket.odin.trade"
+			);
+		}
+
+		socket.removeAllListeners();
 
 		socket.on(market, async res => {
 			let buyBook, sellBook, trades, ticks;
@@ -70,7 +82,7 @@ export const connectSocket = () => {
 						type: EXCHANGE_LOAD_TICKS,
 						payload: ticks
 					});
-					console.log("new tick", res);
+					console.log(`new tick for ${market}`, res);
 					break;
 				default:
 					buyBook = await processBuyBook(res.market.buyOrders);
@@ -88,7 +100,7 @@ export const connectSocket = () => {
 						assets[asset].reserveBalance = 0;
 					}
 					dispatch({
-						type: EXCHANGE_LOADED,
+						type: EXCHANGE_MARKET_LOADED,
 						payload: {
 							socket,
 							market,
@@ -204,13 +216,6 @@ function parseData() {
 	};
 }
 
-export const setCurrentMarket = market => {
-	return {
-		type: EXCHANGE_CURRENT_MARKET,
-		payload: market
-	};
-};
-
 export const filterAssets = (e, assets) => {
 	return async dispatch => {
 		let search = e.target.value;
@@ -227,5 +232,11 @@ export const filterAssets = (e, assets) => {
 			type: EXCHANGE_FILTER_ASSETS,
 			payload: { filteredAssets, search }
 		});
+	};
+};
+
+export const leavePage = () => {
+	return {
+		type: EXCHANGE_LEAVE_PAGE
 	};
 };

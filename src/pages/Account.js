@@ -4,8 +4,18 @@ import Asset from "../components/Asset";
 import M from "materialize-css/dist/js/materialize.min.js";
 import { connect } from "react-redux";
 import _ from "lodash";
+import Loading from "../components/Loading";
+import { fetchAccount, leavePage } from "../actions";
 
 class Account extends Component {
+	componentWillMount = () => {
+		this.props.fetchAccount();
+	};
+
+	componentWillUnmount = () => {
+		this.props.leavePage();
+	};
+
 	componentDidMount = () => {
 		M.AutoInit();
 	};
@@ -37,6 +47,10 @@ class Account extends Component {
 	};
 
 	render() {
+		if (this.props.exchange.loading) {
+			return <Loading />;
+		}
+
 		return (
 			<div className="MyAccount">
 				<div className="row">
@@ -55,8 +69,12 @@ const mapStateToProps = ({ exchange }) => {
 	return { exchange };
 };
 
-// const mapFunctionsToProps = {
-// 	resetFilteredAssets
-// };
+const mapFunctionsToProps = {
+	fetchAccount,
+	leavePage
+};
 
-export default connect(mapStateToProps)(Account);
+export default connect(
+	mapStateToProps,
+	mapFunctionsToProps
+)(Account);

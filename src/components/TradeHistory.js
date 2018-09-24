@@ -75,9 +75,20 @@ class TradeHistory extends Component {
 		}
 	}
 
+	renderNoTrades() {
+		if (!this.props.exchange.trades.length) {
+			return (
+				<div className="unavailable">
+					<p>No trades within the last 24 hours.</p>
+				</div>
+			);
+		}
+	}
+
 	render() {
 		return (
 			<div className="TradeHistory">
+				{this.renderNoTrades()}
 				<div className="card px-4 py-4">
 					<div className="head">
 						<div className="title">24h Trade History</div>

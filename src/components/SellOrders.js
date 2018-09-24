@@ -21,11 +21,22 @@ class SellOrders extends Component {
 		return prices;
 	};
 
+	renderNoSellOrders = () => {
+		if (!Object.keys(this.props.exchange.sellBook.prices).length) {
+			return (
+				<div className="unavailable">
+					<p>No sell orders found.</p>
+				</div>
+			);
+		}
+	};
+
 	render() {
 		const { sellBook, currentMarket } = this.props.exchange;
 
 		return (
 			<div className="SellOrders">
+				{this.renderNoSellOrders()}
 				<div className="card px-4 py-4">
 					<div className="head">
 						<div className="title">

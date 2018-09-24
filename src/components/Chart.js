@@ -1,8 +1,7 @@
-import { withRouter } from "react-router-dom";
 import CandleStickChartWithHoverTooltip from "./CandleStickChartWithHoverTooltip";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class Chart extends Component {
 	renderChart = () => {
@@ -27,7 +26,7 @@ class Chart extends Component {
 			const asset = this.props.exchange.assets[assetKey];
 
 			return (
-				<NavLink
+				<Link
 					to={`/market/${asset.symbol}`}
 					className={`button ${
 						this.props.exchange.currentMarket === asset.symbol ? "active" : ""
@@ -42,7 +41,7 @@ class Chart extends Component {
 					>
 						{asset.currentPrice}
 					</span>
-				</NavLink>
+				</Link>
 			);
 		});
 	};
@@ -68,4 +67,4 @@ const mapStateToProps = ({ exchange }) => {
 	return { exchange };
 };
 
-export default withRouter(connect(mapStateToProps)(Chart));
+export default connect(mapStateToProps)(Chart);

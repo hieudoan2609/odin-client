@@ -1,52 +1,41 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import NavBar from "./components/NavBar";
 import Market from "./pages/Market";
 import Account from "./pages/Account";
-import Loading from "./components/Loading";
 import Footer from "./components/Footer";
-import { connectSocket } from "./actions";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import ReduxThunk from "redux-thunk";
+import reducers from "./reducers";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 class App extends Component {
-	componentWillMount = () => {
-		this.props.connectSocket();
-	};
+	constructor() {
+		super();
+		this.store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+	}
 
 	render() {
-		if (this.props.exchange.loading) {
-			return <Loading />;
-		}
-
 		return (
-			<Router>
-				<div className="App">
-					<NavBar />
+			<Provider store={this.store}>
+				<BrowserRouter>
+					<div className="App">
+						<NavBar />
 
-					<div className="container">
-						<Switch>
-							<Route exact path="/" component={Market} />
-							<Route path="/account" component={Account} />
-							<Route path="/market/:pair" component={Market} />
-						</Switch>
+						<div className="container">
+							<Switch>
+								<Route exact path="/" component={Market} />
+								<Route path="/market/:symbol" component={Market} />
+								<Route path="/account" component={Account} />
+							</Switch>
+						</div>
+
+						<Footer />
 					</div>
-
-					<Footer />
-				</div>
-			</Router>
+				</BrowserRouter>
+			</Provider>
 		);
 	}
 }
 
-const mapStateToProps = ({ exchange }) => {
-	return { exchange };
-};
-
-const mapFunctionsToProps = {
-	connectSocket
-};
-
-export default connect(
-	mapStateToProps,
-	mapFunctionsToProps
-)(App);
+export default App;
