@@ -11,9 +11,16 @@ class Market extends Component {
 	componentWillMount = async () => {
 		var socket = this.props.exchange.socket;
 		var assets = (await axios.get("/assets.json")).data;
-		var market = this.props.match.params.symbol
-			? this.props.match.params.symbol
-			: Object.keys(assets)[0];
+
+		var market;
+		if (
+			this.props.match.params.symbol &&
+			assets[this.props.match.params.symbol]
+		) {
+			market = this.props.match.params.symbol;
+		} else {
+			market = Object.keys(assets)[0];
+		}
 
 		this.props.fetchMarket(market, assets, socket);
 	};
@@ -25,9 +32,15 @@ class Market extends Component {
 	componentWillReceiveProps = async nextProps => {
 		var socket = this.props.exchange.socket;
 		var assets = (await axios.get("/assets.json")).data;
-		var market = nextProps.match.params.symbol
-			? nextProps.match.params.symbol
-			: Object.keys(assets)[0];
+		var market;
+		if (
+			this.props.match.params.symbol &&
+			assets[this.props.match.params.symbol]
+		) {
+			market = this.props.match.params.symbol;
+		} else {
+			market = Object.keys(assets)[0];
+		}
 
 		if (
 			!this.props.exchange.loading &&
