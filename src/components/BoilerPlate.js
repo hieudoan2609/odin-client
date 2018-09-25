@@ -11,7 +11,7 @@ class BoilerPlate extends Component {
 // 	return { chart };
 // };
 
-// const mapFunctionsToProps = {
+// const mapDispatchToProps = {
 // 	getChartData
 // };
 

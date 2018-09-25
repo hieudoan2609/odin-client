@@ -457,9 +457,59 @@ strong {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1; }
+  z-index: 1;
+  text-align: center; }
 
 .App {
   min-height: 100vh; }
   .App .container {
     padding-bottom: 100px; }
+
+.Login .card {
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  padding: 20px; }
+  .Login .card .head {
+    margin-bottom: 20px; }
+    .Login .card .head .title {
+      display: block;
+      text-align: center;
+      width: 100%;
+      font-weight: 100;
+      font-size: 30px;
+      margin-bottom: 0px; }
+      .Login .card .head .title span {
+        font-size: 16px;
+        margin-left: 8px; }
+  .Login .card .body .button {
+    text-transform: uppercase;
+    box-sizing: border-box;
+    background: linear-gradient(to right, #ed8a45, #f6de6c);
+    margin-right: 20px;
+    position: relative;
+    overflow: hidden;
+    padding: 2px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px; }
+    .Login .card .body .button:hover {
+      background: transparent; }
+      .Login .card .body .button:hover > div {
+        background: #ed8a45;
+        color: white; }
+        .Login .card .body .button:hover > div svg path {
+          fill: white !important; }
+    .Login .card .body .button > div {
+      padding: 10px 0px;
+      text-align: center;
+      background: #232d44;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #ed8a45; }
+      .Login .card .body .button > div svg {
+        margin-right: 4px; }
+        .Login .card .body .button > div svg path {
+          fill: #ed8a45 !important; }

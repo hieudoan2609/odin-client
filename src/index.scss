@@ -642,11 +642,78 @@ strong {
 	justify-content: center;
 	align-items: center;
 	z-index: 1;
+	text-align: center;
 }
 
 .App {
 	min-height: 100vh;
 	.container {
 		padding-bottom: 100px;
+	}
+}
+
+.Login {
+	.card {
+		margin-bottom: 20px;
+		box-sizing: border-box;
+		padding: 20px;
+		.head {
+			margin-bottom: 20px;
+			.title {
+				display: block;
+				text-align: center;
+				width: 100%;
+				font-weight: 100;
+				font-size: 30px;
+				margin-bottom: 0px;
+				span {
+					font-size: 16px;
+					margin-left: 8px;
+				}
+			}
+		}
+		.body {
+			.button {
+				text-transform: uppercase;
+				box-sizing: border-box;
+				background: $orange-gradient;
+				margin-right: 20px;
+				position: relative;
+				overflow: hidden;
+				padding: 2px;
+				cursor: pointer;
+				width: 100%;
+				margin-bottom: 10px;
+				&:hover {
+					background: transparent;
+					> div {
+						background: $orange;
+						color: $white;
+						svg {
+							path {
+								fill: $white !important;
+							}
+						}
+					}
+				}
+				> div {
+					padding: 10px 0px;
+					text-align: center;
+					background: $background;
+					width: 100%;
+					height: 100%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					color: $orange;
+					svg {
+						margin-right: 4px;
+						path {
+							fill: $orange !important;
+						}
+					}
+				}
+			}
+		}
 	}
 }

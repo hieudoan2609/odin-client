@@ -22,7 +22,7 @@ class Search extends Component {
 							htmlFor="search"
 							className={this.props.exchange.search ? "active" : ""}
 						>
-							Search
+							Search for an asset
 						</label>
 					</div>
 				</div>

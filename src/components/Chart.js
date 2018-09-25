@@ -22,7 +22,18 @@ class Chart extends Component {
 	};
 
 	renderPairs = () => {
-		return Object.keys(this.props.exchange.assets).map((assetKey, i) => {
+		var keys = Object.keys(this.props.exchange.assets);
+		var sorted_keys = [];
+
+		for (var i in keys) {
+			if (keys[i] === this.props.exchange.currentMarket) {
+				sorted_keys.unshift(keys[i]);
+			} else {
+				sorted_keys.push(keys[i]);
+			}
+		}
+
+		return sorted_keys.map((assetKey, i) => {
 			const asset = this.props.exchange.assets[assetKey];
 			const price = this.props.exchange.marketPrices[assetKey];
 

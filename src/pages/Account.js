@@ -5,6 +5,7 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import { connect } from "react-redux";
 import _ from "lodash";
 import Loading from "../components/Loading";
+import Login from "../components/Login";
 import { fetchAccount } from "../actions";
 
 class Account extends Component {
@@ -49,6 +50,12 @@ class Account extends Component {
 
 		return (
 			<div className="MyAccount">
+				<div className="row">
+					<div className="col-12">
+						<Login />
+					</div>
+				</div>
+
 				<div className="row">
 					<div className="col-12">
 						<Search />
