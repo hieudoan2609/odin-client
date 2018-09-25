@@ -256,7 +256,8 @@ strong {
   .button2:hover {
     background: transparent; }
     .button2:hover > div {
-      background: #ed8a45; }
+      background: #ed8a45;
+      color: white; }
   .button2:last-child {
     margin: 0px; }
   .button2 > div {
@@ -266,7 +267,7 @@ strong {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgba(255, 255, 255, 0.7); }
+    color: #ed8a45; }
   .button2.sell {
     background: #ed8a45; }
     .button2.sell:hover > div {

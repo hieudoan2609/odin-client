@@ -14,9 +14,11 @@ import { EXCHANGE_RELOAD } from "./actions/types";
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 const history = createHistory();
 history.listen((location, action) => {
-	store.dispatch({
-		type: EXCHANGE_RELOAD
-	});
+	if (location.from !== location.pathname) {
+		store.dispatch({
+			type: EXCHANGE_RELOAD
+		});
+	}
 });
 
 class App extends Component {

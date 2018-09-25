@@ -39,7 +39,10 @@ class Chart extends Component {
 
 			return (
 				<Link
-					to={`/market/${asset.symbol}`}
+					to={{
+						pathname: `/market/${asset.symbol}`,
+						from: `/market/${this.props.exchange.currentMarket}`
+					}}
 					className={`button ${
 						this.props.exchange.currentMarket === asset.symbol ? "active" : ""
 					}`}
