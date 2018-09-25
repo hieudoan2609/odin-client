@@ -7,7 +7,7 @@ import {
 	EXCHANGE_LOAD_TRADES,
 	EXCHANGE_LOAD_TICKS,
 	EXCHANGE_FILTER_ASSETS,
-	EXCHANGE_LEAVE_PAGE,
+	EXCHANGE_RELOAD,
 	EXCHANGE_NEW_MARKET_PRICES
 } from "../actions/types";
 
@@ -39,7 +39,7 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				marketPrices: action.payload
 			};
-		case EXCHANGE_LEAVE_PAGE:
+		case EXCHANGE_RELOAD:
 			return {
 				...state,
 				loading: true
@@ -67,7 +67,8 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				loading: false,
-				assets: action.payload
+				assets: action.payload,
+				assetsFiltered: action.payload
 			};
 		case EXCHANGE_MARKET_LOADED:
 			return {

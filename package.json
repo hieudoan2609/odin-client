@@ -9,6 +9,7 @@
     "d3-format": "^1.2.1",
     "d3-scale": "^1.0.7",
     "d3-time-format": "^2.1.1",
+    "history": "^4.7.2",
     "lodash": "^4.17.10",
     "materialize-css": "^1.0.0-rc.2",
     "moment": "^2.22.2",

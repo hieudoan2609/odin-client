@@ -7,18 +7,28 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import reducers from "./reducers";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
+import createHistory from "history/createBrowserHistory";
+import { EXCHANGE_RELOAD } from "./actions/types";
+
+const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+const history = createHistory();
+history.listen((location, action) => {
+	store.dispatch({
+		type: EXCHANGE_RELOAD
+	});
+});
 
 class App extends Component {
 	constructor() {
 		super();
-		this.store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+		this.store = store;
 	}
 
 	render() {
 		return (
 			<Provider store={this.store}>
-				<BrowserRouter>
+				<Router history={history}>
 					<div className="App">
 						<NavBar />
 
@@ -33,7 +43,7 @@ class App extends Component {
 
 						<Footer />
 					</div>
-				</BrowserRouter>
+				</Router>
 			</Provider>
 		);
 	}

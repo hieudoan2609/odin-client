@@ -7,7 +7,7 @@ import {
 	EXCHANGE_LOAD_TRADES,
 	EXCHANGE_LOAD_TICKS,
 	EXCHANGE_FILTER_ASSETS,
-	EXCHANGE_LEAVE_PAGE,
+	EXCHANGE_RELOAD,
 	EXCHANGE_NEW_MARKET_PRICES
 } from "./types";
 import io from "socket.io-client";
@@ -23,6 +23,10 @@ const web3 = new Web3(
 export const fetchAccount = () => {
 	return async dispatch => {
 		var assets = (await axios.get("/assets.json")).data;
+		for (let asset in assets) {
+			assets[asset].availableBalance = 0;
+			assets[asset].reserveBalance = 0;
+		}
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
 			payload: assets
@@ -245,8 +249,10 @@ export const filterAssets = (e, assets) => {
 	};
 };
 
-export const leavePage = () => {
-	return {
-		type: EXCHANGE_LEAVE_PAGE
+export const reload = () => {
+	return dispatch => () => {
+		dispatch({
+			type: EXCHANGE_RELOAD
+		});
 	};
 };

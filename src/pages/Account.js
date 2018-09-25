@@ -5,15 +5,11 @@ import M from "materialize-css/dist/js/materialize.min.js";
 import { connect } from "react-redux";
 import _ from "lodash";
 import Loading from "../components/Loading";
-import { fetchAccount, leavePage } from "../actions";
+import { fetchAccount } from "../actions";
 
 class Account extends Component {
 	componentWillMount = () => {
 		this.props.fetchAccount();
-	};
-
-	componentWillUnmount = () => {
-		this.props.leavePage();
 	};
 
 	componentDidMount = () => {
@@ -70,8 +66,7 @@ const mapStateToProps = ({ exchange }) => {
 };
 
 const mapFunctionsToProps = {
-	fetchAccount,
-	leavePage
+	fetchAccount
 };
 
 export default connect(
