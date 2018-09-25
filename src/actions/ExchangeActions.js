@@ -108,21 +108,21 @@ export const fetchMarket = (market, assets, socket) => {
 			}
 		});
 
-		// socket.on('prices', async res => {
-		// 	console.log('new prices')
-		// 	for (let asset in assets) {
-		// 		assets[asset].currentPrice = roundFixed(
-		// 			web3.utils.fromWei(res.markets[asset].currentPrice.toString())
-		// 		);
-		// 		assets[asset].previousPrice = roundFixed(
-		// 			web3.utils.fromWei(res.markets[asset].previousPrice.toString())
-		// 		);
-		// 	}
-		// 	dispatch({
-		// 		type: EXCHANGE_NEW_MARKET_PRICES,
-		// 		payload: assets
-		// 	});
-		// })
+		socket.on("prices", async res => {
+			console.log("new prices", res);
+			for (let asset in assets) {
+				assets[asset].currentPrice = roundFixed(
+					web3.utils.fromWei(res[asset].currentPrice.toString())
+				);
+				assets[asset].previousPrice = roundFixed(
+					web3.utils.fromWei(res[asset].previousPrice.toString())
+				);
+			}
+			dispatch({
+				type: EXCHANGE_NEW_MARKET_PRICES,
+				payload: assets
+			});
+		});
 
 		socket.emit("getMarket", { market });
 	};
