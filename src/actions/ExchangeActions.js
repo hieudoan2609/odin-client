@@ -7,7 +7,8 @@ import {
 	EXCHANGE_LOAD_TRADES,
 	EXCHANGE_LOAD_TICKS,
 	EXCHANGE_FILTER_ASSETS,
-	EXCHANGE_LEAVE_PAGE
+	EXCHANGE_LEAVE_PAGE,
+	EXCHANGE_NEW_MARKET_PRICES
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -44,19 +45,9 @@ export const fetchMarket = (market, assets, socket) => {
 			switch (res.type) {
 				case "trades":
 					trades = await processTrades(res.market);
-					for (let asset in assets) {
-						assets[asset].currentPrice = roundFixed(
-							web3.utils.fromWei(res.markets[asset].currentPrice.toString())
-						);
-						assets[asset].previousPrice = roundFixed(
-							web3.utils.fromWei(res.markets[asset].previousPrice.toString())
-						);
-						assets[asset].availableBalance = 0;
-						assets[asset].reserveBalance = 0;
-					}
 					dispatch({
 						type: EXCHANGE_LOAD_TRADES,
-						payload: { trades, assets }
+						payload: trades
 					});
 					console.log("new trades", res);
 					break;
@@ -89,11 +80,13 @@ export const fetchMarket = (market, assets, socket) => {
 					sellBook = await processSellBook(res.market.sellOrders);
 					trades = await processTrades(res.market.trades);
 					ticks = await getChartData(market);
+					var marketPrices = {};
 					for (let asset in assets) {
-						assets[asset].currentPrice = roundFixed(
+						marketPrices[asset] = {};
+						marketPrices[asset].currentPrice = roundFixed(
 							web3.utils.fromWei(res.markets[asset].currentPrice.toString())
 						);
-						assets[asset].previousPrice = roundFixed(
+						marketPrices[asset].previousPrice = roundFixed(
 							web3.utils.fromWei(res.markets[asset].previousPrice.toString())
 						);
 						assets[asset].availableBalance = 0;
@@ -105,6 +98,7 @@ export const fetchMarket = (market, assets, socket) => {
 							socket,
 							market,
 							assets,
+							marketPrices,
 							sellBook,
 							buyBook,
 							trades,
@@ -113,6 +107,22 @@ export const fetchMarket = (market, assets, socket) => {
 					});
 			}
 		});
+
+		// socket.on('prices', async res => {
+		// 	console.log('new prices')
+		// 	for (let asset in assets) {
+		// 		assets[asset].currentPrice = roundFixed(
+		// 			web3.utils.fromWei(res.markets[asset].currentPrice.toString())
+		// 		);
+		// 		assets[asset].previousPrice = roundFixed(
+		// 			web3.utils.fromWei(res.markets[asset].previousPrice.toString())
+		// 		);
+		// 	}
+		// 	dispatch({
+		// 		type: EXCHANGE_NEW_MARKET_PRICES,
+		// 		payload: assets
+		// 	});
+		// })
 
 		socket.emit("getMarket", { market });
 	};

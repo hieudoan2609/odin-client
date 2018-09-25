@@ -7,11 +7,13 @@ import {
 	EXCHANGE_LOAD_TRADES,
 	EXCHANGE_LOAD_TICKS,
 	EXCHANGE_FILTER_ASSETS,
-	EXCHANGE_LEAVE_PAGE
+	EXCHANGE_LEAVE_PAGE,
+	EXCHANGE_NEW_MARKET_PRICES
 } from "../actions/types";
 
 const INITIAL_STATE = {
 	assets: {},
+	marketPrices: {},
 	assetsFiltered: {},
 	user: "",
 	buyBook: {
@@ -32,6 +34,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_NEW_MARKET_PRICES:
+			return {
+				...state,
+				marketPrices: action.payload
+			};
 		case EXCHANGE_LEAVE_PAGE:
 			return {
 				...state,
@@ -52,8 +59,7 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_LOAD_TRADES:
 			return {
 				...state,
-				trades: action.payload.trades,
-				assets: action.payload.assets
+				trades: action.payload
 			};
 		case EXCHANGE_LOGIN:
 			return { ...state, user: action.payload };
@@ -74,7 +80,8 @@ export default (state = INITIAL_STATE, action) => {
 				buyBook: action.payload.buyBook,
 				trades: action.payload.trades,
 				ticks: action.payload.ticks,
-				currentMarket: action.payload.market
+				currentMarket: action.payload.market,
+				marketPrices: action.payload.marketPrices
 			};
 		default:
 			return state;

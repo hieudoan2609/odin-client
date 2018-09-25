@@ -24,6 +24,7 @@ class Chart extends Component {
 	renderPairs = () => {
 		return Object.keys(this.props.exchange.assets).map((assetKey, i) => {
 			const asset = this.props.exchange.assets[assetKey];
+			const price = this.props.exchange.marketPrices[assetKey];
 
 			return (
 				<Link
@@ -36,10 +37,10 @@ class Chart extends Component {
 					{"ETH"}/{asset.symbol}
 					<span
 						className={
-							asset.currentPrice < asset.previousPrice ? "sell" : "buy"
+							price.currentPrice < price.previousPrice ? "sell" : "buy"
 						}
 					>
-						{asset.currentPrice}
+						{price.currentPrice}
 					</span>
 				</Link>
 			);
