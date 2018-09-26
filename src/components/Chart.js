@@ -23,17 +23,17 @@ class Chart extends Component {
 
 	renderPairs = () => {
 		var keys = Object.keys(this.props.exchange.assets);
-		var sorted_keys = [];
+		// var sorted_keys = [];
 
-		for (var i in keys) {
-			if (keys[i] === this.props.exchange.currentMarket) {
-				sorted_keys.unshift(keys[i]);
-			} else {
-				sorted_keys.push(keys[i]);
-			}
-		}
+		// for (var i in keys) {
+		// 	if (keys[i] === this.props.exchange.currentMarket) {
+		// 		sorted_keys.unshift(keys[i]);
+		// 	} else {
+		// 		sorted_keys.push(keys[i]);
+		// 	}
+		// }
 
-		return sorted_keys.map((assetKey, i) => {
+		return keys.map((assetKey, i) => {
 			const asset = this.props.exchange.assets[assetKey];
 			const price = this.props.exchange.marketPrices[assetKey];
 

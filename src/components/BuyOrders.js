@@ -52,19 +52,21 @@ class BuyOrders extends Component {
 						</div>
 					</div>
 
-					<div className="table-responsive">
-						<table className="table">
-							<thead>
-								<tr>
-									<th scope="col">Price</th>
-									<th scope="col">Amount</th>
-									<th scope="col">Total</th>
-								</tr>
-							</thead>
-							<tbody>{this.renderPrices()}</tbody>
-						</table>
+					<div className="body">
+						<div className="table-responsive">
+							<table className="table">
+								<thead>
+									<tr>
+										<th scope="col">Price</th>
+										<th scope="col">Amount</th>
+										<th scope="col">Total</th>
+									</tr>
+								</thead>
+								<tbody>{this.renderPrices()}</tbody>
+							</table>
+						</div>
+						<div className="fadeBottom" />
 					</div>
-					<div className="fadeBottom" />
 				</div>
 			</div>
 		);

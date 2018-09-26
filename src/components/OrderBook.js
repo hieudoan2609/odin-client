@@ -15,13 +15,13 @@ class OrderBook extends Component {
 				</div>
 
 				<div className="row">
-					<div className="col-md-4">
+					<div className="col-lg-4">
 						<SellOrders />
 					</div>
-					<div className="col-md-4">
+					<div className="col-lg-4">
 						<BuyOrders />
 					</div>
-					<div className="col-md-4">
+					<div className="col-lg-4">
 						<TradeHistory />
 					</div>
 				</div>

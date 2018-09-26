@@ -442,9 +442,9 @@ strong {
   justify-content: center;
   align-items: center; }
 
-.OrderBook .col-md-4 > div {
+.OrderBook .col-lg-4 > div {
   height: 100%; }
-  .OrderBook .col-md-4 > div > .card {
+  .OrderBook .col-lg-4 > div > .card {
     height: 100%; }
 
 .unavailable {

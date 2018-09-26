@@ -249,10 +249,8 @@ export const filterAssets = (e, assets) => {
 	};
 };
 
-export const reload = () => {
-	return dispatch => () => {
-		dispatch({
-			type: EXCHANGE_RELOAD
-		});
-	};
+export const reload = dispatch => {
+	dispatch({
+		type: EXCHANGE_RELOAD
+	});
 };

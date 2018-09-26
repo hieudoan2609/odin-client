@@ -38,10 +38,7 @@ class Market extends Component {
 			market = Object.keys(assets)[0];
 		}
 
-		if (
-			this.props.exchange.loading &&
-			this.props.exchange.currentMarket !== market
-		) {
+		if (this.props.exchange.loading) {
 			this.props.fetchMarket(market, assets, socket);
 		}
 	};
@@ -54,10 +51,10 @@ class Market extends Component {
 		return (
 			<div className="Market">
 				<div className="row">
-					<div className="col-md-8">
+					<div className="col-lg-8">
 						<Chart />
 					</div>
-					<div className="col-md-4">
+					<div className="col-lg-4">
 						<Trade />
 					</div>
 				</div>

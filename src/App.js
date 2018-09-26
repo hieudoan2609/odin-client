@@ -9,15 +9,13 @@ import ReduxThunk from "redux-thunk";
 import reducers from "./reducers";
 import { Router, Route, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
-import { EXCHANGE_RELOAD } from "./actions/types";
+import { reload } from "./actions";
 
 const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 const history = createHistory();
 history.listen((location, action) => {
 	if (location.from !== location.pathname) {
-		store.dispatch({
-			type: EXCHANGE_RELOAD
-		});
+		reload(store.dispatch);
 	}
 });
 
