@@ -38,18 +38,26 @@ class Market extends Component {
 			market = Object.keys(assets)[0];
 		}
 
-		if (this.props.exchange.loading) {
+		if (this.props.exchange.reloading) {
 			this.props.fetchMarket(market, assets, socket);
 		}
 	};
 
+	renderReloading = () => {
+		if (this.props.exchange.reloading) {
+			return <Loading />;
+		}
+	};
+
 	render() {
-		if (this.props.exchange.loading) {
+		if (this.props.exchange.marketLoading) {
 			return <Loading />;
 		}
 
 		return (
 			<div className="Market">
+				{this.renderReloading()}
+
 				<div className="row">
 					<div className="col-lg-8">
 						<Chart />

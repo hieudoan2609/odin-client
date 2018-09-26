@@ -43,13 +43,21 @@ class Account extends Component {
 		});
 	};
 
+	renderReloading = () => {
+		if (this.props.exchange.reloading) {
+			return <Loading />;
+		}
+	};
+
 	render() {
-		if (this.props.exchange.loading) {
+		if (this.props.exchange.accountLoading) {
 			return <Loading />;
 		}
 
 		return (
 			<div className="MyAccount">
+				{this.renderReloading()}
+
 				<div className="row">
 					<div className="col-12">
 						<Login />

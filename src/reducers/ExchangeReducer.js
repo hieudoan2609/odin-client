@@ -29,7 +29,9 @@ const INITIAL_STATE = {
 	ticks: [],
 	search: "",
 	currentMarket: "",
-	loading: true
+	marketLoading: true,
+	accountLoading: true,
+	reloading: true
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -42,7 +44,7 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_RELOAD:
 			return {
 				...state,
-				loading: true
+				reloading: true
 			};
 		case EXCHANGE_FILTER_ASSETS:
 			return {
@@ -66,14 +68,16 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_ACCOUNT_LOADED:
 			return {
 				...state,
-				loading: false,
+				accountLoading: false,
+				reloading: false,
 				assets: action.payload,
 				assetsFiltered: action.payload
 			};
 		case EXCHANGE_MARKET_LOADED:
 			return {
 				...state,
-				loading: false,
+				marketLoading: false,
+				reloading: false,
 				socket: action.payload.socket,
 				assets: action.payload.assets,
 				assetsFiltered: action.payload.assets,
