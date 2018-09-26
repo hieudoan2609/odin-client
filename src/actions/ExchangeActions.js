@@ -16,9 +16,10 @@ import { round, roundFixed } from "../helpers";
 import moment from "moment";
 import { tsvParse } from "d3-dsv";
 
-const web3 = new Web3(
-	Web3.givenProvider || "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe"
-);
+var infura = process.env.INFURA
+	? process.env.INFURA
+	: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
+const web3 = new Web3(Web3.givenProvider || infura);
 
 export const fetchAccount = () => {
 	return async dispatch => {
