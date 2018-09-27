@@ -76,7 +76,7 @@ body {
 .Chart {
   box-sizing: border-box;
   padding-top: 50px;
-  height: 400px;
+  min-height: 400px;
   overflow: hidden; }
 
 #tooltip {
