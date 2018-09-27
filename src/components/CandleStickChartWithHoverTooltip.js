@@ -115,8 +115,6 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 		const end = xAccessor(data[Math.max(0, data.length - 100)]);
 		const xExtents = [start, end];
 
-		console.log(width / 80);
-
 		return (
 			<ChartCanvas
 				height={400}

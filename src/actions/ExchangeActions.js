@@ -8,7 +8,11 @@ import {
 	EXCHANGE_LOAD_TICKS,
 	EXCHANGE_FILTER_ASSETS,
 	EXCHANGE_RELOAD,
-	EXCHANGE_NEW_MARKET_PRICES
+	EXCHANGE_NEW_MARKET_PRICES,
+	EXCHANGE_INSTALL_METAMASK,
+	EXCHANGE_UNLOCK_METAMASK,
+	EXCHANGE_GO_BACK,
+	EXCHANGE_LOGIN
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -20,6 +24,50 @@ var infura = process.env.INFURA
 	? process.env.INFURA
 	: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
 const web3 = new Web3(Web3.givenProvider || infura);
+
+export const login = user => {
+	return async dispatch => {
+		if (!Web3.givenProvider || !Web3.givenProvider.isMetaMask) {
+			dispatch({
+				type: EXCHANGE_INSTALL_METAMASK
+			});
+		} else {
+			var accounts = await web3.eth.getAccounts();
+			if (accounts.length === 0) {
+				var interval = setInterval(async function() {
+					var accounts = await web3.eth.getAccounts();
+					if (accounts.length > 0) {
+						var user = accounts[0];
+						clearInterval(interval);
+						dispatch({
+							type: EXCHANGE_LOGIN,
+							payload: user
+						});
+					}
+				}, 1000);
+
+				dispatch({
+					type: EXCHANGE_UNLOCK_METAMASK,
+					payload: interval
+				});
+			} else {
+				var user = accounts[0];
+				dispatch({
+					type: EXCHANGE_LOGIN,
+					payload: user
+				});
+			}
+		}
+	};
+};
+
+export const goBack = interval => {
+	clearInterval(interval);
+
+	return {
+		type: EXCHANGE_GO_BACK
+	};
+};
 
 export const fetchAccount = () => {
 	return async dispatch => {

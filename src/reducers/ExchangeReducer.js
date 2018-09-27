@@ -8,14 +8,16 @@ import {
 	EXCHANGE_LOAD_TICKS,
 	EXCHANGE_FILTER_ASSETS,
 	EXCHANGE_RELOAD,
-	EXCHANGE_NEW_MARKET_PRICES
+	EXCHANGE_NEW_MARKET_PRICES,
+	EXCHANGE_INSTALL_METAMASK,
+	EXCHANGE_UNLOCK_METAMASK,
+	EXCHANGE_GO_BACK
 } from "../actions/types";
 
 const INITIAL_STATE = {
 	assets: {},
 	marketPrices: {},
 	assetsFiltered: {},
-	user: "",
 	buyBook: {
 		prices: {},
 		total: 0
@@ -31,11 +33,32 @@ const INITIAL_STATE = {
 	currentMarket: "",
 	marketLoading: true,
 	accountLoading: true,
-	reloading: true
+	reloading: true,
+	user: "",
+	unlockMetamask: false,
+	installMetamask: false,
+	interval: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_GO_BACK:
+			return {
+				...state,
+				unlockMetamask: false,
+				installMetamask: false
+			};
+		case EXCHANGE_INSTALL_METAMASK:
+			return {
+				...state,
+				installMetamask: true
+			};
+		case EXCHANGE_UNLOCK_METAMASK:
+			return {
+				...state,
+				unlockMetamask: true,
+				interval: action.payload
+			};
 		case EXCHANGE_NEW_MARKET_PRICES:
 			return {
 				...state,

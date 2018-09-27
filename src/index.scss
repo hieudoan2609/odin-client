@@ -646,6 +646,10 @@ strong {
 	text-align: center;
 }
 
+.solid {
+	background-color: rgba(35, 45, 68, 1);
+}
+
 .App {
 	min-height: 100vh;
 	.container {
@@ -698,7 +702,7 @@ strong {
 					}
 				}
 				> div {
-					padding: 10px 0px;
+					padding: 20px 0px;
 					text-align: center;
 					background: $background;
 					width: 100%;
@@ -716,5 +720,19 @@ strong {
 				}
 			}
 		}
+	}
+}
+
+.choices {
+	span {
+		cursor: pointer;
+		margin-right: 15px;
+		text-decoration: underline;
+		&:last-child {
+			margin-right: 0px;
+		}
+	}
+	a {
+		color: $orange;
 	}
 }

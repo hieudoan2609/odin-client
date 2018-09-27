@@ -461,6 +461,9 @@ strong {
   z-index: 1;
   text-align: center; }
 
+.solid {
+  background-color: #232d44; }
+
 .App {
   min-height: 100vh; }
   .App .container {
@@ -501,7 +504,7 @@ strong {
         .Login .card .body .button:hover > div svg path {
           fill: white !important; }
     .Login .card .body .button > div {
-      padding: 10px 0px;
+      padding: 20px 0px;
       text-align: center;
       background: #232d44;
       width: 100%;
@@ -514,3 +517,13 @@ strong {
         margin-right: 4px; }
         .Login .card .body .button > div svg path {
           fill: #ed8a45 !important; }
+
+.choices span {
+  cursor: pointer;
+  margin-right: 15px;
+  text-decoration: underline; }
+  .choices span:last-child {
+    margin-right: 0px; }
+
+.choices a {
+  color: #ed8a45; }
