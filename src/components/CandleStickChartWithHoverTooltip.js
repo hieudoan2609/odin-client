@@ -16,7 +16,7 @@ import { fitWidth } from "react-stockcharts/lib/helper";
 import { last } from "react-stockcharts/lib/utils";
 
 const dateFormat = timeFormat("%Y-%m-%d %H:00:00");
-const numberFormat = format(".2f");
+const numberFormat = format(".8f");
 const candlesAppearance = {
 	wickStroke: function fill(d) {
 		return d.close > d.open ? "rgba(39,214,138,.5)" : "rgba(237,138,69,.5)";
@@ -145,6 +145,7 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 						axisAt="right"
 						orient="right"
 						ticks={5}
+						tickFormat={numberFormat}
 						stroke="transparent"
 						tickStroke="#777777"
 					/>
@@ -156,8 +157,9 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 						orient="right"
 						edgeAt="right"
 						yAccessor={d => d.close}
+						displayFormat={numberFormat}
 						fill={d =>
-							d.close > d.open ? "rgba(39,214,138,1" : "rgba(237,138,69,1)"
+							d.close > d.open ? "rgba(39,214,138,1)" : "rgba(237,138,69,1)"
 						}
 						lineStroke={"#777777"}
 					/>

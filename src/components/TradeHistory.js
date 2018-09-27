@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { roundFixed } from "../helpers";
 
 class TradeHistory extends Component {
 	state = {
@@ -15,9 +16,9 @@ class TradeHistory extends Component {
 						<span className={trade.type} />
 					</td>
 					<td>{trade.date}</td>
-					<td>{trade.price}</td>
-					<td>{trade.amount}</td>
-					<td>{trade.total}</td>
+					<td>{roundFixed(trade.price)}</td>
+					<td>{roundFixed(trade.amount)}</td>
+					<td>{roundFixed(trade.total)}</td>
 				</tr>
 			);
 		});

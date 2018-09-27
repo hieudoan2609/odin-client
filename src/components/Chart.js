@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 class Chart extends Component {
 	renderChart = () => {
-		if (!this.props.exchange.ticks) {
+		if (!this.props.exchange.ticks || this.props.exchange.ticks.length < 2) {
 			return (
 				<div className="unavailable">
 					<p>Chart data not available.</p>
