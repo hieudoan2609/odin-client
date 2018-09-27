@@ -39,11 +39,6 @@
 		"name": "Aeternity",
 		"address": "0x1618B59953f0401Ef63C79C16d59546bB6DA4764"
 	},
-	"NPXS": {
-		"symbol": "NPXS",
-		"name": "Pundi X",
-		"address": "0x9D871ef438E67720a0dAFD652646879A5a29c989"
-	},
 	"BAT": {
 		"symbol": "BAT",
 		"name": "Basic Attention Token",
