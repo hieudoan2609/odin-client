@@ -1,5 +1,6 @@
 {
   "name": "odin-client",
+  "homepage": "https://odin.trade",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -34,6 +35,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"npm start\" \"npm run watch-css\""
+    "dev": "concurrently \"npm start\" \"npm run watch-css\"",
+    "predeploy": "npm run build",
+   	"deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "gh-pages": "^2.0.0"
   }
 }
