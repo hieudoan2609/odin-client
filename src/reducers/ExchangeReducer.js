@@ -11,7 +11,8 @@ import {
 	EXCHANGE_NEW_MARKET_PRICES,
 	EXCHANGE_INSTALL_METAMASK,
 	EXCHANGE_UNLOCK_METAMASK,
-	EXCHANGE_GO_BACK
+	EXCHANGE_GO_BACK,
+	EXCHANGE_SET_INTERVAL
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -42,6 +43,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_SET_INTERVAL:
+			return {
+				...state,
+				interval: action.payload
+			};
 		case EXCHANGE_GO_BACK:
 			return {
 				...state,
@@ -56,8 +62,8 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_UNLOCK_METAMASK:
 			return {
 				...state,
-				unlockMetamask: true,
-				interval: action.payload
+				user: "",
+				unlockMetamask: true
 			};
 		case EXCHANGE_NEW_MARKET_PRICES:
 			return {
@@ -87,7 +93,12 @@ export default (state = INITIAL_STATE, action) => {
 				trades: action.payload
 			};
 		case EXCHANGE_LOGIN:
-			return { ...state, user: action.payload };
+			return {
+				...state,
+				user: action.payload,
+				unlockMetamask: false,
+				installMetamask: false
+			};
 		case EXCHANGE_ACCOUNT_LOADED:
 			return {
 				...state,

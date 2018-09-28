@@ -12,7 +12,8 @@ import {
 	EXCHANGE_INSTALL_METAMASK,
 	EXCHANGE_UNLOCK_METAMASK,
 	EXCHANGE_GO_BACK,
-	EXCHANGE_LOGIN
+	EXCHANGE_LOGIN,
+	EXCHANGE_SET_INTERVAL
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -28,30 +29,22 @@ const web3 = new Web3(Web3.givenProvider || infura);
 export const login = user => {
 	return async dispatch => {
 		if (!Web3.givenProvider || !Web3.givenProvider.isMetaMask) {
+			// metamask not installed
 			dispatch({
 				type: EXCHANGE_INSTALL_METAMASK
 			});
 		} else {
 			var accounts = await web3.eth.getAccounts();
 			if (accounts.length === 0) {
-				var interval = setInterval(async function() {
-					var accounts = await web3.eth.getAccounts();
-					if (accounts.length > 0) {
-						var user = accounts[0];
-						clearInterval(interval);
-						dispatch({
-							type: EXCHANGE_LOGIN,
-							payload: user
-						});
-					}
-				}, 1000);
-
+				// metamask installed but locked
+				listenForMetamask(dispatch);
 				dispatch({
-					type: EXCHANGE_UNLOCK_METAMASK,
-					payload: interval
+					type: EXCHANGE_UNLOCK_METAMASK
 				});
 			} else {
+				// metamask is installed and unlocked
 				var user = accounts[0];
+				listenForMetamask(dispatch);
 				dispatch({
 					type: EXCHANGE_LOGIN,
 					payload: user
@@ -59,6 +52,31 @@ export const login = user => {
 			}
 		}
 	};
+};
+
+export const listenForMetamask = dispatch => {
+	var interval = setInterval(async function() {
+		console.log("called");
+
+		var accounts = await web3.eth.getAccounts();
+
+		if (accounts.length > 0) {
+			var user = accounts[0];
+			dispatch({
+				type: EXCHANGE_LOGIN,
+				payload: user
+			});
+		} else {
+			dispatch({
+				type: EXCHANGE_UNLOCK_METAMASK
+			});
+		}
+	}, 3000);
+
+	dispatch({
+		type: EXCHANGE_SET_INTERVAL,
+		payload: interval
+	});
 };
 
 export const goBack = interval => {

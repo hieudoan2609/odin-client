@@ -46,11 +46,32 @@ class LogIn extends Component {
 		}
 	};
 
+	renderLoggedIn = () => {
+		if (this.props.exchange.user) {
+			return (
+				<div className="unavailable solid">
+					<div>
+						<h2>Welcome.</h2>
+						<p>You are now logged in.</p>
+						<div className="choices">
+							<span
+								onClick={() => this.props.goBack(this.props.exchange.interval)}
+							>
+								Log out
+							</span>
+						</div>
+					</div>
+				</div>
+			);
+		}
+	};
+
 	renderCard = () => {
 		return (
 			<div className="card">
 				{this.renderInstallMetamask()}
 				{this.renderUnlockMetamask()}
+				{this.renderLoggedIn()}
 				<div className="head">
 					<p className="title">Log in to a wallet</p>
 				</div>
