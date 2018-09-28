@@ -43,6 +43,7 @@ const INITIAL_STATE = {
 	installMetamask: false,
 	wrongNetwork: false,
 	networkId: 0,
+	exchangeAddress: "",
 	interval: 0,
 	orders: [],
 	myOrders: []
@@ -134,7 +135,8 @@ export default (state = INITIAL_STATE, action) => {
 				reloading: false,
 				assets: action.payload.assets,
 				assetsFiltered: action.payload.assets,
-				networkId: action.payload.networkId
+				networkId: action.payload.networkId,
+				exchangeAddress: action.payload.exchangeAddress
 			};
 		case EXCHANGE_MARKET_LOADED:
 			return {
@@ -150,7 +152,8 @@ export default (state = INITIAL_STATE, action) => {
 				ticks: action.payload.ticks,
 				currentMarket: action.payload.market,
 				marketPrices: action.payload.marketPrices,
-				networkId: action.payload.networkId
+				networkId: action.payload.networkId,
+				exchangeAddress: action.payload.exchangeAddress
 			};
 		default:
 			return state;

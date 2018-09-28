@@ -143,12 +143,14 @@ export const goBack = interval => {
 
 export const fetchAccount = () => {
 	return async dispatch => {
-		var { networkId } = store.getState().exchange;
-		if (!networkId) {
-			networkId = (await axios.get(
+		var { networkId, exchangeAddress } = store.getState().exchange;
+		if (!networkId || !exchangeAddress) {
+			var res = (await axios.get(
 				process.env.ADDRESSES ||
 					"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
-			)).data.networkId;
+			)).data;
+			networkId = res.networkId;
+			exchangeAddress = res.exchangeAddress;
 		}
 		var assets = (await axios.get("/assets.json")).data;
 		for (let asset in assets) {
@@ -157,7 +159,7 @@ export const fetchAccount = () => {
 		}
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
-			payload: { assets, networkId }
+			payload: { assets, networkId, exchangeAddress }
 		});
 	};
 };
@@ -208,12 +210,14 @@ export const fetchMarket = (market, assets, socket) => {
 					console.log(`new tick for ${market}`, res);
 					break;
 				default:
-					var { networkId } = store.getState().exchange;
-					if (!networkId) {
-						networkId = (await axios.get(
+					var { networkId, exchangeAddress } = store.getState().exchange;
+					if (!networkId || !exchangeAddress) {
+						res = (await axios.get(
 							process.env.ADDRESSES ||
 								"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
-						)).data.networkId;
+						)).data;
+						networkId = res.networkId;
+						exchangeAddress = res.exchangeAddress;
 					}
 					buyBook = await processBuyBook(res.market.buyOrders);
 					sellBook = await processSellBook(res.market.sellOrders);
@@ -242,7 +246,8 @@ export const fetchMarket = (market, assets, socket) => {
 							buyBook,
 							trades,
 							ticks,
-							networkId
+							networkId,
+							exchangeAddress
 						}
 					});
 			}
