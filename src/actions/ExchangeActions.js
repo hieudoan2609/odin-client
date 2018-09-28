@@ -70,37 +70,45 @@ const fetchAccountWithUser = async (dispatch, user) => {
 		type: EXCHANGE_RELOAD
 	});
 
-	// var exchangeAddress = (await axios.get(
-	// 	process.env.ADDRESSES ||
-	// 		"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
-	// )).data.ExchangePure;
-	// var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
-	// var nullAddress = "0x0000000000000000000000000000000000000000";
+	var { exchangeAddress, assets, networkId } = store.getState().exchange;
+	var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
 
-	// var balance = await exchange.methods
-	// 	.getMarketInfo("0x76a86b8172886DE0810E61A75aa55EE74a26e76f")
-	// 	.call();
+	for (let asset in assets) {
+		var balances = await exchange.methods
+			.getBalance(assets[asset].address, user)
+			.call();
+		assets[asset].availableBalance = web3.utils.fromWei(
+			balances.available.toString()
+		);
+		assets[asset].reserveBalance = web3.utils.fromWei(
+			balances.reserved.toString()
+		);
+	}
 
-	// console.log(balance);
+	dispatch({
+		type: EXCHANGE_ACCOUNT_LOADED,
+		payload: { assets, networkId, exchangeAddress }
+	});
 
-	// var assets = (await axios.get("/assets.json")).data;
-	// for (let asset in assets) {
-	// 	assets[asset].availableBalance = 0;
-	// 	assets[asset].reserveBalance = 0;
-	// }
-
-	// dispatch({
-	// 	type: EXCHANGE_ACCOUNT_LOADED,
-	// 	payload: assets
-	// });
+	dispatch({
+		type: EXCHANGE_LOGIN,
+		payload: user
+	});
 };
 
 export const logout = interval => {
 	return async dispatch => {
 		clearInterval(interval);
 
+		var { assets } = store.getState().exchange;
+		for (let asset in assets) {
+			assets[asset].availableBalance = 0;
+			assets[asset].reserveBalance = 0;
+		}
+
 		dispatch({
-			type: EXCHANGE_LOGOUT
+			type: EXCHANGE_LOGOUT,
+			payload: { assets }
 		});
 	};
 };
@@ -145,12 +153,12 @@ export const fetchAccount = () => {
 	return async dispatch => {
 		var { networkId, exchangeAddress } = store.getState().exchange;
 		if (!networkId || !exchangeAddress) {
-			var res = (await axios.get(
+			var constants = (await axios.get(
 				process.env.ADDRESSES ||
 					"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
 			)).data;
-			networkId = res.networkId;
-			exchangeAddress = res.exchangeAddress;
+			networkId = constants.networkId;
+			exchangeAddress = constants.exchangeAddress;
 		}
 		var assets = (await axios.get("/assets.json")).data;
 		for (let asset in assets) {
@@ -212,12 +220,12 @@ export const fetchMarket = (market, assets, socket) => {
 				default:
 					var { networkId, exchangeAddress } = store.getState().exchange;
 					if (!networkId || !exchangeAddress) {
-						res = (await axios.get(
+						var constants = (await axios.get(
 							process.env.ADDRESSES ||
 								"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
 						)).data;
-						networkId = res.networkId;
-						exchangeAddress = res.exchangeAddress;
+						networkId = constants.networkId;
+						exchangeAddress = constants.exchangeAddress;
 					}
 					buyBook = await processBuyBook(res.market.buyOrders);
 					sellBook = await processSellBook(res.market.sellOrders);

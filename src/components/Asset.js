@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Modal from "./Modal";
 import { connect } from "react-redux";
+import { round } from "../helpers";
 
 class Asset extends Component {
 	renderOverlay() {
@@ -55,7 +56,7 @@ class Asset extends Component {
 						<div className="col-12">
 							<div className="title">Total Balance</div>
 							<div className="value">
-								{this.props.availableBalance + this.props.reserveBalance}
+								{round(this.props.availableBalance + this.props.reserveBalance)}
 							</div>
 						</div>
 					</div>
@@ -63,11 +64,11 @@ class Asset extends Component {
 					<div className="row">
 						<div className="col-6">
 							<div className="title">Available</div>
-							<div className="value">{this.props.availableBalance}</div>
+							<div className="value">{round(this.props.availableBalance)}</div>
 						</div>
 						<div className="col-6">
 							<div className="title">In Orders</div>
-							<div className="value">{this.props.reserveBalance}</div>
+							<div className="value">{round(this.props.reserveBalance)}</div>
 						</div>
 					</div>
 				</div>

@@ -68,7 +68,9 @@ export default (state = INITIAL_STATE, action) => {
 				unlockMetamask: false,
 				installMetamask: false,
 				wrongNetwork: false,
-				interval: 0
+				interval: 0,
+				assets: action.payload.assets,
+				assetsFiltered: action.payload.assets
 			};
 		case EXCHANGE_SET_INTERVAL:
 			return {

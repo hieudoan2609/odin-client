@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { login, logout, goBack } from "../actions";
+import { login, logout } from "../actions";
 
 class LogIn extends Component {
 	renderWrongNetwork = () => {
@@ -23,7 +23,7 @@ class LogIn extends Component {
 						<p>Please change your network setting to {networkName}.</p>
 						<div className="choices">
 							<span
-								onClick={() => this.props.goBack(this.props.exchange.interval)}
+								onClick={() => this.props.logout(this.props.exchange.interval)}
 							>
 								Go back
 							</span>
@@ -46,7 +46,7 @@ class LogIn extends Component {
 								<a href="https://metamask.io/">Install MetaMask</a>
 							</span>
 							<span
-								onClick={() => this.props.goBack(this.props.exchange.interval)}
+								onClick={() => this.props.logout(this.props.exchange.interval)}
 							>
 								Go back
 							</span>
@@ -66,9 +66,9 @@ class LogIn extends Component {
 						<p>Please unlock MetaMask.</p>
 						<div className="choices">
 							<span
-								onClick={() => this.props.goBack(this.props.exchange.interval)}
+								onClick={() => this.props.logout(this.props.exchange.interval)}
 							>
-								Go back
+								Log out
 							</span>
 						</div>
 					</div>
@@ -151,7 +151,7 @@ const mapStateToProps = ({ exchange }) => {
 const mapDispatchToProps = {
 	login,
 	logout,
-	goBack
+	logout
 };
 
 export default connect(
