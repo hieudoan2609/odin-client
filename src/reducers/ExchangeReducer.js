@@ -39,7 +39,9 @@ const INITIAL_STATE = {
 	user: "",
 	unlockMetamask: false,
 	installMetamask: false,
-	interval: 0
+	interval: 0,
+	orders: [],
+	myOrders: []
 };
 
 export default (state = INITIAL_STATE, action) => {

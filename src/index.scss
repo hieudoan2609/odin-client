@@ -725,14 +725,20 @@ strong {
 
 .choices {
 	span {
-		cursor: pointer;
 		margin-right: 15px;
-		text-decoration: underline;
+		cursor: pointer;
+		color: $text;
 		&:last-child {
 			margin-right: 0px;
 		}
-	}
-	a {
-		color: $orange;
+		&:hover {
+			color: $hover;
+		}
+		a {
+			color: $text;
+			&:hover {
+				color: $hover;
+			}
+		}
 	}
 }

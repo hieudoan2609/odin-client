@@ -21,6 +21,7 @@ import axios from "axios";
 import { round, roundFixed } from "../helpers";
 import moment from "moment";
 import { tsvParse } from "d3-dsv";
+import store from "../store";
 
 var infura = process.env.INFURA
 	? process.env.INFURA
@@ -45,6 +46,7 @@ export const login = user => {
 			} else {
 				// metamask is installed and unlocked
 				var user = accounts[0];
+				console.log("load user data");
 				listenForMetamask(dispatch);
 				dispatch({
 					type: EXCHANGE_LOGIN,
@@ -67,16 +69,18 @@ export const logout = interval => {
 
 export const listenForMetamask = dispatch => {
 	var interval = setInterval(async function() {
-		console.log("called");
-
+		var user = store.getState().exchange.user;
 		var accounts = await web3.eth.getAccounts();
 
 		if (accounts.length > 0) {
-			var user = accounts[0];
-			dispatch({
-				type: EXCHANGE_LOGIN,
-				payload: user
-			});
+			if (!user) {
+				console.log("load user data");
+				user = accounts[0];
+				dispatch({
+					type: EXCHANGE_LOGIN,
+					payload: user
+				});
+			}
 		} else {
 			dispatch({
 				type: EXCHANGE_UNLOCK_METAMASK

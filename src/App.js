@@ -4,14 +4,11 @@ import Market from "./pages/Market";
 import Account from "./pages/Account";
 import Footer from "./components/Footer";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import ReduxThunk from "redux-thunk";
-import reducers from "./reducers";
 import { Router, Route, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
 import { reload } from "./actions";
+import store from "./store";
 
-const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 const history = createHistory();
 history.listen((location, action) => {
 	if (location.from !== location.pathname) {

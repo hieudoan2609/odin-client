@@ -519,11 +519,14 @@ strong {
           fill: #ed8a45 !important; }
 
 .choices span {
-  cursor: pointer;
   margin-right: 15px;
-  text-decoration: underline; }
+  cursor: pointer;
+  color: #777777; }
   .choices span:last-child {
     margin-right: 0px; }
-
-.choices a {
-  color: #ed8a45; }
+  .choices span:hover {
+    color: #ed8a45; }
+  .choices span a {
+    color: #777777; }
+    .choices span a:hover {
+      color: #ed8a45; }
