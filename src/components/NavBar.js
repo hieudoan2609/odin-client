@@ -24,14 +24,24 @@ class NavBar extends Component {
 			<div className="nav-bar">
 				<div className="container">
 					<div className="brand-logo">
-						<Link to={`/market/${this.props.exchange.currentMarket}`}>
+						<Link
+							to={{
+								pathname: `/market/${this.props.exchange.currentMarket}`,
+								from: window.location.pathname
+							}}
+						>
 							<img src="/logo.png" alt="OdinTrade" />
 						</Link>
 					</div>
 					<div className="nav-items">
 						<ul className="pull-right" />
 						<ul className="pull-left">
-							<Link to="/account">
+							<Link
+								to={{
+									pathname: "/account",
+									from: window.location.pathname
+								}}
+							>
 								<li className="nav-item">{this.renderUser()}</li>
 							</Link>
 						</ul>
