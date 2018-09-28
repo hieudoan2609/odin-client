@@ -22,8 +22,9 @@ import { round, roundFixed } from "../helpers";
 import moment from "moment";
 import { tsvParse } from "d3-dsv";
 import store from "../store";
+import exchangeAbi from "../contracts/ExchangePure.json";
 
-var infura = process.env.INFURA
+const infura = process.env.INFURA
 	? process.env.INFURA
 	: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
 const web3 = new Web3(Web3.givenProvider || infura);
@@ -46,15 +47,43 @@ export const login = user => {
 			} else {
 				// metamask is installed and unlocked
 				var user = accounts[0];
-				console.log("load user data");
 				listenForMetamask(dispatch);
-				dispatch({
-					type: EXCHANGE_LOGIN,
-					payload: user
-				});
+				fetchAccountWithUser(dispatch, user);
 			}
 		}
 	};
+};
+
+const fetchAccountWithUser = async (dispatch, user) => {
+	dispatch({
+		type: EXCHANGE_RELOAD
+	});
+
+	var exchangeAddress = (await axios.get(
+		process.env.ADDRESSES ||
+			"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
+	)).data.ExchangePure;
+	var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
+	var nullAddress = "0x0000000000000000000000000000000000000000";
+
+	// var balance = await exchange.methods
+	// 	.getMarketInfo("0x76a86b8172886DE0810E61A75aa55EE74a26e76f")
+	// 	.call();
+
+	var network = await web3.eth.net.getId();
+
+	console.log(network);
+
+	// var assets = (await axios.get("/assets.json")).data;
+	// for (let asset in assets) {
+	// 	assets[asset].availableBalance = 0;
+	// 	assets[asset].reserveBalance = 0;
+	// }
+
+	// dispatch({
+	// 	type: EXCHANGE_ACCOUNT_LOADED,
+	// 	payload: assets
+	// });
 };
 
 export const logout = interval => {
@@ -69,17 +98,13 @@ export const logout = interval => {
 
 export const listenForMetamask = dispatch => {
 	var interval = setInterval(async function() {
-		var user = store.getState().exchange.user;
+		var { user, reloading } = store.getState().exchange;
 		var accounts = await web3.eth.getAccounts();
 
 		if (accounts.length > 0) {
-			if (!user) {
-				console.log("load user data");
+			if (!user & !reloading) {
 				user = accounts[0];
-				dispatch({
-					type: EXCHANGE_LOGIN,
-					payload: user
-				});
+				fetchAccountWithUser(dispatch, user);
 			}
 		} else {
 			dispatch({
