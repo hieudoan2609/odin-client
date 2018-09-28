@@ -14,8 +14,7 @@ import {
 	EXCHANGE_GO_BACK,
 	EXCHANGE_SET_INTERVAL,
 	EXCHANGE_LOGOUT,
-	EXCHANGE_WRONG_NETWORK,
-	EXCHANGE_CORRECT_NETWORK
+	EXCHANGE_WRONG_NETWORK
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -46,16 +45,18 @@ const INITIAL_STATE = {
 	exchangeAddress: "",
 	interval: 0,
 	orders: [],
-	myOrders: []
+	myOrders: [],
+	baseAsset: {
+		symbol: "ETH",
+		name: "Ethereum",
+		address: "0x0000000000000000000000000000000000000000",
+		availableBalance: 0,
+		reserveBalance: 0
+	}
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case EXCHANGE_CORRECT_NETWORK:
-			return {
-				...state,
-				wrongNetwork: false
-			};
 		case EXCHANGE_WRONG_NETWORK:
 			return {
 				...state,
@@ -70,7 +71,8 @@ export default (state = INITIAL_STATE, action) => {
 				wrongNetwork: false,
 				interval: 0,
 				assets: action.payload.assets,
-				assetsFiltered: action.payload.assets
+				assetsFiltered: action.payload.assetsFiltered,
+				baseAsset: action.payload.baseAsset
 			};
 		case EXCHANGE_SET_INTERVAL:
 			return {
@@ -108,7 +110,7 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_FILTER_ASSETS:
 			return {
 				...state,
-				assetsFiltered: action.payload.filteredAssets,
+				assetsFiltered: action.payload.assetsFiltered,
 				search: action.payload.search
 			};
 		case EXCHANGE_LOAD_TICKS:
@@ -136,7 +138,7 @@ export default (state = INITIAL_STATE, action) => {
 				accountLoading: false,
 				reloading: false,
 				assets: action.payload.assets,
-				assetsFiltered: action.payload.assets,
+				assetsFiltered: action.payload.assetsFiltered,
 				networkId: action.payload.networkId,
 				exchangeAddress: action.payload.exchangeAddress
 			};
@@ -147,7 +149,7 @@ export default (state = INITIAL_STATE, action) => {
 				reloading: false,
 				socket: action.payload.socket,
 				assets: action.payload.assets,
-				assetsFiltered: action.payload.assets,
+				assetsFiltered: action.payload.assetsFiltered,
 				sellBook: action.payload.sellBook,
 				buyBook: action.payload.buyBook,
 				trades: action.payload.trades,

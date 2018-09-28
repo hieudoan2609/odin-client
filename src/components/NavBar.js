@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { roundFixed } from "../helpers";
 
 class NavBar extends Component {
 	renderUser = () => {
-		if (this.props.exchange.user) {
+		var { user, baseAsset } = this.props.exchange;
+		if (user) {
 			return (
 				<span>
-					<i className="icon ion-ios-wallet" /> 0x8a37b7...2830E1 (0.097252 BTC)
+					<i className="icon ion-ios-wallet" />{" "}
+					{`
+						${user.substring(0, 6)}...${user.substring(user.length - 4, user.length)}
+						(${roundFixed(baseAsset.availableBalance, 2)} ${baseAsset.symbol})
+					`}
 				</span>
 			);
 		}

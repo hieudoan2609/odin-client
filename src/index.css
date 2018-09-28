@@ -530,3 +530,8 @@ strong {
     color: #777777; }
     .choices span a:hover {
       color: #ed8a45; }
+
+.account-info .head {
+  display: block;
+  text-align: center;
+  color: #ed8a45; }

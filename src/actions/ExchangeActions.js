@@ -15,8 +15,7 @@ import {
 	EXCHANGE_LOGIN,
 	EXCHANGE_SET_INTERVAL,
 	EXCHANGE_LOGOUT,
-	EXCHANGE_WRONG_NETWORK,
-	EXCHANGE_CORRECT_NETWORK
+	EXCHANGE_WRONG_NETWORK
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -70,9 +69,15 @@ const fetchAccountWithUser = async (dispatch, user) => {
 		type: EXCHANGE_RELOAD
 	});
 
-	var { exchangeAddress, assets, networkId } = store.getState().exchange;
+	var {
+		exchangeAddress,
+		assets,
+		networkId,
+		baseAsset
+	} = store.getState().exchange;
 	var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
 
+	var assetsFiltered = {};
 	for (let asset in assets) {
 		var balances = await exchange.methods
 			.getBalance(assets[asset].address, user)
@@ -83,11 +88,23 @@ const fetchAccountWithUser = async (dispatch, user) => {
 		assets[asset].reserveBalance = web3.utils.fromWei(
 			balances.reserved.toString()
 		);
+		assetsFiltered[asset] = assets[asset];
 	}
+
+	var baseAssetBalances = await exchange.methods
+		.getBalance(baseAsset.address, user)
+		.call();
+	baseAsset.availableBalance = web3.utils.fromWei(
+		baseAssetBalances.available.toString()
+	);
+	baseAsset.reserveBalance = web3.utils.fromWei(
+		baseAssetBalances.reserved.toString()
+	);
+	assetsFiltered[baseAsset.symbol] = baseAsset;
 
 	dispatch({
 		type: EXCHANGE_ACCOUNT_LOADED,
-		payload: { assets, networkId, exchangeAddress }
+		payload: { assets, networkId, exchangeAddress, assetsFiltered, baseAsset }
 	});
 
 	dispatch({
@@ -101,14 +118,20 @@ export const logout = interval => {
 		clearInterval(interval);
 
 		var { assets } = store.getState().exchange;
+		var assetsFiltered = {};
 		for (let asset in assets) {
 			assets[asset].availableBalance = 0;
 			assets[asset].reserveBalance = 0;
+			assetsFiltered[asset] = assets[asset];
 		}
+		var { baseAsset } = store.getState().exchange;
+		baseAsset.availableBalance = 0;
+		baseAsset.reserveBalance = 0;
+		assetsFiltered[baseAsset.symbol] = baseAsset;
 
 		dispatch({
 			type: EXCHANGE_LOGOUT,
-			payload: { assets }
+			payload: { assets, assetsFiltered, baseAsset }
 		});
 	};
 };
@@ -161,13 +184,16 @@ export const fetchAccount = () => {
 			exchangeAddress = constants.exchangeAddress;
 		}
 		var assets = (await axios.get("/assets.json")).data;
+		var assetsFiltered = {};
 		for (let asset in assets) {
 			assets[asset].availableBalance = 0;
 			assets[asset].reserveBalance = 0;
+			assetsFiltered[asset] = assets[asset];
 		}
+		var { baseAsset } = store.getState().exchange;
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
-			payload: { assets, networkId, exchangeAddress }
+			payload: { assets, networkId, exchangeAddress, assetsFiltered }
 		});
 	};
 };
@@ -232,6 +258,7 @@ export const fetchMarket = (market, assets, socket) => {
 					trades = await processTrades(res.market.trades);
 					ticks = await getChartData(market);
 					var marketPrices = {};
+					var assetsFiltered = {};
 					for (let asset in assets) {
 						marketPrices[asset] = {};
 						marketPrices[asset].currentPrice = roundFixed(
@@ -242,7 +269,10 @@ export const fetchMarket = (market, assets, socket) => {
 						);
 						assets[asset].availableBalance = 0;
 						assets[asset].reserveBalance = 0;
+						assetsFiltered[asset] = assets[asset];
 					}
+					var { baseAsset } = store.getState().exchange;
+					assetsFiltered[baseAsset.symbol] = baseAsset;
 					dispatch({
 						type: EXCHANGE_MARKET_LOADED,
 						payload: {
@@ -255,7 +285,8 @@ export const fetchMarket = (market, assets, socket) => {
 							trades,
 							ticks,
 							networkId,
-							exchangeAddress
+							exchangeAddress,
+							assetsFiltered
 						}
 					});
 			}
@@ -383,17 +414,27 @@ export const filterAssets = (e, assets) => {
 	return async dispatch => {
 		let search = e.target.value;
 		let regex = new RegExp(search, "gmi");
-		let filteredAssets = {};
+		var { baseAsset } = store.getState().exchange;
 
+		var assetsWithBaseAssetIncluded = {};
 		for (let asset in assets) {
-			if (regex.test(assets[asset].symbol) || regex.test(assets[asset].name)) {
-				filteredAssets[asset] = assets[asset];
+			assetsWithBaseAssetIncluded[asset] = assets[asset];
+		}
+		assetsWithBaseAssetIncluded[baseAsset.symbol] = baseAsset;
+
+		let assetsFiltered = {};
+		for (let asset in assetsWithBaseAssetIncluded) {
+			if (
+				regex.test(assetsWithBaseAssetIncluded[asset].symbol) ||
+				regex.test(assetsWithBaseAssetIncluded[asset].name)
+			) {
+				assetsFiltered[asset] = assetsWithBaseAssetIncluded[asset];
 			}
 		}
 
 		dispatch({
 			type: EXCHANGE_FILTER_ASSETS,
-			payload: { filteredAssets, search }
+			payload: { assetsFiltered, search }
 		});
 	};
 };

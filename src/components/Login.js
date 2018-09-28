@@ -77,33 +77,38 @@ class LogIn extends Component {
 		}
 	};
 
-	renderLoggedIn = () => {
-		if (this.props.exchange.user) {
+	renderCard = () => {
+		var { user } = this.props.exchange;
+
+		if (user) {
 			return (
-				<div className="unavailable solid">
-					<div>
-						<h2>Welcome.</h2>
-						<p>You are now logged in.</p>
-						<div className="choices">
-							<span
-								onClick={() => this.props.logout(this.props.exchange.interval)}
-							>
-								Log out
-							</span>
+				<div className="card">
+					<div className="account-info">
+						<div>
+							<div className="head">
+								<p className="title">Welcome.</p>
+								<p>You have now logged in.</p>
+								<div className="choices">
+									<span
+										onClick={() =>
+											this.props.logout(this.props.exchange.interval)
+										}
+									>
+										Log out
+									</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			);
 		}
-	};
 
-	renderCard = () => {
 		return (
 			<div className="card">
 				{this.renderWrongNetwork()}
 				{this.renderInstallMetamask()}
 				{this.renderUnlockMetamask()}
-				{this.renderLoggedIn()}
 				<div className="head">
 					<p className="title">Log in to a wallet</p>
 				</div>
@@ -150,7 +155,6 @@ const mapStateToProps = ({ exchange }) => {
 
 const mapDispatchToProps = {
 	login,
-	logout,
 	logout
 };
 

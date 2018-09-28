@@ -15,7 +15,7 @@ import { ema } from "react-stockcharts/lib/indicator";
 import { fitWidth } from "react-stockcharts/lib/helper";
 import { last } from "react-stockcharts/lib/utils";
 
-const dateFormat = timeFormat("%Y-%m-%d %H:00:00");
+const dateFormat = timeFormat("%Y-%m-%d %H:%M:%S");
 const numberFormat = format(".8f");
 const candlesAppearance = {
 	wickStroke: function fill(d) {
