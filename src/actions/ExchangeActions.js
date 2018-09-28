@@ -174,7 +174,9 @@ export const goBack = interval => {
 
 export const fetchAccount = () => {
 	return async dispatch => {
-		var { networkId, exchangeAddress } = store.getState().exchange;
+		var state = store.getState().exchange;
+		var networkId = state.networkId;
+		var exchangeAddress = state.exchangeAddress;
 		if (!networkId || !exchangeAddress) {
 			var constants = (await axios.get(
 				process.env.ADDRESSES ||
@@ -191,6 +193,13 @@ export const fetchAccount = () => {
 			assetsFiltered[asset] = assets[asset];
 		}
 		var { baseAsset } = store.getState().exchange;
+		assetsFiltered[baseAsset.symbol] = baseAsset;
+
+		if (!state.accountLoading) {
+			assets = state.assets;
+			assetsFiltered = state.assetsFiltered;
+		}
+
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
 			payload: { assets, networkId, exchangeAddress, assetsFiltered }
@@ -207,6 +216,8 @@ export const fetchMarket = (market, assets, socket) => {
 		}
 
 		socket.removeAllListeners();
+
+		var state = store.getState().exchange;
 
 		socket.on(market, async res => {
 			let buyBook, sellBook, trades, ticks;
@@ -273,6 +284,12 @@ export const fetchMarket = (market, assets, socket) => {
 					}
 					var { baseAsset } = store.getState().exchange;
 					assetsFiltered[baseAsset.symbol] = baseAsset;
+
+					if (!state.accountLoading) {
+						assets = state.assets;
+						assetsFiltered = state.assetsFiltered;
+					}
+
 					dispatch({
 						type: EXCHANGE_MARKET_LOADED,
 						payload: {
