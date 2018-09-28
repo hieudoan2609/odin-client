@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { login, goBack } from "../actions";
+import { login, logout, goBack } from "../actions";
 
 class LogIn extends Component {
 	renderInstallMetamask = () => {
@@ -55,7 +55,7 @@ class LogIn extends Component {
 						<p>You are now logged in.</p>
 						<div className="choices">
 							<span
-								onClick={() => this.props.goBack(this.props.exchange.interval)}
+								onClick={() => this.props.logout(this.props.exchange.interval)}
 							>
 								Log out
 							</span>
@@ -118,6 +118,7 @@ const mapStateToProps = ({ exchange }) => {
 
 const mapDispatchToProps = {
 	login,
+	logout,
 	goBack
 };
 

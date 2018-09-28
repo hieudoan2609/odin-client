@@ -13,7 +13,8 @@ import {
 	EXCHANGE_UNLOCK_METAMASK,
 	EXCHANGE_GO_BACK,
 	EXCHANGE_LOGIN,
-	EXCHANGE_SET_INTERVAL
+	EXCHANGE_SET_INTERVAL,
+	EXCHANGE_LOGOUT
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -51,6 +52,16 @@ export const login = user => {
 				});
 			}
 		}
+	};
+};
+
+export const logout = interval => {
+	return async dispatch => {
+		clearInterval(interval);
+
+		dispatch({
+			type: EXCHANGE_LOGOUT
+		});
 	};
 };
 

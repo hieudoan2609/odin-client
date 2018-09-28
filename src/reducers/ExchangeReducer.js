@@ -12,7 +12,8 @@ import {
 	EXCHANGE_INSTALL_METAMASK,
 	EXCHANGE_UNLOCK_METAMASK,
 	EXCHANGE_GO_BACK,
-	EXCHANGE_SET_INTERVAL
+	EXCHANGE_SET_INTERVAL,
+	EXCHANGE_LOGOUT
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -43,6 +44,14 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_LOGOUT:
+			return {
+				...state,
+				user: "",
+				unlockMetamask: false,
+				installMetamask: false,
+				interval: 0
+			};
 		case EXCHANGE_SET_INTERVAL:
 			return {
 				...state,
