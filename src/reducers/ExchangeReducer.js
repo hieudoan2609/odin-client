@@ -13,7 +13,9 @@ import {
 	EXCHANGE_UNLOCK_METAMASK,
 	EXCHANGE_GO_BACK,
 	EXCHANGE_SET_INTERVAL,
-	EXCHANGE_LOGOUT
+	EXCHANGE_LOGOUT,
+	EXCHANGE_WRONG_NETWORK,
+	EXCHANGE_CORRECT_NETWORK
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -39,6 +41,8 @@ const INITIAL_STATE = {
 	user: "",
 	unlockMetamask: false,
 	installMetamask: false,
+	wrongNetwork: false,
+	networkId: 0,
 	interval: 0,
 	orders: [],
 	myOrders: []
@@ -46,12 +50,23 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_CORRECT_NETWORK:
+			return {
+				...state,
+				wrongNetwork: false
+			};
+		case EXCHANGE_WRONG_NETWORK:
+			return {
+				...state,
+				wrongNetwork: true
+			};
 		case EXCHANGE_LOGOUT:
 			return {
 				...state,
 				user: "",
 				unlockMetamask: false,
 				installMetamask: false,
+				wrongNetwork: false,
 				interval: 0
 			};
 		case EXCHANGE_SET_INTERVAL:
@@ -63,7 +78,8 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				unlockMetamask: false,
-				installMetamask: false
+				installMetamask: false,
+				wrongNetwork: false
 			};
 		case EXCHANGE_INSTALL_METAMASK:
 			return {
@@ -108,15 +124,17 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				user: action.payload,
 				unlockMetamask: false,
-				installMetamask: false
+				installMetamask: false,
+				wrongNetwork: false
 			};
 		case EXCHANGE_ACCOUNT_LOADED:
 			return {
 				...state,
 				accountLoading: false,
 				reloading: false,
-				assets: action.payload,
-				assetsFiltered: action.payload
+				assets: action.payload.assets,
+				assetsFiltered: action.payload.assets,
+				networkId: action.payload.networkId
 			};
 		case EXCHANGE_MARKET_LOADED:
 			return {
@@ -131,7 +149,8 @@ export default (state = INITIAL_STATE, action) => {
 				trades: action.payload.trades,
 				ticks: action.payload.ticks,
 				currentMarket: action.payload.market,
-				marketPrices: action.payload.marketPrices
+				marketPrices: action.payload.marketPrices,
+				networkId: action.payload.networkId
 			};
 		default:
 			return state;

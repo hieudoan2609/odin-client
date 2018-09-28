@@ -3,6 +3,37 @@ import { connect } from "react-redux";
 import { login, logout, goBack } from "../actions";
 
 class LogIn extends Component {
+	renderWrongNetwork = () => {
+		if (this.props.exchange.wrongNetwork) {
+			var { networkId } = this.props.exchange;
+
+			var networkName;
+			switch (networkId) {
+				case 4:
+					networkName = "Rinkeby";
+					break;
+				default:
+					networkName = "Mainnet";
+			}
+
+			return (
+				<div className="unavailable solid">
+					<div>
+						<h2>Wrong network.</h2>
+						<p>Please change your network setting to {networkName}.</p>
+						<div className="choices">
+							<span
+								onClick={() => this.props.goBack(this.props.exchange.interval)}
+							>
+								Go back
+							</span>
+						</div>
+					</div>
+				</div>
+			);
+		}
+	};
+
 	renderInstallMetamask = () => {
 		if (this.props.exchange.installMetamask) {
 			return (
@@ -69,6 +100,7 @@ class LogIn extends Component {
 	renderCard = () => {
 		return (
 			<div className="card">
+				{this.renderWrongNetwork()}
 				{this.renderInstallMetamask()}
 				{this.renderUnlockMetamask()}
 				{this.renderLoggedIn()}

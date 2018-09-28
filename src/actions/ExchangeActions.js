@@ -14,7 +14,9 @@ import {
 	EXCHANGE_GO_BACK,
 	EXCHANGE_LOGIN,
 	EXCHANGE_SET_INTERVAL,
-	EXCHANGE_LOGOUT
+	EXCHANGE_LOGOUT,
+	EXCHANGE_WRONG_NETWORK,
+	EXCHANGE_CORRECT_NETWORK
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -37,12 +39,21 @@ export const login = user => {
 				type: EXCHANGE_INSTALL_METAMASK
 			});
 		} else {
+			var { networkId } = store.getState().exchange;
+			var currentNetworkId = await web3.eth.net.getId();
 			var accounts = await web3.eth.getAccounts();
+
 			if (accounts.length === 0) {
 				// metamask installed but locked
 				listenForMetamask(dispatch);
 				dispatch({
 					type: EXCHANGE_UNLOCK_METAMASK
+				});
+			} else if (networkId !== currentNetworkId) {
+				// metamask installed but on the wrong network
+				listenForMetamask(dispatch);
+				dispatch({
+					type: EXCHANGE_WRONG_NETWORK
 				});
 			} else {
 				// metamask is installed and unlocked
@@ -59,20 +70,18 @@ const fetchAccountWithUser = async (dispatch, user) => {
 		type: EXCHANGE_RELOAD
 	});
 
-	var exchangeAddress = (await axios.get(
-		process.env.ADDRESSES ||
-			"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
-	)).data.ExchangePure;
-	var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
-	var nullAddress = "0x0000000000000000000000000000000000000000";
+	// var exchangeAddress = (await axios.get(
+	// 	process.env.ADDRESSES ||
+	// 		"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
+	// )).data.ExchangePure;
+	// var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
+	// var nullAddress = "0x0000000000000000000000000000000000000000";
 
 	// var balance = await exchange.methods
 	// 	.getMarketInfo("0x76a86b8172886DE0810E61A75aa55EE74a26e76f")
 	// 	.call();
 
-	var network = await web3.eth.net.getId();
-
-	console.log(network);
+	// console.log(balance);
 
 	// var assets = (await axios.get("/assets.json")).data;
 	// for (let asset in assets) {
@@ -98,18 +107,23 @@ export const logout = interval => {
 
 export const listenForMetamask = dispatch => {
 	var interval = setInterval(async function() {
-		var { user, reloading } = store.getState().exchange;
+		var { user, reloading, networkId } = store.getState().exchange;
+		var currentNetworkId = await web3.eth.net.getId();
 		var accounts = await web3.eth.getAccounts();
 
-		if (accounts.length > 0) {
+		if (accounts.length === 0) {
+			dispatch({
+				type: EXCHANGE_UNLOCK_METAMASK
+			});
+		} else if (networkId !== currentNetworkId) {
+			dispatch({
+				type: EXCHANGE_WRONG_NETWORK
+			});
+		} else {
 			if (!user & !reloading) {
 				user = accounts[0];
 				fetchAccountWithUser(dispatch, user);
 			}
-		} else {
-			dispatch({
-				type: EXCHANGE_UNLOCK_METAMASK
-			});
 		}
 	}, 3000);
 
@@ -129,6 +143,13 @@ export const goBack = interval => {
 
 export const fetchAccount = () => {
 	return async dispatch => {
+		var { networkId } = store.getState().exchange;
+		if (!networkId) {
+			networkId = (await axios.get(
+				process.env.ADDRESSES ||
+					"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
+			)).data.networkId;
+		}
 		var assets = (await axios.get("/assets.json")).data;
 		for (let asset in assets) {
 			assets[asset].availableBalance = 0;
@@ -136,7 +157,7 @@ export const fetchAccount = () => {
 		}
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
-			payload: assets
+			payload: { assets, networkId }
 		});
 	};
 };
@@ -187,6 +208,13 @@ export const fetchMarket = (market, assets, socket) => {
 					console.log(`new tick for ${market}`, res);
 					break;
 				default:
+					var { networkId } = store.getState().exchange;
+					if (!networkId) {
+						networkId = (await axios.get(
+							process.env.ADDRESSES ||
+								"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
+						)).data.networkId;
+					}
 					buyBook = await processBuyBook(res.market.buyOrders);
 					sellBook = await processSellBook(res.market.sellOrders);
 					trades = await processTrades(res.market.trades);
@@ -213,7 +241,8 @@ export const fetchMarket = (market, assets, socket) => {
 							sellBook,
 							buyBook,
 							trades,
-							ticks
+							ticks,
+							networkId
 						}
 					});
 			}
