@@ -44,9 +44,9 @@ const INITIAL_STATE = {
 	networkId: 0,
 	exchangeAddress: "",
 	exchangeInstance: {},
+	web3: {},
 	metamaskInterval: 0,
 	fetchBalanceInterval: 0,
-	orders: [],
 	myOrders: [],
 	baseAsset: {
 		symbol: "ETH",
@@ -119,9 +119,17 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_LOAD_TICKS:
 			return { ...state, ticks: action.payload };
 		case EXCHANGE_LOAD_BUYBOOK:
-			return { ...state, buyBook: action.payload };
+			return {
+				...state,
+				buyBook: action.payload.buyBook,
+				myOrders: action.payload.myOrders
+			};
 		case EXCHANGE_LOAD_SELLBOOK:
-			return { ...state, sellBook: action.payload };
+			return {
+				...state,
+				sellBook: action.payload.sellBook,
+				myOrders: action.payload.myOrders
+			};
 		case EXCHANGE_LOAD_TRADES:
 			return {
 				...state,
@@ -145,7 +153,8 @@ export default (state = INITIAL_STATE, action) => {
 				assets: action.payload.assets,
 				assetsFiltered: action.payload.assetsFiltered,
 				networkId: action.payload.networkId,
-				exchangeAddress: action.payload.exchangeAddress
+				exchangeAddress: action.payload.exchangeAddress,
+				web3: action.payload.web3
 			};
 		case EXCHANGE_MARKET_LOADED:
 			return {
@@ -162,7 +171,9 @@ export default (state = INITIAL_STATE, action) => {
 				currentMarket: action.payload.market,
 				marketPrices: action.payload.marketPrices,
 				networkId: action.payload.networkId,
-				exchangeAddress: action.payload.exchangeAddress
+				exchangeAddress: action.payload.exchangeAddress,
+				myOrders: action.payload.myOrders,
+				web3: action.payload.web3
 			};
 		default:
 			return state;

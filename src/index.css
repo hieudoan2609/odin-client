@@ -299,8 +299,14 @@ strong {
   .icon.buy {
     background: linear-gradient(to right, #27d68a, #58d39e); }
 
-.MyOrders .card {
-  height: 215px; }
+.MyOrders {
+  position: relative; }
+  .MyOrders .card {
+    min-height: 236px; }
+    .MyOrders .card .body {
+      position: relative; }
+      .MyOrders .card .body .table-responsive {
+        height: 170px; }
 
 .SellOrders,
 .BuyOrders,

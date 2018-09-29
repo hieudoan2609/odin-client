@@ -90,6 +90,7 @@ class TradeHistory extends Component {
 		return (
 			<div className="TradeHistory">
 				{this.renderNoTrades()}
+
 				<div className="card px-4 py-4">
 					<div className="head">
 						<div className="title">24h Trade History</div>

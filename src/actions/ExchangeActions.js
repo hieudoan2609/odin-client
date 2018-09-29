@@ -143,7 +143,14 @@ const fetchBalance = (
 
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
-			payload: { assets, networkId, exchangeAddress, assetsFiltered, baseAsset }
+			payload: {
+				assets,
+				networkId,
+				exchangeAddress,
+				assetsFiltered,
+				baseAsset,
+				web3
+			}
 		});
 
 		resolve();
@@ -273,17 +280,45 @@ export const fetchMarket = (market, assets, socket) => {
 					break;
 				case "buyOrders":
 					buyBook = await processBuyBook(res.market);
+
+					var { myOrders, user } = store.getState().exchange;
+					var sellOrders = myOrders.filter(order => order.sell);
+					var orders = res.market;
+					myOrders = orders.filter(order => order.user === user);
+					myOrders = myOrders.concat(sellOrders);
+					myOrders.sort((a, b) => {
+						return parseFloat(b.price) - parseFloat(a.price);
+					});
+
+					if (!user) {
+						myOrders = [];
+					}
+
 					dispatch({
 						type: EXCHANGE_LOAD_BUYBOOK,
-						payload: buyBook
+						payload: { buyBook, myOrders }
 					});
 					console.log("new buy orders", res);
 					break;
 				case "sellOrders":
 					sellBook = await processSellBook(res.market);
+
+					var { myOrders, user } = store.getState().exchange;
+					var buyOrders = myOrders.filter(order => !order.sell);
+					var orders = res.market;
+					myOrders = orders.filter(order => order.user === user);
+					myOrders = myOrders.concat(buyOrders);
+					myOrders.sort((a, b) => {
+						return parseFloat(b.price) - parseFloat(a.price);
+					});
+
+					if (!user) {
+						myOrders = [];
+					}
+
 					dispatch({
 						type: EXCHANGE_LOAD_SELLBOOK,
-						payload: sellBook
+						payload: { sellBook, myOrders }
 					});
 					console.log("new sell orders", res);
 					break;
@@ -296,7 +331,8 @@ export const fetchMarket = (market, assets, socket) => {
 					console.log(`new tick for ${market}`, res);
 					break;
 				default:
-					var { networkId, exchangeAddress } = store.getState().exchange;
+					var { networkId, exchangeAddress, user } = store.getState().exchange;
+
 					if (!networkId || !exchangeAddress) {
 						var constants = (await axios.get(
 							process.env.ADDRESSES ||
@@ -305,11 +341,13 @@ export const fetchMarket = (market, assets, socket) => {
 						networkId = constants.networkId;
 						exchangeAddress = constants.exchangeAddress;
 					}
+
 					buyBook = await processBuyBook(res.market.buyOrders);
 					sellBook = await processSellBook(res.market.sellOrders);
 					trades = await processTrades(res.market.trades);
 					ticks = await getChartData(market);
 					var marketPrices = {};
+
 					var assetsFiltered = {};
 					for (let asset in assets) {
 						marketPrices[asset] = {};
@@ -331,6 +369,16 @@ export const fetchMarket = (market, assets, socket) => {
 						assetsFiltered = state.assetsFiltered;
 					}
 
+					var orders = res.market.buyOrders.concat(res.market.sellOrders);
+					var myOrders = orders.filter(order => order.user === user);
+					myOrders.sort((a, b) => {
+						return parseFloat(b.price) - parseFloat(a.price);
+					});
+
+					if (!user) {
+						myOrders = [];
+					}
+
 					dispatch({
 						type: EXCHANGE_MARKET_LOADED,
 						payload: {
@@ -344,7 +392,9 @@ export const fetchMarket = (market, assets, socket) => {
 							ticks,
 							networkId,
 							exchangeAddress,
-							assetsFiltered
+							assetsFiltered,
+							myOrders,
+							web3
 						}
 					});
 			}

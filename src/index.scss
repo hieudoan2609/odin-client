@@ -413,8 +413,15 @@ strong {
 }
 
 .MyOrders {
+	position: relative;
 	.card {
-		height: 215px;
+		min-height: 236px;
+		.body {
+			position: relative;
+			.table-responsive {
+				height: 170px;
+			}
+		}
 	}
 }
 

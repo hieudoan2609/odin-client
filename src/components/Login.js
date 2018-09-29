@@ -74,7 +74,7 @@ class LogIn extends Component {
 					<div className="account-info">
 						<div>
 							<div className="head">
-								<p className="title">Welcome.</p>
+								<p className="title">Welcome back.</p>
 								<p>You have now logged in.</p>
 								<div className="choices">
 									<span onClick={() => this.props.logout()}>Log out</span>
