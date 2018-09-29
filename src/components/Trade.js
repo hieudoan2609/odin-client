@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-import { round } from "../helpers";
+import { roundFixed } from "../helpers";
 import Flash from "../components/Flash";
 import M from "materialize-css/dist/js/materialize.min.js";
 
@@ -11,7 +11,8 @@ class Trade extends Component {
 		amount: 0,
 		fee: 0,
 		total: 0,
-		error: ""
+		error: "",
+		pending: false
 	};
 
 	componentDidMount = () => {
@@ -69,7 +70,8 @@ class Trade extends Component {
 					<div className="title">
 						Balance
 						<span>
-							{round(assets[currentMarket].availableBalance)} {currentMarket}
+							{roundFixed(assets[currentMarket].availableBalance)}{" "}
+							{currentMarket}
 						</span>
 					</div>
 				</div>
@@ -80,7 +82,7 @@ class Trade extends Component {
 					<div className="title">
 						Balance
 						<span>
-							{round(baseAsset.availableBalance)} {baseAsset.symbol}
+							{roundFixed(baseAsset.availableBalance)} {baseAsset.symbol}
 						</span>
 					</div>
 				</div>
@@ -95,20 +97,31 @@ class Trade extends Component {
 			return (
 				<p>
 					Fee ({fee}
-					%): {round(this.state.fee)} {baseAsset.symbol}
+					%): {roundFixed(this.state.fee)} {baseAsset.symbol}
 				</p>
 			);
 		} else {
 			return (
 				<p>
 					Fee ({fee}
-					%): {round(this.state.fee)} {currentMarket}
+					%): {roundFixed(this.state.fee)} {currentMarket}
 				</p>
 			);
 		}
 	};
 
 	renderSubmitButton = () => {
+		if (this.state.pending) {
+			return (
+				<div className="buttons">
+					<div className="button2 pending">
+						<div>
+							<span>Please wait...</span>
+						</div>
+					</div>
+				</div>
+			);
+		}
 		if (this.state.type === "sell") {
 			return (
 				<div className="buttons" onClick={this.handleSubmit}>
@@ -138,7 +151,7 @@ class Trade extends Component {
 			baseAsset
 		} = this.props.exchange;
 
-		var { price, amount, total } = this.state;
+		var { price, amount } = this.state;
 		price = web3.utils.toWei(price.toString());
 		amount = web3.utils.toWei(amount.toString());
 		var marketAddress = assets[currentMarket].address;
@@ -153,15 +166,6 @@ class Trade extends Component {
 			this.setState({ error: "Amount can't be empty." });
 			return;
 		}
-
-		console.log(
-			currentMarket,
-			assets[currentMarket],
-			baseAsset,
-			parseFloat(assets[currentMarket].availableBalance),
-			parseFloat(baseAsset.availableBalance),
-			parseFloat(web3.utils.fromWei(amount.toString()))
-		);
 
 		if (
 			sell &&
@@ -183,14 +187,25 @@ class Trade extends Component {
 			return;
 		}
 
-		// var res = await exchangeInstance.methods
-		// 	.createOrder(marketAddress, amount, price, sell)
-		// 	.send({ from: user });
-		// console.log(res);
+		var err;
+		try {
+			this.setState({ pending: true, error: "" });
+			await exchangeInstance.methods
+				.createOrder(marketAddress, amount, price, sell)
+				.send({ from: user });
+		} catch (error) {
+			this.setState({ pending: false });
+			err = error;
+		}
 
-		this.setState({ error: "" });
-		var $ = window.$;
-		$("#flash").modal("open");
+		if (!err) {
+			this.setState({ pending: false, amount: 0, price: 0, total: 0, fee: 0 });
+			this.refs.amount.value = 0;
+			this.refs.price.value = 0;
+
+			var $ = window.$;
+			$("#flash").modal("open");
+		}
 	};
 
 	renderTotal = () => {
@@ -199,28 +214,26 @@ class Trade extends Component {
 		if (this.state.type === "sell") {
 			return (
 				<p>
-					Total: {round(this.state.total)} {baseAsset.symbol}
+					Total: {roundFixed(this.state.total)} {baseAsset.symbol}
 				</p>
 			);
 		} else {
 			return (
 				<p>
-					Total: {round(this.state.total)} {currentMarket}
+					Total: {roundFixed(this.state.total)} {currentMarket}
 				</p>
 			);
 		}
 	};
 
 	render() {
-		var { baseAsset } = this.props.exchange;
-
 		return (
 			<div className="Trade card">
 				{this.renderOverlay()}
 
 				<Flash
 					title="ORDER SUBMITTED."
-					content="Your order will be processed shortly by the network."
+					content="Your order has been successfully submitted."
 				/>
 
 				<div className="order__types">
@@ -247,6 +260,7 @@ class Trade extends Component {
 						<div className="input-field">
 							<input
 								id="amount"
+								ref="amount"
 								type="number"
 								autoComplete="off"
 								onChange={this.handleAmountInput}
@@ -256,6 +270,7 @@ class Trade extends Component {
 						<div className="input-field">
 							<input
 								id="price"
+								ref="price"
 								type="number"
 								autoComplete="off"
 								onChange={this.handlePriceInput}

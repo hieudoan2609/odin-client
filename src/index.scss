@@ -347,6 +347,16 @@ strong {
 	overflow: hidden;
 	padding: 2px;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&.pending {
+		cursor: not-allowed;
+		span {
+			animation: blink-animation 1500ms infinite;
+		}
+	}
 
 	&:hover {
 		background: transparent;

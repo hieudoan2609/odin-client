@@ -257,7 +257,14 @@ strong {
   position: relative;
   overflow: hidden;
   padding: 2px;
-  cursor: pointer; }
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .button2.pending {
+    cursor: not-allowed; }
+    .button2.pending span {
+      animation: blink-animation 1500ms infinite; }
   .button2:hover {
     background: transparent; }
     .button2:hover > div {
