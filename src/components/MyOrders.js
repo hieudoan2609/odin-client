@@ -6,7 +6,7 @@ import M from "materialize-css/dist/js/materialize.min.js";
 
 class MyOrders extends Component {
 	state = {
-		pending: false
+		pending: {}
 	};
 
 	componentDidMount = () => {
@@ -23,18 +23,22 @@ class MyOrders extends Component {
 		} = this.props.exchange;
 
 		var err;
+		var state = this.state;
 		try {
-			this.setState({ pending: order.id });
+			state.pending[order.id] = true;
+			this.setState(state);
 			await exchangeInstance.methods
 				.cancelOrder(assets[currentMarket].address, order.id)
 				.send({ from: user });
 		} catch (error) {
-			this.setState({ pending: false });
+			state.pending[order.id] = false;
+			this.setState(state);
 			err = error;
 		}
 
 		if (!err) {
-			this.setState({ pending: false });
+			state.pending[order.id] = false;
+			this.setState(state);
 			var $ = window.$;
 			$("#orderCancelled").modal("open");
 		}
@@ -81,11 +85,11 @@ class MyOrders extends Component {
 					<td>
 						<span
 							className={
-								this.state.pending === order.id ? "action pending" : "action"
+								this.state.pending[order.id] ? "action pending" : "action"
 							}
 							onClick={() => this.cancelOrder(order)}
 						>
-							{this.state.pending === order.id ? "Please wait..." : "Cancel"}
+							{this.state.pending[order.id] ? "Please wait..." : "Cancel"}
 						</span>
 					</td>
 				</tr>
