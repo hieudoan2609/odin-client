@@ -512,6 +512,11 @@ strong {
 	&:hover {
 		color: $orange;
 	}
+	&.pending {
+		animation: blink-animation 1500ms infinite;
+		color: $orange;
+		cursor: not-allowed;
+	}
 }
 
 .card {

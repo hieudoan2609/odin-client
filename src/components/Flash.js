@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Modal extends Component {
 	render() {
 		return (
-			<div id="flash" className="modal">
+			<div id={this.props.id} className="modal">
 				<div className="modal-content">
 					<h4>{this.props.title}</h4>
 					<p>{this.props.content}</p>

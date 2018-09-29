@@ -369,6 +369,10 @@ strong {
   cursor: pointer; }
   .action:hover {
     color: #ed8a45; }
+  .action.pending {
+    animation: blink-animation 1500ms infinite;
+    color: #ed8a45;
+    cursor: not-allowed; }
 
 .card {
   overflow: hidden; }

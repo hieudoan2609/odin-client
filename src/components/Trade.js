@@ -204,7 +204,7 @@ class Trade extends Component {
 			this.refs.price.value = 0;
 
 			var $ = window.$;
-			$("#flash").modal("open");
+			$("#orderSubmitted").modal("open");
 		}
 	};
 
@@ -232,8 +232,9 @@ class Trade extends Component {
 				{this.renderOverlay()}
 
 				<Flash
+					id="orderSubmitted"
 					title="ORDER SUBMITTED."
-					content="Your order has been successfully submitted."
+					content="Your order has been successfully submitted, it will appear shortly."
 				/>
 
 				<div className="order__types">

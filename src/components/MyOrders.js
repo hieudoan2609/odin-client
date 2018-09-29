@@ -5,6 +5,10 @@ import Flash from "../components/Flash";
 import M from "materialize-css/dist/js/materialize.min.js";
 
 class MyOrders extends Component {
+	state = {
+		pending: false
+	};
+
 	componentDidMount = () => {
 		M.AutoInit();
 	};
@@ -18,14 +22,22 @@ class MyOrders extends Component {
 			web3
 		} = this.props.exchange;
 
-		// var currentNonce = await web3.eth.getTransactionCount(user);
-		var res = await exchangeInstance.methods
-			.cancelOrder(assets[currentMarket].address, order.id)
-			.send({ from: user });
+		var err;
+		try {
+			this.setState({ pending: order.id });
+			await exchangeInstance.methods
+				.cancelOrder(assets[currentMarket].address, order.id)
+				.send({ from: user });
+		} catch (error) {
+			this.setState({ pending: false });
+			err = error;
+		}
 
-		console.log(res);
-		// var $ = window.$;
-		// $("#flash").modal("open");
+		if (!err) {
+			this.setState({ pending: false });
+			var $ = window.$;
+			$("#orderCancelled").modal("open");
+		}
 	};
 
 	renderOverlay = () => {
@@ -67,8 +79,13 @@ class MyOrders extends Component {
 						)}
 					</td>
 					<td>
-						<span className="action" onClick={() => this.cancelOrder(order)}>
-							Cancel
+						<span
+							className={
+								this.state.pending === order.id ? "action pending" : "action"
+							}
+							onClick={() => this.cancelOrder(order)}
+						>
+							{this.state.pending === order.id ? "Please wait..." : "Cancel"}
 						</span>
 					</td>
 				</tr>
@@ -110,8 +127,9 @@ class MyOrders extends Component {
 					{this.renderNoOrders()}
 
 					<Flash
-						title="CANCEL REQUEST SUBMITTED."
-						content="Your request will be processed shortly by the network."
+						id="orderCancelled"
+						title="ORDER CANCELLED."
+						content="Your order has been cancelled, it will disappear shortly."
 					/>
 
 					<div className="head">
