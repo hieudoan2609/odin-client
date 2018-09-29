@@ -57,17 +57,20 @@ export const login = user => {
 			} else {
 				// metamask is installed and unlocked
 				var user = accounts[0];
+				var reload = true;
 				listenForMetamask(dispatch);
-				fetchAccountWithUser(dispatch, user);
+				fetchAccountWithUser(dispatch, user, reload);
 			}
 		}
 	};
 };
 
-const fetchAccountWithUser = async (dispatch, user) => {
-	dispatch({
-		type: EXCHANGE_RELOAD
-	});
+const fetchAccountWithUser = async (dispatch, user, reload) => {
+	if (reload) {
+		dispatch({
+			type: EXCHANGE_RELOAD
+		});
+	}
 
 	var {
 		exchangeAddress,
@@ -153,7 +156,8 @@ export const listenForMetamask = dispatch => {
 		} else {
 			if (!user & !reloading) {
 				user = accounts[0];
-				fetchAccountWithUser(dispatch, user);
+				var reload = true;
+				fetchAccountWithUser(dispatch, user, reload);
 			}
 		}
 	}, 3000);

@@ -106,9 +106,9 @@ class LogIn extends Component {
 
 		return (
 			<div className="card">
-				{this.renderWrongNetwork()}
 				{this.renderInstallMetamask()}
 				{this.renderUnlockMetamask()}
+				{this.renderWrongNetwork()}
 				<div className="head">
 					<p className="title">Log in to a wallet</p>
 				</div>
