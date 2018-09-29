@@ -9,12 +9,16 @@ import Login from "../components/Login";
 import { fetchAccount } from "../actions";
 
 class Account extends Component {
-	componentWillMount = () => {
-		this.props.fetchAccount();
+	componentWillReceiveProps = () => {
+		M.AutoInit();
 	};
 
 	componentDidMount = () => {
 		M.AutoInit();
+	};
+
+	componentWillMount = () => {
+		this.props.fetchAccount();
 	};
 
 	renderAssets = () => {

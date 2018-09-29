@@ -1,16 +1,56 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
+import { round } from "../helpers";
+import Flash from "../components/Flash";
+import M from "materialize-css/dist/js/materialize.min.js";
 
 class Trade extends Component {
 	state = {
-		type: "buy"
+		type: "sell",
+		price: 0,
+		amount: 0,
+		fee: 0,
+		total: 0,
+		error: ""
+	};
+
+	componentDidMount = () => {
+		M.AutoInit();
+	};
+
+	handlePriceInput = async e => {
+		var price = parseFloat(e.target.value);
+		await this.setState({ price });
+		this.calculateFeeAndTotal();
+	};
+
+	handleAmountInput = async e => {
+		var amount = parseFloat(e.target.value);
+		await this.setState({ amount });
+		this.calculateFeeAndTotal();
+	};
+
+	calculateFeeAndTotal = async (price, amount) => {
+		var feeRate = this.props.exchange.fee;
+
+		var total, fee;
+		if (this.state.price && this.state.amount) {
+			total = this.state.price * this.state.amount;
+			fee = (total / 100) * feeRate;
+			total = total - fee;
+			await this.setState({ total, fee });
+		} else {
+			total = 0;
+			fee = 0;
+			await this.setState({ total, fee });
+		}
 	};
 
 	switchOrderType = type => {
 		this.setState({ type });
 	};
 
-	renderOverlay() {
+	renderOverlay = () => {
 		if (!this.props.exchange.user) {
 			return (
 				<div className="unavailable">
@@ -18,56 +58,217 @@ class Trade extends Component {
 				</div>
 			);
 		}
-	}
+	};
+
+	renderBalance = () => {
+		var { baseAsset, currentMarket, assets } = this.props.exchange;
+
+		if (this.state.type === "sell") {
+			return (
+				<div className="mini card balance">
+					<div className="title">
+						Balance
+						<span>
+							{round(assets[currentMarket].availableBalance)} {currentMarket}
+						</span>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div className="mini card balance">
+					<div className="title">
+						Balance
+						<span>
+							{round(baseAsset.availableBalance)} {baseAsset.symbol}
+						</span>
+					</div>
+				</div>
+			);
+		}
+	};
+
+	renderFee = () => {
+		var { fee, baseAsset, currentMarket } = this.props.exchange;
+
+		if (this.state.type === "sell") {
+			return (
+				<p>
+					Fee ({fee}
+					%): {round(this.state.fee)} {baseAsset.symbol}
+				</p>
+			);
+		} else {
+			return (
+				<p>
+					Fee ({fee}
+					%): {round(this.state.fee)} {currentMarket}
+				</p>
+			);
+		}
+	};
+
+	renderSubmitButton = () => {
+		if (this.state.type === "sell") {
+			return (
+				<div className="buttons" onClick={this.handleSubmit}>
+					<div className="button2">
+						<div>Sell</div>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div className="buttons" onClick={this.handleSubmit}>
+					<div className="button2">
+						<div>Buy</div>
+					</div>
+				</div>
+			);
+		}
+	};
+
+	handleSubmit = async () => {
+		var {
+			user,
+			exchangeInstance,
+			currentMarket,
+			assets,
+			web3,
+			baseAsset
+		} = this.props.exchange;
+
+		var { price, amount, total } = this.state;
+		price = web3.utils.toWei(price.toString());
+		amount = web3.utils.toWei(amount.toString());
+		var marketAddress = assets[currentMarket].address;
+		var sell = this.state.type === "sell" ? true : false;
+
+		if (!this.state.price) {
+			this.setState({ error: "Price can't be empty." });
+			return;
+		}
+
+		if (!this.state.amount) {
+			this.setState({ error: "Amount can't be empty." });
+			return;
+		}
+
+		console.log(
+			currentMarket,
+			assets[currentMarket],
+			baseAsset,
+			parseFloat(assets[currentMarket].availableBalance),
+			parseFloat(baseAsset.availableBalance),
+			parseFloat(web3.utils.fromWei(amount.toString()))
+		);
+
+		if (
+			sell &&
+			parseFloat(assets[currentMarket].availableBalance) <
+				parseFloat(web3.utils.fromWei(amount.toString()))
+		) {
+			this.setState({
+				error: `Insufficient ${currentMarket} balance.`
+			});
+			return;
+		}
+
+		if (
+			!sell &&
+			parseFloat(baseAsset.availableBalance) <
+				parseFloat(web3.utils.fromWei(amount.toString()))
+		) {
+			this.setState({ error: `Insufficient ${baseAsset.symbol} balance.` });
+			return;
+		}
+
+		// var res = await exchangeInstance.methods
+		// 	.createOrder(marketAddress, amount, price, sell)
+		// 	.send({ from: user });
+		// console.log(res);
+
+		this.setState({ error: "" });
+		var $ = window.$;
+		$("#flash").modal("open");
+	};
+
+	renderTotal = () => {
+		var { baseAsset, currentMarket } = this.props.exchange;
+
+		if (this.state.type === "sell") {
+			return (
+				<p>
+					Total: {round(this.state.total)} {baseAsset.symbol}
+				</p>
+			);
+		} else {
+			return (
+				<p>
+					Total: {round(this.state.total)} {currentMarket}
+				</p>
+			);
+		}
+	};
 
 	render() {
-		const exchange = this.props.exchange;
+		var { baseAsset } = this.props.exchange;
 
 		return (
 			<div className="Trade card">
 				{this.renderOverlay()}
+
+				<Flash
+					title="ORDER SUBMITTED."
+					content="Your order will be processed shortly by the network."
+				/>
+
 				<div className="order__types">
 					<div
-						className={`button buy ${
-							this.state.orderType === "buy" ? "active" : ""
-						}`}
-						onClick={() => this.switchOrderType("buy")}
-					>
-						Buy
-					</div>
-					<div
 						className={`button sell ${
-							this.state.orderType === "sell" ? "active" : ""
+							this.state.type === "sell" ? "active" : ""
 						}`}
 						onClick={() => this.switchOrderType("sell")}
 					>
 						Sell
 					</div>
+					<div
+						className={`button buy ${
+							this.state.type === "buy" ? "active" : ""
+						}`}
+						onClick={() => this.switchOrderType("buy")}
+					>
+						Buy
+					</div>
 				</div>
 				<div className="order__body">
-					<div className="mini card balance">
-						<div className="title">
-							Balance
-							<span>0 {exchange.currentMarket}</span>
-						</div>
-					</div>
+					{this.renderBalance()}
 					<div className="fields">
 						<div className="input-field">
-							<input id="amount" type="text" autoComplete="off" />
+							<input
+								id="amount"
+								type="number"
+								autoComplete="off"
+								onChange={this.handleAmountInput}
+							/>
 							<label htmlFor="amount">Amount</label>
 						</div>
 						<div className="input-field">
-							<input id="price" type="text" autoComplete="off" />
+							<input
+								id="price"
+								type="number"
+								autoComplete="off"
+								onChange={this.handlePriceInput}
+							/>
 							<label htmlFor="price">Price</label>
 						</div>
 					</div>
-					<p>Fee (0.1%): 0 BTC</p>
-					<p>Total: 0 USD</p>
-					<div className="buttons">
-						<div className="button2">
-							<div>Buy</div>
-						</div>
-					</div>
+					{this.renderFee()}
+					{this.renderTotal()}
+
+					<span className="helper-text orange">{this.state.error}</span>
+
+					{this.renderSubmitButton()}
 				</div>
 			</div>
 		);

@@ -54,7 +54,8 @@ const INITIAL_STATE = {
 		address: "0x0000000000000000000000000000000000000000",
 		availableBalance: 0,
 		reserveBalance: 0
-	}
+	},
+	fee: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -173,7 +174,9 @@ export default (state = INITIAL_STATE, action) => {
 				networkId: action.payload.networkId,
 				exchangeAddress: action.payload.exchangeAddress,
 				myOrders: action.payload.myOrders,
-				web3: action.payload.web3
+				web3: action.payload.web3,
+				exchangeInstance: action.payload.exchangeInstance,
+				fee: action.payload.fee
 			};
 		default:
 			return state;

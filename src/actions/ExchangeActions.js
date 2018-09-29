@@ -374,6 +374,14 @@ export const fetchMarket = (market, assets, socket) => {
 						myOrders = [];
 					}
 
+					var exchangeInstance = new web3.eth.Contract(
+						exchangeAbi,
+						exchangeAddress
+					);
+					var fee = web3.utils.fromWei(
+						await exchangeInstance.methods.fees(0).call()
+					);
+
 					dispatch({
 						type: EXCHANGE_MARKET_LOADED,
 						payload: {
@@ -389,7 +397,9 @@ export const fetchMarket = (market, assets, socket) => {
 							exchangeAddress,
 							assetsFiltered,
 							myOrders,
-							web3
+							web3,
+							exchangeInstance,
+							fee
 						}
 					});
 			}

@@ -1,8 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { roundFixed } from "../helpers";
+import Flash from "../components/Flash";
+import M from "materialize-css/dist/js/materialize.min.js";
 
 class MyOrders extends Component {
+	componentDidMount = () => {
+		M.AutoInit();
+	};
+
+	cancelOrder = async order => {
+		var {
+			user,
+			exchangeInstance,
+			currentMarket,
+			assets,
+			web3
+		} = this.props.exchange;
+
+		// var currentNonce = await web3.eth.getTransactionCount(user);
+		var res = await exchangeInstance.methods
+			.cancelOrder(assets[currentMarket].address, order.id)
+			.send({ from: user });
+
+		console.log(res);
+		// var $ = window.$;
+		// $("#flash").modal("open");
+	};
+
 	renderOverlay = () => {
 		if (!this.props.exchange.user) {
 			return (
@@ -14,9 +39,9 @@ class MyOrders extends Component {
 	};
 
 	renderNoOrders = () => {
-		var { myOrders } = this.props.exchange;
+		var { user, myOrders } = this.props.exchange;
 
-		if (myOrders.length === 0) {
+		if (myOrders.length === 0 && user) {
 			return (
 				<div className="unavailable">
 					<p>You have no open orders.</p>
@@ -42,7 +67,9 @@ class MyOrders extends Component {
 						)}
 					</td>
 					<td>
-						<span className="action">Cancel</span>
+						<span className="action" onClick={() => this.cancelOrder(order)}>
+							Cancel
+						</span>
 					</td>
 				</tr>
 			);
@@ -81,6 +108,11 @@ class MyOrders extends Component {
 				<div className="card px-4 py-4">
 					{this.renderOverlay()}
 					{this.renderNoOrders()}
+
+					<Flash
+						title="CANCEL REQUEST SUBMITTED."
+						content="Your request will be processed shortly by the network."
+					/>
 
 					<div className="head">
 						<div className="title">My open orders</div>

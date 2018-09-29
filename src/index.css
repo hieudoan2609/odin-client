@@ -222,9 +222,14 @@ strong {
   color: #ed8a45 !important; }
 
 /* label underline focus color */
-.input-field input[type="text"]:focus {
+.input-field input[type="text"]:focus,
+.input-field input[type="number"]:focus {
   border-bottom: 1px solid #ed8a45 !important;
   box-shadow: 0 1px 0 0 #ed8a45 !important; }
+
+.helper-text.orange {
+  background-color: transparent !important;
+  color: #ed8a45 !important; }
 
 .Market > .row {
   display: flex;

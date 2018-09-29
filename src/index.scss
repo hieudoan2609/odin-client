@@ -301,9 +301,14 @@ strong {
 	color: $orange !important;
 }
 /* label underline focus color */
-.input-field input[type="text"]:focus {
+.input-field input[type="text"]:focus,
+.input-field input[type="number"]:focus {
 	border-bottom: 1px solid $orange !important;
 	box-shadow: 0 1px 0 0 $orange !important;
+}
+.helper-text.orange {
+	background-color: transparent !important;
+	color: $orange !important;
 }
 
 .Market {
