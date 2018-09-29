@@ -266,6 +266,7 @@ export const fetchMarket = (market, assets, socket) => {
 		socket.removeAllListeners();
 
 		var state = store.getState().exchange;
+		var myOrders, orders, user, networkId, exchangeAddress;
 
 		socket.on(market, async res => {
 			let buyBook, sellBook, trades, ticks;
@@ -281,14 +282,12 @@ export const fetchMarket = (market, assets, socket) => {
 				case "buyOrders":
 					buyBook = await processBuyBook(res.market);
 
-					var { myOrders, user } = store.getState().exchange;
+					({ myOrders, user } = store.getState().exchange);
 					var sellOrders = myOrders.filter(order => order.sell);
-					var orders = res.market;
+					orders = res.market;
 					myOrders = orders.filter(order => order.user === user);
 					myOrders = myOrders.concat(sellOrders);
-					myOrders.sort((a, b) => {
-						return parseFloat(b.price) - parseFloat(a.price);
-					});
+					sortOrders(myOrders);
 
 					if (!user) {
 						myOrders = [];
@@ -303,14 +302,12 @@ export const fetchMarket = (market, assets, socket) => {
 				case "sellOrders":
 					sellBook = await processSellBook(res.market);
 
-					var { myOrders, user } = store.getState().exchange;
+					({ myOrders, user } = store.getState().exchange);
 					var buyOrders = myOrders.filter(order => !order.sell);
-					var orders = res.market;
+					orders = res.market;
 					myOrders = orders.filter(order => order.user === user);
 					myOrders = myOrders.concat(buyOrders);
-					myOrders.sort((a, b) => {
-						return parseFloat(b.price) - parseFloat(a.price);
-					});
+					sortOrders(myOrders);
 
 					if (!user) {
 						myOrders = [];
@@ -331,7 +328,7 @@ export const fetchMarket = (market, assets, socket) => {
 					console.log(`new tick for ${market}`, res);
 					break;
 				default:
-					var { networkId, exchangeAddress, user } = store.getState().exchange;
+					({ networkId, exchangeAddress, user } = store.getState().exchange);
 
 					if (!networkId || !exchangeAddress) {
 						var constants = (await axios.get(
@@ -369,11 +366,9 @@ export const fetchMarket = (market, assets, socket) => {
 						assetsFiltered = state.assetsFiltered;
 					}
 
-					var orders = res.market.buyOrders.concat(res.market.sellOrders);
-					var myOrders = orders.filter(order => order.user === user);
-					myOrders.sort((a, b) => {
-						return parseFloat(b.price) - parseFloat(a.price);
-					});
+					orders = res.market.buyOrders.concat(res.market.sellOrders);
+					myOrders = orders.filter(order => order.user === user);
+					sortOrders(myOrders);
 
 					if (!user) {
 						myOrders = [];
@@ -418,6 +413,12 @@ export const fetchMarket = (market, assets, socket) => {
 
 		socket.emit("getMarket", { market });
 	};
+};
+
+const sortOrders = orders => {
+	orders.sort((a, b) => {
+		return parseFloat(b.price) - parseFloat(a.price);
+	});
 };
 
 const processBuyBook = orders => {

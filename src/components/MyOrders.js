@@ -13,6 +13,18 @@ class MyOrders extends Component {
 		}
 	};
 
+	renderNoOrders = () => {
+		var { myOrders } = this.props.exchange;
+
+		if (myOrders.length === 0) {
+			return (
+				<div className="unavailable">
+					<p>You have no open orders.</p>
+				</div>
+			);
+		}
+	};
+
 	renderOrders = () => {
 		var { myOrders, web3 } = this.props.exchange;
 
@@ -38,7 +50,9 @@ class MyOrders extends Component {
 	};
 
 	renderOrderTable = () => {
-		if (this.props.exchange.user) {
+		var { myOrders, user } = this.props.exchange;
+
+		if (user && myOrders.length > 0) {
 			return (
 				<div>
 					<div className="table-responsive">
@@ -66,6 +80,7 @@ class MyOrders extends Component {
 			<div className="MyOrders">
 				<div className="card px-4 py-4">
 					{this.renderOverlay()}
+					{this.renderNoOrders()}
 
 					<div className="head">
 						<div className="title">My open orders</div>
