@@ -13,7 +13,7 @@ import {
 	EXCHANGE_UNLOCK_METAMASK,
 	EXCHANGE_GO_BACK,
 	EXCHANGE_LOGIN,
-	EXCHANGE_SET_INTERVAL,
+	EXCHANGE_SET_METAMASK_INTERVAL,
 	EXCHANGE_LOGOUT,
 	EXCHANGE_WRONG_NETWORK
 } from "./types";
@@ -78,47 +78,84 @@ const fetchAccountWithUser = async (dispatch, user, reload) => {
 		networkId,
 		baseAsset
 	} = store.getState().exchange;
-	var exchange = new web3.eth.Contract(exchangeAbi, exchangeAddress);
-
-	var assetsFiltered = {};
-	for (let asset in assets) {
-		var balances = await exchange.methods
-			.getBalance(assets[asset].address, user)
-			.call();
-		assets[asset].availableBalance = web3.utils.fromWei(
-			balances.available.toString()
-		);
-		assets[asset].reserveBalance = web3.utils.fromWei(
-			balances.reserved.toString()
-		);
-		assetsFiltered[asset] = assets[asset];
-	}
-
-	var baseAssetBalances = await exchange.methods
-		.getBalance(baseAsset.address, user)
-		.call();
-	baseAsset.availableBalance = web3.utils.fromWei(
-		baseAssetBalances.available.toString()
+	var exchangeInstance = new web3.eth.Contract(exchangeAbi, exchangeAddress);
+	await fetchBalance(
+		dispatch,
+		user,
+		assets,
+		baseAsset,
+		exchangeInstance,
+		networkId,
+		exchangeAddress
 	);
-	baseAsset.reserveBalance = web3.utils.fromWei(
-		baseAssetBalances.reserved.toString()
+	var fetchBalanceInterval = setInterval(
+		fetchBalance,
+		10000,
+		dispatch,
+		user,
+		assets,
+		baseAsset,
+		exchangeInstance,
+		networkId,
+		exchangeAddress
 	);
-	assetsFiltered[baseAsset.symbol] = baseAsset;
-
-	dispatch({
-		type: EXCHANGE_ACCOUNT_LOADED,
-		payload: { assets, networkId, exchangeAddress, assetsFiltered, baseAsset }
-	});
 
 	dispatch({
 		type: EXCHANGE_LOGIN,
-		payload: user
+		payload: { user, fetchBalanceInterval, exchangeInstance }
 	});
 };
 
-export const logout = interval => {
+const fetchBalance = (
+	dispatch,
+	user,
+	assets,
+	baseAsset,
+	exchangeInstance,
+	networkId,
+	exchangeAddress
+) => {
+	return new Promise(async (resolve, reject) => {
+		var assetsFiltered = {};
+		for (let asset in assets) {
+			var balances = await exchangeInstance.methods
+				.getBalance(assets[asset].address, user)
+				.call();
+			assets[asset].availableBalance = web3.utils.fromWei(
+				balances.available.toString()
+			);
+			assets[asset].reserveBalance = web3.utils.fromWei(
+				balances.reserved.toString()
+			);
+			assetsFiltered[asset] = assets[asset];
+		}
+
+		var baseAssetBalances = await exchangeInstance.methods
+			.getBalance(baseAsset.address, user)
+			.call();
+		baseAsset.availableBalance = web3.utils.fromWei(
+			baseAssetBalances.available.toString()
+		);
+		baseAsset.reserveBalance = web3.utils.fromWei(
+			baseAssetBalances.reserved.toString()
+		);
+		assetsFiltered[baseAsset.symbol] = baseAsset;
+
+		dispatch({
+			type: EXCHANGE_ACCOUNT_LOADED,
+			payload: { assets, networkId, exchangeAddress, assetsFiltered, baseAsset }
+		});
+
+		resolve();
+	});
+};
+
+export const logout = () => {
 	return async dispatch => {
-		clearInterval(interval);
+		var { metamaskInterval, fetchBalanceInterval } = store.getState().exchange;
+
+		clearInterval(metamaskInterval);
+		clearInterval(fetchBalanceInterval);
 
 		var { assets } = store.getState().exchange;
 		var assetsFiltered = {};
@@ -163,7 +200,7 @@ export const listenForMetamask = dispatch => {
 	}, 3000);
 
 	dispatch({
-		type: EXCHANGE_SET_INTERVAL,
+		type: EXCHANGE_SET_METAMASK_INTERVAL,
 		payload: interval
 	});
 };

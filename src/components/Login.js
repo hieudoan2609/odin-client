@@ -22,11 +22,7 @@ class LogIn extends Component {
 						<h2>Wrong network.</h2>
 						<p>Please change your network setting to {networkName}.</p>
 						<div className="choices">
-							<span
-								onClick={() => this.props.logout(this.props.exchange.interval)}
-							>
-								Go back
-							</span>
+							<span onClick={() => this.props.logout()}>Go back</span>
 						</div>
 					</div>
 				</div>
@@ -45,11 +41,7 @@ class LogIn extends Component {
 							<span>
 								<a href="https://metamask.io/">Install MetaMask</a>
 							</span>
-							<span
-								onClick={() => this.props.logout(this.props.exchange.interval)}
-							>
-								Go back
-							</span>
+							<span onClick={() => this.props.logout()}>Go back</span>
 						</div>
 					</div>
 				</div>
@@ -65,11 +57,7 @@ class LogIn extends Component {
 						<h2>MetaMask is not unlocked.</h2>
 						<p>Please unlock MetaMask.</p>
 						<div className="choices">
-							<span
-								onClick={() => this.props.logout(this.props.exchange.interval)}
-							>
-								Log out
-							</span>
+							<span onClick={() => this.props.logout()}>Log out</span>
 						</div>
 					</div>
 				</div>
@@ -89,13 +77,7 @@ class LogIn extends Component {
 								<p className="title">Welcome.</p>
 								<p>You have now logged in.</p>
 								<div className="choices">
-									<span
-										onClick={() =>
-											this.props.logout(this.props.exchange.interval)
-										}
-									>
-										Log out
-									</span>
+									<span onClick={() => this.props.logout()}>Log out</span>
 								</div>
 							</div>
 						</div>

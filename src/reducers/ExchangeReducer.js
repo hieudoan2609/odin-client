@@ -12,7 +12,7 @@ import {
 	EXCHANGE_INSTALL_METAMASK,
 	EXCHANGE_UNLOCK_METAMASK,
 	EXCHANGE_GO_BACK,
-	EXCHANGE_SET_INTERVAL,
+	EXCHANGE_SET_METAMASK_INTERVAL,
 	EXCHANGE_LOGOUT,
 	EXCHANGE_WRONG_NETWORK
 } from "../actions/types";
@@ -43,7 +43,9 @@ const INITIAL_STATE = {
 	wrongNetwork: false,
 	networkId: 0,
 	exchangeAddress: "",
-	interval: 0,
+	exchangeInstance: {},
+	metamaskInterval: 0,
+	fetchBalanceInterval: 0,
 	orders: [],
 	myOrders: [],
 	baseAsset: {
@@ -69,15 +71,16 @@ export default (state = INITIAL_STATE, action) => {
 				unlockMetamask: false,
 				installMetamask: false,
 				wrongNetwork: false,
-				interval: 0,
+				metamaskInterval: 0,
+				fetchBalanceInterval: 0,
 				assets: action.payload.assets,
 				assetsFiltered: action.payload.assetsFiltered,
 				baseAsset: action.payload.baseAsset
 			};
-		case EXCHANGE_SET_INTERVAL:
+		case EXCHANGE_SET_METAMASK_INTERVAL:
 			return {
 				...state,
-				interval: action.payload
+				metamaskInterval: action.payload
 			};
 		case EXCHANGE_GO_BACK:
 			return {
@@ -127,7 +130,9 @@ export default (state = INITIAL_STATE, action) => {
 		case EXCHANGE_LOGIN:
 			return {
 				...state,
-				user: action.payload,
+				user: action.payload.user,
+				fetchBalanceInterval: action.payload.fetchBalanceInterval,
+				exchangeInstance: action.payload.exchangeInstance,
 				unlockMetamask: false,
 				installMetamask: false,
 				wrongNetwork: false
