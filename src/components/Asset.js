@@ -56,7 +56,10 @@ class Asset extends Component {
 						<div className="col-12">
 							<div className="title">Total Balance</div>
 							<div className="value">
-								{round(this.props.availableBalance + this.props.reserveBalance)}
+								{round(
+									round(this.props.availableBalance) +
+										round(this.props.reserveBalance)
+								)}
 							</div>
 						</div>
 					</div>
