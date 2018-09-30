@@ -11,6 +11,7 @@ class Trade extends Component {
 		amount: 0,
 		fee: 0,
 		total: 0,
+		totalMinusFee: 0,
 		error: "",
 		pending: false
 	};
@@ -34,16 +35,23 @@ class Trade extends Component {
 	calculateFeeAndTotal = async (price, amount) => {
 		var feeRate = this.props.exchange.fee;
 
-		var total, fee;
+		var total, fee, totalMinusFee;
 		if (this.state.price && this.state.amount) {
-			total = this.state.price * this.state.amount;
-			fee = (total / 100) * feeRate;
-			total = total - fee;
-			await this.setState({ total, fee });
+			total =
+				this.state.type === "sell"
+					? this.state.price * this.state.amount
+					: this.state.amount;
+			fee =
+				this.state.type === "sell"
+					? (total / 100) * feeRate
+					: (this.state.amount / 100) * feeRate;
+			totalMinusFee = total - fee;
+			await this.setState({ total, fee, totalMinusFee });
 		} else {
 			total = 0;
 			fee = 0;
-			await this.setState({ total, fee });
+			totalMinusFee = 0;
+			await this.setState({ total, fee, totalMinusFee });
 		}
 	};
 
@@ -151,7 +159,7 @@ class Trade extends Component {
 			baseAsset
 		} = this.props.exchange;
 
-		var { price, amount } = this.state;
+		var { price, amount, total } = this.state;
 		price = web3.utils.toWei(price.toString());
 		amount = web3.utils.toWei(amount.toString());
 		var marketAddress = assets[currentMarket].address;
@@ -178,11 +186,7 @@ class Trade extends Component {
 			return;
 		}
 
-		if (
-			!sell &&
-			parseFloat(baseAsset.availableBalance) <
-				parseFloat(web3.utils.fromWei(amount.toString()))
-		) {
+		if (!sell && parseFloat(baseAsset.availableBalance) < parseFloat(total)) {
 			this.setState({ error: `Insufficient ${baseAsset.symbol} balance.` });
 			return;
 		}
@@ -214,13 +218,13 @@ class Trade extends Component {
 		if (this.state.type === "sell") {
 			return (
 				<p>
-					Total: {roundFixed(this.state.total)} {baseAsset.symbol}
+					Total: {roundFixed(this.state.totalMinusFee)} {baseAsset.symbol}
 				</p>
 			);
 		} else {
 			return (
 				<p>
-					Total: {roundFixed(this.state.total)} {currentMarket}
+					Total: {roundFixed(this.state.totalMinusFee)} {currentMarket}
 				</p>
 			);
 		}
