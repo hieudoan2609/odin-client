@@ -24,6 +24,7 @@ import moment from "moment";
 import { tsvParse } from "d3-dsv";
 import store from "../store";
 import exchangeAbi from "../contracts/ExchangePure.json";
+import tokenAbi from "../contracts/Token.json";
 
 const infura = process.env.INFURA
 	? process.env.INFURA
@@ -121,6 +122,7 @@ const fetchBalance = (
 			var balances = await exchangeInstance.methods
 				.getBalance(assets[asset].address, user)
 				.call();
+
 			assets[asset].availableBalance = web3.utils.fromWei(
 				balances.available.toString()
 			);
@@ -141,6 +143,14 @@ const fetchBalance = (
 		);
 		assetsFiltered[baseAsset.symbol] = baseAsset;
 
+		var assetWeb3Instances = {};
+		for (var asset in assetsFiltered) {
+			assetWeb3Instances[asset] = new web3.eth.Contract(
+				tokenAbi,
+				assetsFiltered[asset].address
+			);
+		}
+
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
 			payload: {
@@ -149,7 +159,8 @@ const fetchBalance = (
 				exchangeAddress,
 				assetsFiltered,
 				baseAsset,
-				web3
+				web3,
+				assetWeb3Instances
 			}
 		});
 
@@ -248,9 +259,23 @@ export const fetchAccount = () => {
 			assetsFiltered = state.assetsFiltered;
 		}
 
+		var assetWeb3Instances = {};
+		for (var asset in assetsFiltered) {
+			assetWeb3Instances[asset] = new web3.eth.Contract(
+				tokenAbi,
+				assetsFiltered[asset].address
+			);
+		}
+
 		dispatch({
 			type: EXCHANGE_ACCOUNT_LOADED,
-			payload: { assets, networkId, exchangeAddress, assetsFiltered }
+			payload: {
+				assets,
+				networkId,
+				exchangeAddress,
+				assetsFiltered,
+				assetWeb3Instances
+			}
 		});
 	};
 };

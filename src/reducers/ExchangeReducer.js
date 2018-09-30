@@ -55,7 +55,8 @@ const INITIAL_STATE = {
 		availableBalance: 0,
 		reserveBalance: 0
 	},
-	fee: 0
+	fee: 0,
+	assetWeb3Instances: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -155,7 +156,8 @@ export default (state = INITIAL_STATE, action) => {
 				assetsFiltered: action.payload.assetsFiltered,
 				networkId: action.payload.networkId,
 				exchangeAddress: action.payload.exchangeAddress,
-				web3: action.payload.web3
+				web3: action.payload.web3,
+				assetWeb3Instances: action.payload.assetWeb3Instances
 			};
 		case EXCHANGE_MARKET_LOADED:
 			return {

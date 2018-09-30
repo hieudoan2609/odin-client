@@ -4,7 +4,7 @@ import M from "materialize-css/dist/js/materialize.min.js";
 
 class Transfer extends Component {
 	state = {
-		amount: 0,
+		amount: "",
 		error: "",
 		type: "",
 		name: "",
@@ -19,7 +19,7 @@ class Transfer extends Component {
 			var { type, name, symbol } = data;
 			this.refs.amount.value = "";
 			var initialState = {
-				amount: 0,
+				amount: "",
 				error: "",
 				type,
 				name,
@@ -36,15 +36,103 @@ class Transfer extends Component {
 		this.setState({ amount });
 	};
 
-	handleSubmit = async () => {
+	handleSubmit = () => {
+		if (this.state.type === "withdraw") {
+			this.withdraw();
+		} else {
+			this.deposit();
+		}
+	};
+
+	deposit = async () => {
 		var { type, symbol, amount } = this.state;
 		var {
 			user,
 			exchangeInstance,
 			assetsFiltered,
-			assets,
-			web3
+			web3,
+			assetWeb3Instances,
+			exchangeAddress,
+			baseAsset
 		} = this.props.exchange;
+
+		if (!amount) {
+			await this.setState({ error: "Amount cannot be 0." });
+			return;
+		}
+
+		var balance = await this.getBalance(user, symbol);
+
+		if (parseFloat(balance) < parseFloat(amount)) {
+			await this.setState({ error: "Insufficient balance." });
+			return;
+		}
+
+		amount = web3.utils.toWei(amount.toString());
+		var assetAddress = assetsFiltered[symbol].address;
+		var err;
+		var approved = false;
+
+		if (symbol !== baseAsset.symbol) {
+			try {
+				this.setState({ pending: true, error: "" });
+				await assetWeb3Instances[symbol].methods
+					.approve(exchangeAddress, amount)
+					.send({ from: user });
+				approved = true;
+			} catch (error) {
+				this.setState({ pending: false });
+				err = error;
+			}
+		}
+
+		if (approved) {
+			var value = symbol !== baseAsset.symbol ? 0 : amount;
+
+			try {
+				this.setState({ pending: true, error: "" });
+				await exchangeInstance.methods
+					.deposit(assetAddress, amount)
+					.send({ from: user, value });
+			} catch (error) {
+				this.setState({ pending: false });
+				err = error;
+			}
+
+			if (!err) {
+				var $ = window.$;
+				$("#transfer").modal("close");
+				$("#transferComplete").modal("open");
+			}
+		}
+	};
+
+	getBalance = async (user, symbol, amount) => {
+		return new Promise(async (resolve, reject) => {
+			var balance;
+			var {
+				assetsFiltered,
+				baseAsset,
+				web3,
+				assetWeb3Instances
+			} = this.props.exchange;
+
+			if (symbol === baseAsset.symbol) {
+				balance = web3.utils.fromWei(await web3.eth.getBalance(user));
+			} else {
+				var token = assetWeb3Instances[symbol];
+				balance = web3.utils.fromWei(
+					await token.methods.balanceOf(user).call()
+				);
+			}
+
+			resolve(balance);
+		});
+	};
+
+	withdraw = async () => {
+		var { symbol, amount } = this.state;
+		var { user, exchangeInstance, assetsFiltered, web3 } = this.props.exchange;
 
 		if (!amount) {
 			await this.setState({ error: "Amount cannot be 0." });
@@ -57,7 +145,7 @@ class Transfer extends Component {
 		}
 
 		amount = web3.utils.toWei(amount.toString());
-		var marketAddress = assets[symbol].address;
+		var marketAddress = assetsFiltered[symbol].address;
 		var err;
 		try {
 			this.setState({ pending: true, error: "" });
@@ -77,11 +165,18 @@ class Transfer extends Component {
 	};
 
 	sendAll = async () => {
-		var { symbol } = this.state;
-		var { assetsFiltered } = this.props.exchange;
-		var amount = assetsFiltered[symbol].availableBalance;
-		await this.setState({ amount });
-		this.refs.amount.value = amount;
+		var { symbol, type } = this.state;
+		var { user } = this.props.exchange;
+		if (type === "withdraw") {
+			var { assetsFiltered } = this.props.exchange;
+			var amount = assetsFiltered[symbol].availableBalance;
+			await this.setState({ amount });
+			this.refs.amount.value = amount;
+		} else {
+			var amount = parseFloat(await this.getBalance(user, symbol));
+			await this.setState({ amount });
+			this.refs.amount.value = amount;
+		}
 	};
 
 	renderSubmitButton = () => {
@@ -122,7 +217,7 @@ class Transfer extends Component {
 						/>
 						<label
 							htmlFor="amount"
-							className={this.state.amount ? "active" : ""}
+							className={this.state.amount !== "" ? "active" : ""}
 						>
 							Amount
 						</label>
