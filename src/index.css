@@ -485,7 +485,9 @@ strong {
   justify-content: center;
   align-items: center;
   z-index: 1;
-  text-align: center; }
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box; }
 
 .solid {
   background-color: #232d44; }
