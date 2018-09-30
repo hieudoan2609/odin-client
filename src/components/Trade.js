@@ -12,6 +12,7 @@ class Trade extends Component {
 		fee: 0,
 		total: 0,
 		totalMinusFee: 0,
+		amountMinusFee: 0,
 		error: "",
 		pending: false
 	};
@@ -32,31 +33,9 @@ class Trade extends Component {
 		this.calculateFeeAndTotal();
 	};
 
-	calculateFeeAndTotal = async (price, amount) => {
-		var feeRate = this.props.exchange.fee;
-
-		var total, fee, totalMinusFee;
-		if (this.state.price && this.state.amount) {
-			total =
-				this.state.type === "sell"
-					? this.state.price * this.state.amount
-					: this.state.amount;
-			fee =
-				this.state.type === "sell"
-					? (total / 100) * feeRate
-					: (this.state.amount / 100) * feeRate;
-			totalMinusFee = total - fee;
-			await this.setState({ total, fee, totalMinusFee });
-		} else {
-			total = 0;
-			fee = 0;
-			totalMinusFee = 0;
-			await this.setState({ total, fee, totalMinusFee });
-		}
-	};
-
-	switchOrderType = type => {
-		this.setState({ type });
+	switchOrderType = async type => {
+		await this.setState({ type });
+		this.calculateFeeAndTotal();
 	};
 
 	renderOverlay = () => {
@@ -212,6 +191,28 @@ class Trade extends Component {
 		}
 	};
 
+	calculateFeeAndTotal = async (price, amount) => {
+		var feeRate = this.props.exchange.fee;
+
+		var total, fee, totalMinusFee, amountMinusFee;
+		if (this.state.price && this.state.amount) {
+			total = this.state.price * this.state.amount;
+			fee =
+				this.state.type === "sell"
+					? (total / 100) * feeRate
+					: (this.state.amount / 100) * feeRate;
+			totalMinusFee = total - fee;
+			amountMinusFee = this.state.amount - fee;
+			await this.setState({ total, fee, totalMinusFee, amountMinusFee });
+		} else {
+			total = 0;
+			fee = 0;
+			totalMinusFee = 0;
+			amountMinusFee = 0;
+			await this.setState({ total, fee, totalMinusFee, amountMinusFee });
+		}
+	};
+
 	renderTotal = () => {
 		var { baseAsset, currentMarket } = this.props.exchange;
 
@@ -224,7 +225,7 @@ class Trade extends Component {
 		} else {
 			return (
 				<p>
-					Total: {roundFixed(this.state.totalMinusFee)} {currentMarket}
+					Total: {roundFixed(this.state.amountMinusFee)} {currentMarket}
 				</p>
 			);
 		}
