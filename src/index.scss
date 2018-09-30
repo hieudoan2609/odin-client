@@ -435,6 +435,12 @@ strong {
 			position: relative;
 			.table-responsive {
 				height: 170px;
+				th {
+					width: 25%;
+					&:first-child {
+						width: 0%;
+					}
+				}
 			}
 		}
 	}

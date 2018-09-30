@@ -1,9 +1,12 @@
 import React, { Component } from "react";
-import Modal from "./Modal";
 import { connect } from "react-redux";
 import { round } from "../helpers";
 
 class Asset extends Component {
+	transfer = (type, name, symbol) => {
+		window.$("#transfer").trigger("open", { type, name, symbol });
+	};
+
 	renderOverlay() {
 		if (!this.props.exchange.user) {
 			return (
@@ -17,19 +20,6 @@ class Asset extends Component {
 	render() {
 		return (
 			<div className="Asset">
-				<Modal
-					name={this.props.name}
-					symbol={this.props.symbol}
-					type="deposit"
-					id={`deposit-${this.props.symbol}`}
-				/>
-				<Modal
-					name={this.props.name}
-					symbol={this.props.symbol}
-					type="withdraw"
-					id={`withdraw-${this.props.symbol}`}
-				/>
-
 				<div className="card">
 					{this.renderOverlay()}
 
@@ -39,14 +29,16 @@ class Asset extends Component {
 					</p>
 					<p className="subtitle">
 						<span
-							className="modal-trigger"
-							href={`#deposit-${this.props.symbol}`}
+							onClick={() =>
+								this.transfer("deposit", this.props.name, this.props.symbol)
+							}
 						>
 							Deposit
 						</span>
 						<span
-							className="modal-trigger"
-							href={`#withdraw-${this.props.symbol}`}
+							onClick={() =>
+								this.transfer("withdraw", this.props.name, this.props.symbol)
+							}
 						>
 							Withdraw
 						</span>
@@ -84,9 +76,9 @@ const mapStateToProps = ({ exchange }) => {
 	return { exchange };
 };
 
-const mapFunctionsToProps = {};
+const mapDispatchToProps = {};
 
 export default connect(
 	mapStateToProps,
-	mapFunctionsToProps
+	mapDispatchToProps
 )(Asset);

@@ -14,13 +14,7 @@ class MyOrders extends Component {
 	};
 
 	cancelOrder = async order => {
-		var {
-			user,
-			exchangeInstance,
-			currentMarket,
-			assets,
-			web3
-		} = this.props.exchange;
+		var { user, exchangeInstance, currentMarket, assets } = this.props.exchange;
 
 		var err;
 		var state = this.state;
@@ -132,8 +126,8 @@ class MyOrders extends Component {
 
 					<Flash
 						id="orderCancelled"
-						title="ORDER CANCELLED."
-						content="Your order has been cancelled, it will disappear shortly."
+						title="ORDER(S) CANCELLED."
+						content="Your order(s) has been cancelled, it will disappear shortly."
 					/>
 
 					<div className="head">

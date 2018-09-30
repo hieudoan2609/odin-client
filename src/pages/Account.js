@@ -1,22 +1,15 @@
 import React, { Component } from "react";
 import Search from "../components/Search";
 import Asset from "../components/Asset";
-import M from "materialize-css/dist/js/materialize.min.js";
 import { connect } from "react-redux";
 import _ from "lodash";
 import Loading from "../components/Loading";
 import Login from "../components/Login";
 import { fetchAccount } from "../actions";
+import Transfer from "../components/Transfer";
+import Flash from "../components/Flash";
 
 class Account extends Component {
-	componentWillReceiveProps = () => {
-		M.AutoInit();
-	};
-
-	componentDidMount = () => {
-		M.AutoInit();
-	};
-
 	componentWillMount = () => {
 		this.props.fetchAccount();
 	};
@@ -61,6 +54,14 @@ class Account extends Component {
 		return (
 			<div className="MyAccount">
 				{this.renderReloading()}
+
+				<Transfer />
+
+				<Flash
+					id="transferComplete"
+					title="REQUEST SUBMITTED."
+					content="Your request has been successfully submitted, it will be processed shortly."
+				/>
 
 				<div className="row">
 					<div className="col-12">

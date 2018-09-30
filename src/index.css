@@ -319,6 +319,10 @@ strong {
       position: relative; }
       .MyOrders .card .body .table-responsive {
         height: 170px; }
+        .MyOrders .card .body .table-responsive th {
+          width: 25%; }
+          .MyOrders .card .body .table-responsive th:first-child {
+            width: 0%; }
 
 .SellOrders,
 .BuyOrders,
