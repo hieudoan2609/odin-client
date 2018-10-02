@@ -15,7 +15,8 @@ import {
 	EXCHANGE_LOGIN,
 	EXCHANGE_SET_METAMASK_INTERVAL,
 	EXCHANGE_LOGOUT,
-	EXCHANGE_WRONG_NETWORK
+	EXCHANGE_WRONG_NETWORK,
+	EXCHANGE_NAVBAR_LOADED
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -159,7 +160,6 @@ const fetchBalance = (
 				exchangeAddress,
 				assetsFiltered,
 				baseAsset,
-				web3,
 				assetWeb3Instances
 			}
 		});
@@ -422,7 +422,6 @@ export const fetchMarket = (market, assets, socket) => {
 							exchangeAddress,
 							assetsFiltered,
 							myOrders,
-							web3,
 							exchangeInstance,
 							fee
 						}
@@ -509,7 +508,7 @@ const processTrades = async trades => {
 		for (let trade of trades) {
 			const type = trade.sell ? "sell" : "buy";
 			const date = moment(new Date(trade.timestamp * 1000)).format(
-				"YYYY-MM-D HH:mm:ss"
+				"YYYY-MM-DD HH:mm:ss"
 			);
 			const price = web3.utils.fromWei(trade.price);
 			const amount = web3.utils.fromWei(trade.amount);

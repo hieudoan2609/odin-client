@@ -14,7 +14,8 @@ import {
 	EXCHANGE_GO_BACK,
 	EXCHANGE_SET_METAMASK_INTERVAL,
 	EXCHANGE_LOGOUT,
-	EXCHANGE_WRONG_NETWORK
+	EXCHANGE_WRONG_NETWORK,
+	EXCHANGE_NAVBAR_LOADED
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -61,6 +62,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
+		case EXCHANGE_NAVBAR_LOADED:
+			return {
+				...state,
+				web3: action.payload.web3
+			};
 		case EXCHANGE_WRONG_NETWORK:
 			return {
 				...state,
@@ -156,7 +162,6 @@ export default (state = INITIAL_STATE, action) => {
 				assetsFiltered: action.payload.assetsFiltered,
 				networkId: action.payload.networkId,
 				exchangeAddress: action.payload.exchangeAddress,
-				web3: action.payload.web3,
 				assetWeb3Instances: action.payload.assetWeb3Instances
 			};
 		case EXCHANGE_MARKET_LOADED:
@@ -176,7 +181,6 @@ export default (state = INITIAL_STATE, action) => {
 				networkId: action.payload.networkId,
 				exchangeAddress: action.payload.exchangeAddress,
 				myOrders: action.payload.myOrders,
-				web3: action.payload.web3,
 				exchangeInstance: action.payload.exchangeInstance,
 				fee: action.payload.fee
 			};

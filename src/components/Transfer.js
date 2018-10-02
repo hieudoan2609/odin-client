@@ -45,7 +45,7 @@ class Transfer extends Component {
 	};
 
 	deposit = async () => {
-		var { type, symbol, amount } = this.state;
+		var { symbol, amount } = this.state;
 		var {
 			user,
 			exchangeInstance,
@@ -110,12 +110,7 @@ class Transfer extends Component {
 	getBalance = async (user, symbol, amount) => {
 		return new Promise(async (resolve, reject) => {
 			var balance;
-			var {
-				assetsFiltered,
-				baseAsset,
-				web3,
-				assetWeb3Instances
-			} = this.props.exchange;
+			var { baseAsset, web3, assetWeb3Instances } = this.props.exchange;
 
 			if (symbol === baseAsset.symbol) {
 				balance = web3.utils.fromWei(await web3.eth.getBalance(user));
@@ -167,13 +162,14 @@ class Transfer extends Component {
 	sendAll = async () => {
 		var { symbol, type } = this.state;
 		var { user } = this.props.exchange;
+		var amount;
 		if (type === "withdraw") {
 			var { assetsFiltered } = this.props.exchange;
-			var amount = assetsFiltered[symbol].availableBalance;
+			amount = assetsFiltered[symbol].availableBalance;
 			await this.setState({ amount });
 			this.refs.amount.value = amount;
 		} else {
-			var amount = parseFloat(await this.getBalance(user, symbol));
+			amount = parseFloat(await this.getBalance(user, symbol));
 			await this.setState({ amount });
 			this.refs.amount.value = amount;
 		}
