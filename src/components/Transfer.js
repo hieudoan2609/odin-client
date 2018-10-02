@@ -84,6 +84,8 @@ class Transfer extends Component {
 				this.setState({ pending: false });
 				err = error;
 			}
+		} else {
+			approved = true;
 		}
 
 		if (approved) {

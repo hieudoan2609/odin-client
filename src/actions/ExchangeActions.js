@@ -16,7 +16,7 @@ import {
 	EXCHANGE_SET_METAMASK_INTERVAL,
 	EXCHANGE_LOGOUT,
 	EXCHANGE_WRONG_NETWORK,
-	EXCHANGE_NAVBAR_LOADED
+	EXCHANGE_INITIALIZE
 } from "./types";
 import io from "socket.io-client";
 import axios from "axios";
@@ -31,6 +31,15 @@ const infura = process.env.INFURA
 	? process.env.INFURA
 	: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
 const web3 = new Web3(Web3.givenProvider || infura);
+
+export const initialize = () => {
+	return async dispatch => {
+		dispatch({
+			type: EXCHANGE_INITIALIZE,
+			payload: { web3 }
+		});
+	};
+};
 
 export const login = user => {
 	return async dispatch => {

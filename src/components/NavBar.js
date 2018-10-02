@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { roundFixed } from "../helpers";
+import { round } from "../helpers";
+import { initialize } from "../actions";
 
 class NavBar extends Component {
+	componentWillMount = () => {
+		this.props.initialize();
+	};
+
 	renderUser = () => {
 		var { user, baseAsset } = this.props.exchange;
 		if (user) {
@@ -12,7 +17,7 @@ class NavBar extends Component {
 					<i className="icon ion-ios-wallet" />{" "}
 					{`
 						${user.substring(0, 6)}...${user.substring(user.length - 4, user.length)}
-						(${roundFixed(baseAsset.availableBalance, 2)} ${baseAsset.symbol})
+						(${round(baseAsset.availableBalance)} ${baseAsset.symbol})
 					`}
 				</span>
 			);
@@ -62,8 +67,11 @@ const mapStateToProps = ({ exchange }) => {
 	return { exchange };
 };
 
-// const mapFunctionsToProps = {
-// 	getChartData
-// };
+const mapDispatchToProps = {
+	initialize
+};
 
-export default connect(mapStateToProps)(NavBar);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(NavBar);

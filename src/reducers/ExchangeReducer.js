@@ -15,7 +15,7 @@ import {
 	EXCHANGE_SET_METAMASK_INTERVAL,
 	EXCHANGE_LOGOUT,
 	EXCHANGE_WRONG_NETWORK,
-	EXCHANGE_NAVBAR_LOADED
+	EXCHANGE_INITIALIZE
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -62,7 +62,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case EXCHANGE_NAVBAR_LOADED:
+		case EXCHANGE_INITIALIZE:
 			return {
 				...state,
 				web3: action.payload.web3
