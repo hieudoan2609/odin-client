@@ -31,6 +31,27 @@ const infura = process.env.INFURA
 	? process.env.INFURA
 	: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
 const web3 = new Web3(Web3.givenProvider || infura);
+web3.currentProvider.publicConfigStore.on("update", data => {
+	updateWeb3(store.dispatch, data);
+});
+
+const updateWeb3 = (dispatch, data) => {
+	var {
+		user,
+		metamaskInterval,
+		fetchBalanceInterval
+	} = store.getState().exchange;
+	var { selectedAddress } = data;
+	if (
+		user &&
+		user.toLowerCase().trim() !== selectedAddress.toLowerCase().trim()
+	) {
+		clearInterval(metamaskInterval);
+		clearInterval(fetchBalanceInterval);
+		listenForMetamask(dispatch);
+		fetchAccountWithUser(dispatch, selectedAddress, reload);
+	}
+};
 
 export const initialize = () => {
 	return async dispatch => {
@@ -218,7 +239,7 @@ export const listenForMetamask = dispatch => {
 				type: EXCHANGE_WRONG_NETWORK
 			});
 		} else {
-			if (!user & !reloading) {
+			if (!user && !reloading) {
 				user = accounts[0];
 				var reload = true;
 				fetchAccountWithUser(dispatch, user, reload);
