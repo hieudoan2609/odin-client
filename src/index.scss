@@ -484,11 +484,13 @@ strong {
 	}
 	tr {
 		.icon {
+			position: relative;
 			span {
 				width: 10px;
 				height: 100%;
+				top: 0px;
 				display: block;
-				position: relative;
+				position: absolute;
 				&:after {
 					content: "";
 					display: block;

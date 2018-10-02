@@ -351,23 +351,26 @@ strong {
     color: rgba(255, 255, 255, 0.7); }
   .table td {
     border: 0px !important; }
-  .table tr .icon span {
-    width: 10px;
-    height: 100%;
-    display: block;
+  .table tr .icon {
     position: relative; }
-    .table tr .icon span:after {
-      content: "";
-      display: block;
+    .table tr .icon span {
       width: 10px;
-      height: 10px;
-      position: absolute;
-      top: 50%;
-      margin-top: -50%; }
-    .table tr .icon span.sell:after {
-      background: linear-gradient(to right, #ed8a45, #f6de6c); }
-    .table tr .icon span.buy:after {
-      background: linear-gradient(to right, #27d68a, #58d39e); }
+      height: 100%;
+      top: 0px;
+      display: block;
+      position: absolute; }
+      .table tr .icon span:after {
+        content: "";
+        display: block;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 50%;
+        margin-top: -50%; }
+      .table tr .icon span.sell:after {
+        background: linear-gradient(to right, #ed8a45, #f6de6c); }
+      .table tr .icon span.buy:after {
+        background: linear-gradient(to right, #27d68a, #58d39e); }
 
 .action {
   cursor: pointer; }

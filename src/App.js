@@ -12,7 +12,7 @@ import store from "./store";
 const history = createHistory();
 history.listen((location, action) => {
 	if (location.from !== location.pathname) {
-		reload(store.dispatch);
+		reload();
 	}
 });
 

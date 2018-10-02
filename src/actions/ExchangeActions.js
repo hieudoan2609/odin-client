@@ -27,15 +27,23 @@ import store from "../store";
 import exchangeAbi from "../contracts/ExchangePure.json";
 import tokenAbi from "../contracts/Token.json";
 
-const infura = process.env.INFURA
-	? process.env.INFURA
-	: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
-const web3 = new Web3(Web3.givenProvider || infura);
-web3.currentProvider.publicConfigStore.on("update", data => {
-	updateWeb3(store.dispatch, data);
-});
+const initializeWeb3 = () => {
+	const infura = process.env.INFURA
+		? process.env.INFURA
+		: "https://rinkeby.infura.io/pVTvEWYTqXvSRvluzCCe";
+	const web3 = new Web3(Web3.givenProvider || infura);
 
-const updateWeb3 = (dispatch, data) => {
+	if (web3.currentProvider.publicConfigStore) {
+		web3.currentProvider.publicConfigStore.on("update", data => {
+			updateWeb3Account(store.dispatch, data);
+		});
+	}
+
+	return web3;
+};
+const web3 = initializeWeb3();
+
+const updateWeb3Account = (dispatch, data) => {
 	var {
 		user,
 		metamaskInterval,
@@ -51,15 +59,6 @@ const updateWeb3 = (dispatch, data) => {
 		listenForMetamask(dispatch);
 		fetchAccountWithUser(dispatch, selectedAddress, reload);
 	}
-};
-
-export const initialize = () => {
-	return async dispatch => {
-		dispatch({
-			type: EXCHANGE_INITIALIZE,
-			payload: { web3 }
-		});
-	};
 };
 
 export const login = user => {
@@ -324,7 +323,7 @@ export const fetchMarket = (market, assets, socket) => {
 		var myOrders, orders, user, networkId, exchangeAddress;
 
 		socket.on(market, async res => {
-			let buyBook, sellBook, trades, ticks;
+			let buyOrders, sellOrders, buyBook, sellBook, trades, ticks;
 			switch (res.type) {
 				case "trades":
 					trades = await processTrades(res.market);
@@ -338,7 +337,7 @@ export const fetchMarket = (market, assets, socket) => {
 					buyBook = await processBuyBook(res.market);
 
 					({ myOrders, user } = store.getState().exchange);
-					var sellOrders = myOrders.filter(order => order.sell);
+					sellOrders = myOrders.filter(order => order.sell);
 					orders = res.market;
 					myOrders = orders.filter(order => order.user === user);
 					myOrders = myOrders.concat(sellOrders);
@@ -348,9 +347,11 @@ export const fetchMarket = (market, assets, socket) => {
 						myOrders = [];
 					}
 
+					buyOrders = res.market.buyOrders;
+
 					dispatch({
 						type: EXCHANGE_LOAD_BUYBOOK,
-						payload: { buyBook, myOrders }
+						payload: { buyBook, myOrders, buyOrders }
 					});
 					console.log("new buy orders", res);
 					break;
@@ -358,7 +359,7 @@ export const fetchMarket = (market, assets, socket) => {
 					sellBook = await processSellBook(res.market);
 
 					({ myOrders, user } = store.getState().exchange);
-					var buyOrders = myOrders.filter(order => !order.sell);
+					buyOrders = myOrders.filter(order => !order.sell);
 					orders = res.market;
 					myOrders = orders.filter(order => order.user === user);
 					myOrders = myOrders.concat(buyOrders);
@@ -368,9 +369,11 @@ export const fetchMarket = (market, assets, socket) => {
 						myOrders = [];
 					}
 
+					sellOrders = res.market.sellOrders;
+
 					dispatch({
 						type: EXCHANGE_LOAD_SELLBOOK,
-						payload: { sellBook, myOrders }
+						payload: { sellBook, myOrders, sellOrders }
 					});
 					console.log("new sell orders", res);
 					break;
@@ -437,6 +440,9 @@ export const fetchMarket = (market, assets, socket) => {
 						await exchangeInstance.methods.fees(0).call()
 					);
 
+					buyOrders = res.market.buyOrders;
+					sellOrders = res.market.sellOrders;
+
 					dispatch({
 						type: EXCHANGE_MARKET_LOADED,
 						payload: {
@@ -452,6 +458,8 @@ export const fetchMarket = (market, assets, socket) => {
 							exchangeAddress,
 							assetsFiltered,
 							myOrders,
+							buyOrders,
+							sellOrders,
 							exchangeInstance,
 							fee
 						}
@@ -612,8 +620,17 @@ export const filterAssets = (e, assets) => {
 	};
 };
 
-export const reload = dispatch => {
-	dispatch({
+export const reload = () => {
+	store.dispatch({
 		type: EXCHANGE_RELOAD
 	});
+};
+
+export const initialize = () => {
+	return async dispatch => {
+		dispatch({
+			type: EXCHANGE_INITIALIZE,
+			payload: { web3 }
+		});
+	};
 };

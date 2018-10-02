@@ -48,6 +48,8 @@ const INITIAL_STATE = {
 	web3: {},
 	metamaskInterval: 0,
 	fetchBalanceInterval: 0,
+	sellOrders: [],
+	buyOrders: [],
 	myOrders: [],
 	baseAsset: {
 		symbol: "ETH",
@@ -130,13 +132,15 @@ export default (state = INITIAL_STATE, action) => {
 			return {
 				...state,
 				buyBook: action.payload.buyBook,
-				myOrders: action.payload.myOrders
+				myOrders: action.payload.myOrders,
+				buyOrders: action.payload.buyOrders
 			};
 		case EXCHANGE_LOAD_SELLBOOK:
 			return {
 				...state,
 				sellBook: action.payload.sellBook,
-				myOrders: action.payload.myOrders
+				myOrders: action.payload.myOrders,
+				sellOrders: action.payload.sellOrders
 			};
 		case EXCHANGE_LOAD_TRADES:
 			return {
@@ -181,6 +185,8 @@ export default (state = INITIAL_STATE, action) => {
 				networkId: action.payload.networkId,
 				exchangeAddress: action.payload.exchangeAddress,
 				myOrders: action.payload.myOrders,
+				buyOrders: action.payload.buyOrders,
+				sellOrders: action.payload.sellOrders,
 				exchangeInstance: action.payload.exchangeInstance,
 				fee: action.payload.fee
 			};
