@@ -112,7 +112,8 @@ class CandleStickChartWithHoverTooltip extends React.Component {
 		);
 
 		const start = xAccessor(last(data));
-		const end = xAccessor(data[Math.max(0, data.length - 100)]);
+		const totalTicks = 100;
+		const end = xAccessor(data[Math.max(0, data.length - totalTicks)]);
 		const xExtents = [start, end];
 
 		return (

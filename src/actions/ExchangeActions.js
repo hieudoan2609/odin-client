@@ -44,17 +44,13 @@ const initializeWeb3 = () => {
 const web3 = initializeWeb3();
 
 const updateWeb3Account = (dispatch, data) => {
-	var {
-		user,
-		metamaskInterval,
-		fetchBalanceInterval
-	} = store.getState().exchange;
+	var { user } = store.getState().exchange;
 	var { selectedAddress } = data;
 	if (
 		user &&
 		user.toLowerCase().trim() !== selectedAddress.toLowerCase().trim()
 	) {
-		logout();
+		dispatchLogout(store.dispatch);
 	}
 };
 
@@ -195,6 +191,12 @@ const fetchBalance = (
 };
 
 export const logout = () => {
+	return async dispatch => {
+		dispatchLogout(dispatch);
+	};
+};
+
+const dispatchLogout = dispatch => {
 	var { metamaskInterval, fetchBalanceInterval } = store.getState().exchange;
 
 	clearInterval(metamaskInterval);
@@ -212,7 +214,7 @@ export const logout = () => {
 	baseAsset.reserveBalance = 0;
 	assetsFiltered[baseAsset.symbol] = baseAsset;
 
-	store.dispatch({
+	dispatch({
 		type: EXCHANGE_LOGOUT,
 		payload: { assets, assetsFiltered, baseAsset }
 	});
@@ -431,9 +433,16 @@ export const fetchMarket = (market, assets, socket) => {
 						exchangeAbi,
 						exchangeAddress
 					);
-					var fee = web3.utils.fromWei(
-						await exchangeInstance.methods.fees(0).call()
-					);
+
+					var currentNetworkId = await web3.eth.net.getId();
+					var fee;
+					if (networkId === currentNetworkId) {
+						fee = web3.utils.fromWei(
+							await exchangeInstance.methods.fees(0).call()
+						);
+					} else {
+						fee = 0;
+					}
 
 					buyOrders = res.market.buyOrders;
 					sellOrders = res.market.sellOrders;
