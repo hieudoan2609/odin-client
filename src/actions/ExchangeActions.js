@@ -54,10 +54,7 @@ const updateWeb3Account = (dispatch, data) => {
 		user &&
 		user.toLowerCase().trim() !== selectedAddress.toLowerCase().trim()
 	) {
-		clearInterval(metamaskInterval);
-		clearInterval(fetchBalanceInterval);
-		listenForMetamask(dispatch);
-		fetchAccountWithUser(dispatch, selectedAddress, reload);
+		logout();
 	}
 };
 
@@ -198,29 +195,27 @@ const fetchBalance = (
 };
 
 export const logout = () => {
-	return async dispatch => {
-		var { metamaskInterval, fetchBalanceInterval } = store.getState().exchange;
+	var { metamaskInterval, fetchBalanceInterval } = store.getState().exchange;
 
-		clearInterval(metamaskInterval);
-		clearInterval(fetchBalanceInterval);
+	clearInterval(metamaskInterval);
+	clearInterval(fetchBalanceInterval);
 
-		var { assets } = store.getState().exchange;
-		var assetsFiltered = {};
-		for (let asset in assets) {
-			assets[asset].availableBalance = 0;
-			assets[asset].reserveBalance = 0;
-			assetsFiltered[asset] = assets[asset];
-		}
-		var { baseAsset } = store.getState().exchange;
-		baseAsset.availableBalance = 0;
-		baseAsset.reserveBalance = 0;
-		assetsFiltered[baseAsset.symbol] = baseAsset;
+	var { assets } = store.getState().exchange;
+	var assetsFiltered = {};
+	for (let asset in assets) {
+		assets[asset].availableBalance = 0;
+		assets[asset].reserveBalance = 0;
+		assetsFiltered[asset] = assets[asset];
+	}
+	var { baseAsset } = store.getState().exchange;
+	baseAsset.availableBalance = 0;
+	baseAsset.reserveBalance = 0;
+	assetsFiltered[baseAsset.symbol] = baseAsset;
 
-		dispatch({
-			type: EXCHANGE_LOGOUT,
-			payload: { assets, assetsFiltered, baseAsset }
-		});
-	};
+	store.dispatch({
+		type: EXCHANGE_LOGOUT,
+		payload: { assets, assetsFiltered, baseAsset }
+	});
 };
 
 export const listenForMetamask = dispatch => {
@@ -339,7 +334,7 @@ export const fetchMarket = (market, assets, socket) => {
 					({ myOrders, user } = store.getState().exchange);
 					sellOrders = myOrders.filter(order => order.sell);
 					orders = res.market;
-					myOrders = orders.filter(order => order.user === user);
+					myOrders = filterMyOrders(orders, user);
 					myOrders = myOrders.concat(sellOrders);
 					sortOrders(myOrders);
 
@@ -361,7 +356,7 @@ export const fetchMarket = (market, assets, socket) => {
 					({ myOrders, user } = store.getState().exchange);
 					buyOrders = myOrders.filter(order => !order.sell);
 					orders = res.market;
-					myOrders = orders.filter(order => order.user === user);
+					myOrders = filterMyOrders(orders, user);
 					myOrders = myOrders.concat(buyOrders);
 					sortOrders(myOrders);
 
@@ -425,7 +420,7 @@ export const fetchMarket = (market, assets, socket) => {
 					}
 
 					orders = res.market.buyOrders.concat(res.market.sellOrders);
-					myOrders = orders.filter(order => order.user === user);
+					myOrders = filterMyOrders(orders, user);
 					sortOrders(myOrders);
 
 					if (!user) {
@@ -491,6 +486,12 @@ const sortOrders = orders => {
 	orders.sort((a, b) => {
 		return parseFloat(b.price) - parseFloat(a.price);
 	});
+};
+
+const filterMyOrders = (orders, user) => {
+	return orders.filter(
+		order => order.user.toLowerCase().trim() === user.toLowerCase().trim()
+	);
 };
 
 const processBuyBook = orders => {
