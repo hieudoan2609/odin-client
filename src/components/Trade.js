@@ -1,41 +1,18 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import { roundFixed } from "../helpers";
-import Flash from "../components/Flash";
 import M from "materialize-css/dist/js/materialize.min.js";
+import {
+	handleTradePriceInput,
+	handleTradeAmountInput,
+	dispatchFeeAndTotal,
+	handleSubmit,
+	switchOrderType
+} from "../actions";
 
 class Trade extends Component {
-	state = {
-		type: "sell",
-		price: 0,
-		amount: 0,
-		fee: 0,
-		total: 0,
-		totalMinusFee: 0,
-		amountMinusFee: 0,
-		error: "",
-		pending: false
-	};
-
 	componentDidMount = () => {
 		M.AutoInit();
-	};
-
-	handlePriceInput = async e => {
-		var price = parseFloat(e.target.value);
-		await this.setState({ price });
-		this.calculateFeeAndTotal();
-	};
-
-	handleAmountInput = async e => {
-		var amount = parseFloat(e.target.value);
-		await this.setState({ amount });
-		this.calculateFeeAndTotal();
-	};
-
-	switchOrderType = async type => {
-		await this.setState({ type });
-		this.calculateFeeAndTotal();
 	};
 
 	renderOverlay = () => {
@@ -50,8 +27,9 @@ class Trade extends Component {
 
 	renderBalance = () => {
 		var { baseAsset, currentMarket, assets } = this.props.exchange;
+		var { type } = this.props.trade;
 
-		if (this.state.type === "sell") {
+		if (type === "sell") {
 			return (
 				<div className="mini card balance">
 					<div className="title">
@@ -79,26 +57,30 @@ class Trade extends Component {
 
 	renderFee = () => {
 		var { fee, baseAsset, currentMarket } = this.props.exchange;
+		var { type } = this.props.trade;
+		var tradeFee = this.props.trade.fee;
 
-		if (this.state.type === "sell") {
+		if (type === "sell") {
 			return (
 				<p>
 					Fee ({fee}
-					%): {roundFixed(this.state.fee)} {baseAsset.symbol}
+					%): {roundFixed(tradeFee)} {baseAsset.symbol}
 				</p>
 			);
 		} else {
 			return (
 				<p>
 					Fee ({fee}
-					%): {roundFixed(this.state.fee)} {currentMarket}
+					%): {roundFixed(tradeFee)} {currentMarket}
 				</p>
 			);
 		}
 	};
 
 	renderSubmitButton = () => {
-		if (this.state.pending) {
+		var { pending, type } = this.props.trade;
+
+		if (pending) {
 			return (
 				<div className="buttons">
 					<div className="button2 pending">
@@ -109,9 +91,12 @@ class Trade extends Component {
 				</div>
 			);
 		}
-		if (this.state.type === "sell") {
+		if (type === "sell") {
 			return (
-				<div className="buttons" onClick={this.handleSubmit}>
+				<div
+					className="buttons"
+					onClick={() => this.props.handleSubmit(this.refs)}
+				>
 					<div className="button2">
 						<div>Sell</div>
 					</div>
@@ -119,7 +104,10 @@ class Trade extends Component {
 			);
 		} else {
 			return (
-				<div className="buttons" onClick={this.handleSubmit}>
+				<div
+					className="buttons"
+					onClick={() => this.props.handleSubmit(this.refs)}
+				>
 					<div className="button2">
 						<div>Buy</div>
 					</div>
@@ -128,104 +116,20 @@ class Trade extends Component {
 		}
 	};
 
-	handleSubmit = async () => {
-		var {
-			user,
-			exchangeInstance,
-			currentMarket,
-			assets,
-			web3,
-			baseAsset
-		} = this.props.exchange;
-
-		var { price, amount, total } = this.state;
-		price = web3.utils.toWei(price.toString());
-		amount = web3.utils.toWei(amount.toString());
-		var marketAddress = assets[currentMarket].address;
-		var sell = this.state.type === "sell" ? true : false;
-
-		if (!this.state.price) {
-			this.setState({ error: "Price can't be empty." });
-			return;
-		}
-
-		if (!this.state.amount) {
-			this.setState({ error: "Amount can't be empty." });
-			return;
-		}
-
-		if (
-			sell &&
-			parseFloat(assets[currentMarket].availableBalance) <
-				parseFloat(web3.utils.fromWei(amount.toString()))
-		) {
-			this.setState({
-				error: `Insufficient ${currentMarket} balance.`
-			});
-			return;
-		}
-
-		if (!sell && parseFloat(baseAsset.availableBalance) < parseFloat(total)) {
-			this.setState({ error: `Insufficient ${baseAsset.symbol} balance.` });
-			return;
-		}
-
-		var err;
-		try {
-			this.setState({ pending: true, error: "" });
-			await exchangeInstance.methods
-				.createOrder(marketAddress, amount, price, sell)
-				.send({ from: user });
-		} catch (error) {
-			this.setState({ pending: false });
-			err = error;
-		}
-
-		if (!err) {
-			this.setState({ pending: false, amount: 0, price: 0, total: 0, fee: 0 });
-			this.refs.amount.value = 0;
-			this.refs.price.value = 0;
-
-			var $ = window.$;
-			$("#orderSubmitted").modal("open");
-		}
-	};
-
-	calculateFeeAndTotal = async (price, amount) => {
-		var feeRate = this.props.exchange.fee;
-
-		var total, fee, totalMinusFee, amountMinusFee;
-		if (this.state.price && this.state.amount) {
-			total = this.state.price * this.state.amount;
-			fee =
-				this.state.type === "sell"
-					? (total / 100) * feeRate
-					: (this.state.amount / 100) * feeRate;
-			totalMinusFee = total - fee;
-			amountMinusFee = this.state.amount - fee;
-			await this.setState({ total, fee, totalMinusFee, amountMinusFee });
-		} else {
-			total = 0;
-			fee = 0;
-			totalMinusFee = 0;
-			amountMinusFee = 0;
-			await this.setState({ total, fee, totalMinusFee, amountMinusFee });
-		}
-	};
-
 	renderTotal = () => {
 		var { baseAsset, currentMarket } = this.props.exchange;
+		var { type, totalMinusFee, amountMinusFee } = this.props.trade;
 
-		if (this.state.type === "sell") {
+		if (type === "sell") {
 			return (
 				<p>
-					Total: {roundFixed(this.state.totalMinusFee)} {baseAsset.symbol}
+					Total: {roundFixed(totalMinusFee)} {baseAsset.symbol}
 				</p>
 			);
 		} else {
 			return (
 				<p>
-					Total: {roundFixed(this.state.amountMinusFee)} {currentMarket}
+					Total: {roundFixed(amountMinusFee)} {currentMarket}
 				</p>
 			);
 		}
@@ -236,26 +140,20 @@ class Trade extends Component {
 			<div className="Trade card">
 				{this.renderOverlay()}
 
-				<Flash
-					id="orderSubmitted"
-					title="ORDER SUBMITTED."
-					content="Your order has been successfully submitted, it will appear shortly."
-				/>
-
 				<div className="order__types">
 					<div
 						className={`button sell ${
-							this.state.type === "sell" ? "active" : ""
+							this.props.trade.type === "sell" ? "active" : ""
 						}`}
-						onClick={() => this.switchOrderType("sell")}
+						onClick={() => this.props.switchOrderType("sell")}
 					>
 						Sell
 					</div>
 					<div
 						className={`button buy ${
-							this.state.type === "buy" ? "active" : ""
+							this.props.trade.type === "buy" ? "active" : ""
 						}`}
-						onClick={() => this.switchOrderType("buy")}
+						onClick={() => this.props.switchOrderType("buy")}
 					>
 						Buy
 					</div>
@@ -269,9 +167,15 @@ class Trade extends Component {
 								ref="amount"
 								type="number"
 								autoComplete="off"
-								onChange={this.handleAmountInput}
+								onChange={this.props.handleTradeAmountInput}
+								value={this.props.trade.amount}
 							/>
-							<label htmlFor="amount">Amount</label>
+							<label
+								htmlFor="amount"
+								className={this.props.trade.amount !== "" ? "active" : ""}
+							>
+								Amount
+							</label>
 						</div>
 						<div className="input-field">
 							<input
@@ -279,15 +183,21 @@ class Trade extends Component {
 								ref="price"
 								type="number"
 								autoComplete="off"
-								onChange={this.handlePriceInput}
+								onChange={this.props.handleTradePriceInput}
+								value={this.props.trade.price}
 							/>
-							<label htmlFor="price">Price</label>
+							<label
+								htmlFor="price"
+								className={this.props.trade.price !== "" ? "active" : ""}
+							>
+								Price
+							</label>
 						</div>
 					</div>
 					{this.renderFee()}
 					{this.renderTotal()}
 
-					<span className="helper-text orange">{this.state.error}</span>
+					<span className="helper-text orange">{this.props.trade.error}</span>
 
 					{this.renderSubmitButton()}
 				</div>
@@ -296,8 +206,19 @@ class Trade extends Component {
 	}
 }
 
-const mapStateToProps = ({ exchange }) => {
-	return { exchange };
+const mapStateToProps = ({ exchange, trade }) => {
+	return { exchange, trade };
 };
 
-export default connect(mapStateToProps)(Trade);
+const mapDispatchToProps = {
+	handleTradePriceInput,
+	handleTradeAmountInput,
+	dispatchFeeAndTotal,
+	handleSubmit,
+	switchOrderType
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Trade);

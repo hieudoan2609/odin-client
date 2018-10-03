@@ -18,6 +18,10 @@ class SellOrders extends Component {
 			);
 		}
 
+		prices.sort((a, b) => {
+			return a.key - b.key;
+		});
+
 		return prices;
 	};
 

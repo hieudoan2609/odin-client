@@ -3,6 +3,7 @@ import NavBar from "./components/NavBar";
 import Market from "./pages/Market";
 import Account from "./pages/Account";
 import Footer from "./components/Footer";
+import Flash from "./components/Flash";
 import { Provider } from "react-redux";
 import { Router, Route, Switch } from "react-router-dom";
 import createHistory from "history/createBrowserHistory";
@@ -28,6 +29,12 @@ class App extends Component {
 				<Router history={history}>
 					<div className="App">
 						<NavBar />
+
+						<Flash
+							id="orderSubmitted"
+							title="ORDER SUBMITTED."
+							content="Your order has been successfully submitted, it will appear shortly."
+						/>
 
 						<div className="container">
 							<Switch>

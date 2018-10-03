@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import ExchangeReducer from "./ExchangeReducer";
+import exchangeReducer from "./exchangeReducer";
+import tradeReducer from "./tradeReducer";
 
 export default combineReducers({
-	exchange: ExchangeReducer
+	exchange: exchangeReducer,
+	trade: tradeReducer
 });

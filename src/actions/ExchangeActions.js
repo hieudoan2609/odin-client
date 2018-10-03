@@ -437,8 +437,8 @@ export const fetchMarket = (market, assets, socket) => {
 					var currentNetworkId = await web3.eth.net.getId();
 					var fee;
 					if (networkId === currentNetworkId) {
-						fee = web3.utils.fromWei(
-							await exchangeInstance.methods.fees(0).call()
+						fee = parseFloat(
+							web3.utils.fromWei(await exchangeInstance.methods.fees(0).call())
 						);
 					} else {
 						fee = 0;
