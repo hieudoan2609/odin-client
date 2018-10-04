@@ -2,8 +2,6 @@ import { TRANSFER } from "./types";
 import store from "../store";
 
 export const setInitialState = state => {
-	console.log("called");
-
 	return async dispatch => {
 		dispatch({
 			type: TRANSFER,
