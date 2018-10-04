@@ -23,3 +23,5 @@ export const TRADE_TYPE = "TRADE_TYPE";
 export const TRADE_ERROR = "TRADE_ERROR";
 export const TRADE_PENDING = "TRADE_PENDING";
 export const TRADE_SUBMITTED = "TRADE_SUBMITTED";
+
+export const MY_ORDERS_PENDING = "MY_ORDERS_PENDING";

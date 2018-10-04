@@ -1,41 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { roundFixed } from "../helpers";
-import Flash from "../components/Flash";
 import M from "materialize-css/dist/js/materialize.min.js";
+import { cancelOrder } from "../actions";
 
 class MyOrders extends Component {
-	state = {
-		pending: {}
-	};
-
 	componentDidMount = () => {
 		M.AutoInit();
-	};
-
-	cancelOrder = async order => {
-		var { user, exchangeInstance, currentMarket, assets } = this.props.exchange;
-
-		var err;
-		var state = this.state;
-		try {
-			state.pending[order.id] = true;
-			this.setState(state);
-			await exchangeInstance.methods
-				.cancelOrder(assets[currentMarket].address, order.id)
-				.send({ from: user });
-		} catch (error) {
-			state.pending[order.id] = false;
-			this.setState(state);
-			err = error;
-		}
-
-		if (!err) {
-			state.pending[order.id] = false;
-			this.setState(state);
-			var $ = window.$;
-			$("#orderCancelled").modal("open");
-		}
 	};
 
 	renderOverlay = () => {
@@ -79,11 +50,15 @@ class MyOrders extends Component {
 					<td>
 						<span
 							className={
-								this.state.pending[order.id] ? "action pending" : "action"
+								this.props.myOrders.pending[order.id]
+									? "action pending"
+									: "action"
 							}
-							onClick={() => this.cancelOrder(order)}
+							onClick={() => this.props.cancelOrder(order)}
 						>
-							{this.state.pending[order.id] ? "Please wait..." : "Cancel"}
+							{this.props.myOrders.pending[order.id]
+								? "Please wait..."
+								: "Cancel"}
 						</span>
 					</td>
 				</tr>
@@ -124,12 +99,6 @@ class MyOrders extends Component {
 					{this.renderOverlay()}
 					{this.renderNoOrders()}
 
-					<Flash
-						id="orderCancelled"
-						title="ORDER(S) CANCELLED."
-						content="Your order(s) has been cancelled, it will disappear shortly."
-					/>
-
 					<div className="head">
 						<div className="title">My open orders</div>
 					</div>
@@ -141,11 +110,11 @@ class MyOrders extends Component {
 	}
 }
 
-const mapStateToProps = ({ exchange }) => {
-	return { exchange };
+const mapStateToProps = ({ exchange, myOrders }) => {
+	return { exchange, myOrders };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { cancelOrder };
 
 export default connect(
 	mapStateToProps,
