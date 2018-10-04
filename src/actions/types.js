@@ -25,3 +25,5 @@ export const TRADE_PENDING = "TRADE_PENDING";
 export const TRADE_SUBMITTED = "TRADE_SUBMITTED";
 
 export const MY_ORDERS_PENDING = "MY_ORDERS_PENDING";
+
+export const TRANSFER = "TRANSFER";

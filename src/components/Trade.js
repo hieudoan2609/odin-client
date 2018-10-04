@@ -6,7 +6,7 @@ import {
 	handleTradePriceInput,
 	handleTradeAmountInput,
 	dispatchFeeAndTotal,
-	handleSubmit,
+	handleTradeSubmit,
 	switchOrderType
 } from "../actions";
 
@@ -95,7 +95,7 @@ class Trade extends Component {
 			return (
 				<div
 					className="buttons"
-					onClick={() => this.props.handleSubmit(this.refs)}
+					onClick={() => this.props.handleTradeSubmit(this.refs)}
 				>
 					<div className="button2">
 						<div>Sell</div>
@@ -106,7 +106,7 @@ class Trade extends Component {
 			return (
 				<div
 					className="buttons"
-					onClick={() => this.props.handleSubmit(this.refs)}
+					onClick={() => this.props.handleTradeSubmit(this.refs)}
 				>
 					<div className="button2">
 						<div>Buy</div>
@@ -214,7 +214,7 @@ const mapDispatchToProps = {
 	handleTradePriceInput,
 	handleTradeAmountInput,
 	dispatchFeeAndTotal,
-	handleSubmit,
+	handleTradeSubmit,
 	switchOrderType
 };
 

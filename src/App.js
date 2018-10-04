@@ -42,6 +42,12 @@ class App extends Component {
 							content="Your order(s) has been cancelled, it will disappear shortly."
 						/>
 
+						<Flash
+							id="transferComplete"
+							title="REQUEST SUBMITTED."
+							content="Your request has been successfully submitted, it will be processed shortly."
+						/>
+
 						<div className="container">
 							<Switch>
 								<Route exact path="/" component={Market} />

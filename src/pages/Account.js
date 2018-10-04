@@ -7,7 +7,6 @@ import Loading from "../components/Loading";
 import Login from "../components/Login";
 import { fetchAccount } from "../actions";
 import Transfer from "../components/Transfer";
-import Flash from "../components/Flash";
 
 class Account extends Component {
 	componentWillMount = () => {
@@ -56,12 +55,6 @@ class Account extends Component {
 				{this.renderReloading()}
 
 				<Transfer />
-
-				<Flash
-					id="transferComplete"
-					title="REQUEST SUBMITTED."
-					content="Your request has been successfully submitted, it will be processed shortly."
-				/>
 
 				<div className="row">
 					<div className="col-12">

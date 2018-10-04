@@ -79,7 +79,7 @@ export const dispatchFeeAndTotal = dispatch => {
 	});
 };
 
-export const handleSubmit = refs => {
+export const handleTradeSubmit = refs => {
 	return async dispatch => {
 		var {
 			user,
