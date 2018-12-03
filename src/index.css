@@ -516,7 +516,7 @@ strong {
       .Login .card .head .title span {
         font-size: 16px;
         margin-left: 8px; }
-  .Login .card .body .button {
+  .Login .card .button {
     text-transform: uppercase;
     box-sizing: border-box;
     background: linear-gradient(to right, #ed8a45, #f6de6c);
@@ -527,14 +527,14 @@ strong {
     cursor: pointer;
     width: 100%;
     margin-bottom: 10px; }
-    .Login .card .body .button:hover {
+    .Login .card .button:hover {
       background: transparent; }
-      .Login .card .body .button:hover > div {
+      .Login .card .button:hover > div {
         background: #ed8a45;
         color: white; }
-        .Login .card .body .button:hover > div svg path {
+        .Login .card .button:hover > div svg path {
           fill: white !important; }
-    .Login .card .body .button > div {
+    .Login .card .button > div {
       padding: 20px 0px;
       text-align: center;
       background: #232d44;
@@ -544,9 +544,9 @@ strong {
       justify-content: center;
       align-items: center;
       color: #ed8a45; }
-      .Login .card .body .button > div svg {
+      .Login .card .button > div svg {
         margin-right: 4px; }
-        .Login .card .body .button > div svg path {
+        .Login .card .button > div svg path {
           fill: #ed8a45 !important; }
 
 .choices span {

@@ -56,6 +56,8 @@ const updateWeb3Account = (dispatch, data) => {
 
 export const login = user => {
 	return async dispatch => {
+		requestMetamaskPermission();
+
 		if (!Web3.givenProvider || !Web3.givenProvider.isMetaMask) {
 			// metamask not installed
 			dispatch({
@@ -88,6 +90,16 @@ export const login = user => {
 		}
 	};
 };
+
+async function requestMetamaskPermission() {
+	if (window.ethereum) {
+		try {
+			await window.ethereum.enable();
+		} catch (err) {
+			console.log(err);
+		}
+	}
+}
 
 const fetchAccountWithUser = async (dispatch, user, reload) => {
 	if (reload) {
