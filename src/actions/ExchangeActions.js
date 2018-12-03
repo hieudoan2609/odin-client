@@ -275,10 +275,12 @@ export const fetchAccount = () => {
 		var networkId = state.networkId;
 		var exchangeAddress = state.exchangeAddress;
 		if (!networkId || !exchangeAddress) {
-			var constants = (await axios.get(
+			const res = await axios.get(
 				process.env.ADDRESSES ||
 					"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
-			)).data;
+			);
+			var constants = res.data;
+			console.log(res);
 			networkId = constants.networkId;
 			exchangeAddress = constants.exchangeAddress;
 		}

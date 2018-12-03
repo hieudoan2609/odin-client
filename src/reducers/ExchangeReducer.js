@@ -169,6 +169,7 @@ export default (state = INITIAL_STATE, action) => {
 				assetWeb3Instances: action.payload.assetWeb3Instances
 			};
 		case EXCHANGE_MARKET_LOADED:
+			console.log(action.payload.networkId);
 			return {
 				...state,
 				marketLoading: false,
