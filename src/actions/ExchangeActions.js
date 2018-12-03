@@ -280,7 +280,7 @@ export const fetchAccount = () => {
 					"https://raw.githubusercontent.com/odintrade/odin-trade/master/public/constants.json"
 			);
 			var constants = res.data;
-			console.log(res);
+			console.log(constants);
 			networkId = constants.networkId;
 			exchangeAddress = constants.exchangeAddress;
 		}
